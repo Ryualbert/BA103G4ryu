@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>BeanLife</title>
+    <link rel="Shortcut Icon" type="image/x-icon" href="res/img/logo/BeanLifeIco2.ico" />
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="res/plugin/jquery.scrollbar.css">
+
+    <link rel="stylesheet" href="res/css/BeanLifeBase.css">
+
+
+  </head>
+  <body>
+
+    <!-- NavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbar -->
+    <nav class="navbar navbar-default navbar-fixed-top bg-light-brn border0 cus-nav" role="navigation">
+      <div class="container">
+        <div>
+          <button type="button" class="navbar-toggle pull-left cus-ham" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">選單切換</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+
+          <div class="pull-left">
+            <a href="index.html">
+              <img class="w50 padt5 padb2 mgr20" src="res/img/BeanLifeLogoR.png">
+            </a>
+          </div>
+          
+          <div class="pull-right padt5">
+            <div class="dropdown pull-right">
+                      <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span class="badge cus-badge">5</span>
+                      </a>
+                      <ul class="dropdown-menu zidx5">
+                    <li><a href="#">咖啡</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a href="#">清單</a></li>
+                    <li><a href="#">清單</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a href="#">清單</a></li>
+                    <li><a href="#">清單</a></li>
+                    <li><a href="#">清單</a></li>
+                  </ul>
+                    </div>
+
+                    <div class="dropdown pull-right">
+                      <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                      </a>
+                      <ul class="dropdown-menu zidx5">
+                    <li><a href="#">店家資訊</a></li>
+                    <li><a href="#">商品管理</a></li>
+                    <li><a href="#">訂單管理</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a href="#">個人資料</a></li>
+                    <li><a href="#">訂單查詢</a></li>
+                    <li><a href="#">我的收藏</a></li>
+                    <li><a href="#">個人文章</a></li>
+                    <li><a href="#">個人活動</a></li>
+                    <li><a href="#">積分兌換</a></li>
+                  </ul>
+                    </div>
+                </div>
+        </div>
+
+
+        <div class="h-block-depn-nav"></div>
+
+        <!-- 手機隱藏選單區 -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <!-- 左選單 -->
+          <ul class="nav navbar-nav">
+            <li class="active"><a class="padt20 padb17" href="shop.html">找豆</a></li>
+            <li><a class="padt20 padb17" href="forum.html">討論板</a></li>
+            <li><a class="padt20 padb17" href="activity.html">辦活動</a></li>
+            <li><a class="padt20 padb17" href="#">地圖</a></li>
+          </ul>
+        </div>
+        <!-- 手機隱藏選單區結束 -->
+      </div>
+    </nav>
+<!-- --------------------------------------NAV尾NAV尾NAV尾NAV尾NAV尾----------FUNC BAR開頭--------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- funcbar -->
+    <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn" role="navigation">
+      <div class="container padt8">
+        <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+          <select class="form-control">
+            <option>請選擇產地</option>
+                <option>巴西</option>
+                <option>越南</option>
+                <option>台灣</option>
+                <option>爪哇</option>
+                <option>越南</option>
+                <option>台灣</option>
+                <option>爪哇</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+          <select class="form-control">
+            <option>請選擇處理法</option>
+                <option>日曬  </option>
+                <option>半水洗</option>
+                <option>水洗</option>
+                <option>蜜處理</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-2 padt8">
+          <input type="range" name="points" min="0" max="7">
+        </div>
+        <div class="col-xs-12 col-sm-4">
+          <form>
+                 <div class="input-group">
+                   <input type="text" class="form-control" placeholder="Search">
+                   <div class="input-group-btn">
+                     <button class="btn btn-default" type="submit">
+                       <i class="glyphicon glyphicon-search"></i>
+                     </button>
+                   </div>
+                 </div>
+                </form>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- -------------------------------------------------------廣告 ------------------------------>
+    <div class="container mgt120 mgb30">
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+          <div id="ad-cas" class="carousel slide" data-ride="carousel">
+              <!-- 幻燈片主圖區 -->
+              <div class="carousel-inner">
+                  <div class="item">
+                      <img src="res/img/ad1.png" alt="">
+                  </div>
+                  <div class="item">
+                      <img src="res/img/ad2.png" alt="">
+                  </div>
+                  <div class="item active">
+                      <img src="res/img/ad3.png" alt="">
+                  </div>
+              </div>
+              <!-- 上下頁控制區 -->
+              <a class="left carousel-control" href="#ad-cas" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+              <a class="right carousel-control" href="#ad-cas" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
+
+
+
+
+
+
+    <div class="container">
+      <div class="row ">
+
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 mgb30">
+          <div class="container-floid">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12">
+                <div class="pull-left inline-b">
+                  <h4 class="text-danger">找到37項商品</h4>
+                </div>
+                <div class="pull-right inline-b">
+                  <select class="form-control ">
+                        <option>排序依評價</option>
+                        <option>排序依熱門</option>
+                        <option>排序依日期</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container-floid">
+
+
+
+            <!-- ------------------商品陳列結果---------------- -->
+            <!-- ///////////////////////////////////////////// -->
+                <div class="row cus-prod-row zidx0">
+                  <div class="col-xs-12 col-sm-2 vam-div150">
+                    <img class="img-responsive mg-auto vam-img  rd10" src="res/img/m3.png">
+                  </div>
+                  <a href='#prod1' data-toggle="modal">
+                    <div class="col-xs-12 col-sm-10">
+                      <h4 class="inline-b bold">坦尚尼亞 瑪金加 肯特</h4><small class="inline-b pull-right">2017-09-04</small>
+                      <div>
+                        <h5 class="inline-b bold text-info">＄600/lb　　巴西　水洗　深培　阿兜仔咖啡</h5>
+                        <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 bor-info" aria-label="Left Align">
+                            <span class="text-info">42</span>
+                            <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                        </button>
+                        <div class="pull-right mgr20">
+                             <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                            <span>(51)</span>
+                        </div>
+                      </div>
+                      <p>這支美妙的咖啡是由「瑪金加」農民團體 (Majinja Farmer Group) 所生產，瑪金加有 20 個小農組成，位於坦尚尼亞南部，擁有極為突出的紫羅蘭花香、玫瑰果香氣，黑莓醬與無花果風味，豐富的口感。 瑪金加成立於 2015 年，這是他們第二個季度的收成，為了保證產出高品質的咖啡</p>
+                    </div>
+                  </a>
+                </div>
+
+
+                
+
+            <!-- ///////////////////////////////////////////// -->
+                <div class="row cus-prod-row zidx0">
+                  <div class="col-xs-12 col-sm-2 vam-div150">
+                    <img class="img-responsive mg-auto vam-img  rd10" src="res/img/m3.png">
+                  </div>
+                  <a href='#prod1' data-toggle="modal">
+                    <div class="col-xs-12 col-sm-10">
+                      <h4 class="inline-b bold">坦尚尼亞 瑪金加 肯特</h4><small class="inline-b pull-right">2017-09-04</small>
+                      <div>
+                        <h5 class="inline-b bold text-info">＄600/lb　　巴西　水洗　深培　阿兜仔咖啡</h5>
+                        <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 bor-info" aria-label="Left Align">
+                            <span class="text-info">42</span>
+                            <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                        </button>
+                        <div class="pull-right mgr20">
+                             <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                            <span>(51)</span>
+                        </div>
+                      </div>
+                      <p>這支美妙的咖啡是由「瑪金加」農民團體 (Majinja Farmer Group) 所生產，瑪金加有 20 個小農組成，位於坦尚尼亞南部，擁有極為突出的紫羅蘭花香、玫瑰果香氣，黑莓醬與無花果風味，豐富的口感。 瑪金加成立於 2015 年，這是他們第二個季度的收成，為了保證產出高品質的咖啡</p>
+                    </div>
+                  </a>
+                </div>
+
+
+                
+
+            <!-- ///////////////////////////////////////////// -->
+                <div class="row cus-prod-row zidx0">
+                  <div class="col-xs-12 col-sm-2 vam-div150">
+                    <img class="img-responsive mg-auto vam-img  rd10" src="res/img/m3.png">
+                  </div>
+                  <a href='#prod1' data-toggle="modal">
+                    <div class="col-xs-12 col-sm-10">
+                      <h4 class="inline-b bold">坦尚尼亞 瑪金加 肯特</h4><small class="inline-b pull-right">2017-09-04</small>
+                      <div>
+                        <h5 class="inline-b bold text-info">＄600/lb　　巴西　水洗　深培　阿兜仔咖啡</h5>
+                        <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 " aria-label="Left Align">
+                            <span class="tx-gray">42</span>
+                            <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
+                        </button>
+                        <div class="pull-right mgr20">
+                             <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                            <span>(51)</span>
+                        </div>
+                      </div>
+                      <p>這支美妙的咖啡是由「瑪金加」農民團體 (Majinja Farmer Group) 所生產，瑪金加有 20 個小農組成，位於坦尚尼亞南部，擁有極為突出的紫羅蘭花香、玫瑰果香氣，黑莓醬與無花果風味，豐富的口感。 瑪金加成立於 2015 年，這是他們第二個季度的收成，為了保證產出高品質的咖啡</p>
+                    </div>
+                  </a>
+                </div>
+
+
+                
+
+
+
+
+
+
+
+              </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ----------------------------------------------FOOTER--------------------------------------------------------- -->
+
+
+
+
+
+
+    
+    <div class="footer">
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-xs-12 col-sm-1 col-sm-offset-4">
+            <a href="#">服務條款</a>
+          </div>
+          <div class="col-xs-12 col-sm-1">
+            <a href="#">常見問題</a>
+          </div>
+          <div class="col-xs-12 col-sm-1">
+            <a href="#">聯絡我們</a>
+          </div>
+          <div class="col-xs-12 col-sm-1">
+            <a href="#">商業合作</a>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+          <h5 class="small">COPYRIGHT (C) 2017 BeanLife, Inc. ALL RIGHTS RESERVED.</h5>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+<!--  --------------------------------------------------------------商品跳窗---------------------------------------------------------------->
+
+
+
+
+
+    <div class="modal" id="prod1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content fix-h scrollbar-macosx">
+
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title bold">坦尚尼亞 瑪金加 肯特</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-floid">
+
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+
+
+
+
+
+                                <!-- ---------------商品圖片-------------- -->
+                                <div class="container-floid">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-11 col-sm-offset-1">
+                                            <div id="mod-cas" class="carousel slide" data-ride="carousel">
+                                                <!-- 幻燈片主圖區 -->
+                                                <div class="carousel-inner">
+                                                    <div class="item active">
+                                                        <img class="img-responsive w800" src="res/img/p1.jpg" alt="">
+                                                    </div>
+                                                    <div class="item">
+                                                        <img class="img-responsive w800" src="res/img/p2.jpg" alt="">
+                                                    </div>
+                                                    <div class="item">
+                                                        <img class="img-responsive w800" src="res/img/p3.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <!-- 上下頁控制區 -->
+                                                <a class="left carousel-control" href="#mod-cas" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                                <a class="right carousel-control" href="#mod-cas" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mgt20">
+                                        <div class="col-xs-12 col-sm-11 col-sm-offset-1 pointer" href='#store1' data-toggle="modal">
+                                            <h4 class="bold text-info">藍色小舖</h4>
+                                            <p>
+                                                地址： 高雄市鳥松區本館路72巷11-1號<br>
+                                                電話： 07-3707263<br>
+                                                營業時間：   10:00～18:00
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <!-- ---------------商品資訊-------------- -->
+                            <div class="col-xs-12 col-sm-5">
+                                <div class="well">
+                                    <p>
+                                        <small class="pull-right">最後編輯時間<br>2017-09-05</small>
+                                        豆種：肯特 Kent <br>
+                                        生豆等級：G3<br>
+                                        <br>
+                                        生產國：坦尚尼亞 Tanzania<br>
+                                        地區：Mbeya 省<br>
+                                        農場：莫內花園咖啡農莊<br>
+                                        生產者：瑪金加 Majinja 農民團體的當地小農戶<br>
+                                        海拔：1250公尺<br>
+                                        <br>
+                                        處理法：水洗 Washed<br>
+                                        烘焙度：深焙<br>
+                                        <br>
+                                        <small>商品編號：P1000000001</small>
+                                    </p>
+                                </div>
+                                <h4 class="text-info inline-b bold">$600　0.5lb</h4>
+                                <div class="pull-right mgt10">
+
+                                  <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                  <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                  <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                  <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                  <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                                  <!-- <span>(51)</span> -->
+
+                                </div>
+                                <p>
+                                    <button type="button" class="btn btn-default btn-sm zidx5 pull-right bor-info" aria-label="Left Align">
+                                        <span class="text-info">42</span>
+                                        <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                                    </button>
+                                    標價/重量：$1200/lb<br>
+                                    運費：$80<span class="text-warning bold mgl20">滿$1000免運費</span><br>
+                                    供應數量：10
+                                </p>
+
+                                <div class="container-floid">
+                                    <div class="row">
+                                        <div class="col-xs-7 col-sm-6">
+                                            <span class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
+                                            <input class="btn w45" type="text" name="" value="0">
+                                            <span class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
+
+                                        </div>
+                                        <div class="col-xs-5 col-sm-6">
+                                            <div class="btn btn-default btn-info">加入購物車</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="row mgt20">
+                            <div class="col-xs-12 col-sm-6">
+
+                                <!-- ---------------商品描述-------------- -->
+                                <div class="container-floid">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-11 col-sm-offset-1">
+                                            <p>
+                                                這支美妙的咖啡是由「瑪金加」農民團體 (Majinja Farmer Group) 所生產，瑪金加有 20 個小農組成，位於坦尚尼亞南部，擁有極為突出的紫羅蘭花香、玫瑰果香氣，黑莓醬與無花果風味，豐富的口感。
+
+                                                瑪金加成立於 2015 年，這是他們第二個季度的收成，為了保證產出高品質的咖啡，農民採收的都是完全成熟的櫻桃鮮果，歷經去果皮、發酵、水洗的不同階段，最後在高架曬床上緩慢的日曬乾燥。
+
+                                                坦尚尼亞最普遍的豆種是波旁，波旁在當地叫做 Mbozi，Mbozi 事實上也是南部省份的名字，就是這支豆生產的區域。1890 年代，耶穌會的教士引進阿拉比卡品種，1990 年時，咖啡已經成為經濟作物，一開始栽種的品種就是波旁 (Bourbon)，後來又引進了肯特 (Kent) 豆種。坦尚尼亞在很多地方學習肯亞的咖啡生產方式，例如分級制度就是沿用肯亞，處理法也是肯亞式的全水洗。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+                                <img class="img-responsive mg-auto" src="res/img/5.png">
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <!-- -----------------------------------------互動區塊--------------------------------------------- -->
+                        <div class="row mgt20">
+                            <div class="col-xs-12 col-sm-12">
+                                <div role="tabpanel">
+                                    <!-- 標籤面板：標籤區 -->
+                                    <ul class="nav nav-tabs " role="tablist">
+                                        <li role="presentation" class="active w50p text-center">
+                                            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab" class="bold">心得評論</a>
+                                        </li>
+                                        <li role="presentation" class="w50p text-center">
+                                            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab" class="bold">問與答</a>
+                                        </li>
+                                    </ul>
+
+
+
+
+
+
+
+
+
+                                    <!-- 標籤面板：內容區 -->
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="tab1">
+
+
+
+                                             <!-- ///////////////////////////////////////////////////////////////// -->
+                                            <div class="row cus-art-row zidx0 mgt20">
+                                                <div class="col-xs-6 col-sm-1 col-sm-offset-1 padr0 ">
+                                                    <img class="img-responsive mg-auto vam-img round-img" src="res/img/mem01.png">
+                                                </div>
+                                                <!-- -----------------名稱------------------- -->
+                                                <div class="col-xs-6 col-sm-2">
+                                                    <span class="text-info">Java123</span>
+                                                    <br>
+                                                    <span>手沖達人</span>
+                                                    <br>
+                                                    <small>2017-09-04</small>
+                                                </div>
+                                                <!-- -----------------沖泡方式------------------- -->
+                                                <div class="col-xs-12 col-sm-4 col-sm-offset-1 mgt10 mg-auto">
+                                                    <div class="container-floid padt10">
+                                                        <div class="row">
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45 " src="res\img\icon\weight.png">
+                                                                <small class="text-info">25g</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\kettle.png">
+                                                                <small class="text-info">250ml</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\drgree.png">
+                                                                <small class="text-info">85C</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\timer.png">
+                                                                <small class="text-info">2m50s</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <!-- -----------------給分 收藏------------------- -->
+                                                <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+
+                                                    <div class="container-floid">
+                                                        <div class="row">
+                                                            <div class="col-xs-6 col-sm-12 padt10">
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                                                            </div>
+
+
+                                                             <div class="col-xs-6 col-sm-12 padt10">
+                                                                <button type="button" class="btn btn-default btn-xs zidx5 bor-like" aria-label="Left Align">
+                                                                    <span class="tx-like">42</span>
+                                                                    <span class="glyphicon glyphicon-heart tx-like" aria-hidden="true"></span>
+                                                                </button>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- -----------------心得內文------------------- -->
+                                                <div class="col-xs-12 col-sm-10 col-sm-offset-1  mgt10">
+                                                    <p>国家锁定越来越审批垃圾不大相册证实起点你的物品规律，无奈甚至哪里课堂减少速度每日创业美好，一个轻松情节情绪花园给他循环有时此处转移，能量类型加上本页教授级别分钟生存是什么可以邮政编码必须躺在复，无比前面相同城市事件相对，不了如果您金额提出了反而通常法规超市小孩至少指标东莞分享，证书数码相机如今减肥平衡优秀事情评估类别开心决策老大驱动走进。</p>
+                                                </div>
+
+                                            </div>
+                                            
+
+                                             <!-- ///////////////////////////////////////////////////////////////// -->
+                                            <div class="row cus-art-row zidx0 mgt20">
+                                                <div class="col-xs-6 col-sm-1 col-sm-offset-1 padr0 ">
+                                                    <img class="img-responsive mg-auto vam-img round-img" src="res/img/mem01.png">
+                                                </div>
+                                                <!-- -----------------名稱------------------- -->
+                                                <div class="col-xs-6 col-sm-2">
+                                                    <span class="text-info">Java123</span>
+                                                    <br>
+                                                    <span>手沖達人</span>
+                                                    <br>
+                                                    <small>2017-09-04</small>
+                                                </div>
+                                                <!-- -----------------沖泡方式------------------- -->
+                                                <div class="col-xs-12 col-sm-4 col-sm-offset-1 mgt10 mg-auto">
+                                                    <div class="container-floid padt10">
+                                                        <div class="row">
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45 " src="res\img\icon\weight.png">
+                                                                <small class="text-info">25g</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\kettle.png">
+                                                                <small class="text-info">250ml</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\drgree.png">
+                                                                <small class="text-info">85C</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\timer04.png">
+                                                                <small class="text-info">2m50s</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <!-- -----------------給分 收藏------------------- -->
+                                                <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+
+                                                    <div class="container-floid">
+                                                        <div class="row">
+                                                            <div class="col-xs-6 col-sm-12 padt10">
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                                                            </div>
+
+
+                                                             <div class="col-xs-6 col-sm-12 padt10">
+                                                                <button type="button" class="btn btn-default btn-xs zidx5 bor-like" aria-label="Left Align">
+                                                                    <span class="tx-like">42</span>
+                                                                    <span class="glyphicon glyphicon-heart tx-like" aria-hidden="true"></span>
+                                                                </button>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- -----------------心得內文------------------- -->
+                                                <div class="col-xs-12 col-sm-10 col-sm-offset-1  mgt10">
+                                                    <p>将其危险高考升级儿童加工广州还没有明星一是并且，有一些尚未所说讨论编，资本上下会在显卡获取实践消失登陆回应矛盾自，手册对面世界杯铁路言论构成以后于是家园反对措施办法一周金属思。</p>
+                                                </div>
+
+                                            </div>
+                                            
+
+                                             <!-- ///////////////////////////////////////////////////////////////// -->
+                                            <div class="row cus-art-row zidx0 mgt20">
+                                                <div class="col-xs-6 col-sm-1 col-sm-offset-1 padr0 ">
+                                                    <img class="img-responsive mg-auto vam-img round-img" src="res/img/mem01.png">
+                                                </div>
+                                                <!-- -----------------名稱------------------- -->
+                                                <div class="col-xs-6 col-sm-2">
+                                                    <span class="text-info">Java123</span>
+                                                    <br>
+                                                    <span>手沖達人</span>
+                                                    <br>
+                                                    <small>2017-09-04</small>
+                                                </div>
+                                                <!-- -----------------沖泡方式------------------- -->
+                                                <div class="col-xs-12 col-sm-4 col-sm-offset-1 mgt10 mg-auto">
+                                                    <div class="container-floid padt10">
+                                                        <div class="row">
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45 " src="res\img\icon\weight03.png">
+                                                                <small class="text-info">25g</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\kettle03.png">
+                                                                <small class="text-info">250ml</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\drgree03.png">
+                                                                <small class="text-info">85C</small>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 text-center">
+                                                                <img class="img-responsive mg-auto inline-b w45" src="res\img\icon\timer03.png">
+                                                                <small class="text-info">2m50s</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <!-- -----------------給分 收藏------------------- -->
+                                                <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+
+                                                    <div class="container-floid">
+                                                        <div class="row">
+                                                            <div class="col-xs-6 col-sm-12 padt10">
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                                                                <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                                                            </div>
+
+
+                                                             <div class="col-xs-6 col-sm-12 padt10">
+                                                                <button type="button" class="btn btn-default btn-xs zidx5 bor-like" aria-label="Left Align">
+                                                                    <span class="tx-like">42</span>
+                                                                    <span class="glyphicon glyphicon-heart tx-like" aria-hidden="true"></span>
+                                                                </button>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- -----------------心得內文------------------- -->
+                                                <div class="col-xs-12 col-sm-10 col-sm-offset-1  mgt10">
+                                                    <p>秘密无疑居然甚至复杂你会一口气，消费者我觉得执法背景爆，一个月团体老师下了现在诚信把握特殊联赛政府沉默难得大，出版社姐姐正文民主毫不父母南方男孩等人儿童知道维持现代化，再说考察大全先进性产权笑容突破。</p>
+                                                </div>
+
+                                            </div>
+                                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="tab2">
+
+
+
+
+
+                                            <!-- --------------------問與答---------------- -->
+                                             <!-- ////////////////////////////////// -->
+                                            <div class="row cus-qa-row zidx0 mgt20">
+                                               
+                                                <div class="col-xs-12 col-sm-9 col-sm-offset-1">
+                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
+                                                    <p>内存速度微微素质尴尬，导演住房初步铃声邮政编码他们的天地本地有关部门大厦电影财，作业频率不会专家总经理格式激情辽宁一段他们的首页有限责任公司，眼光进攻能不能优势上有一周西方并不好多多，细节许可制品医院整体内容，民间生活不如状态邮政编码高达正是论坛能否关键地说律师维护经，一脸这段调查资产概念要去人民政府业绩五金美国当天懂，公告调节你们的信心条款文件大小平衡成就求职，尽快出租之间一点东方广大上次博客而是商标货币还会几天他说内。</p>
+                                                </div>
+
+
+                                                <div class="col-xs-12 col-sm-9 col-sm-offset-2 well">
+                                                    <span class="text-info">藍色小舖</span><small class="mgl20">(2017-09-06)</small>
+                                                    <p>他们的经销商领导恋爱功夫链接可是青，他也很好外资还没有在这平，而是电子商务你怎么远程确保每，看过收入规则眼泪本网地说经验等人中文版高兴招聘最终印度大。</p>
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+                                             <!-- ////////////////////////////////// -->
+                                            <div class="row cus-qa-row zidx0 mgt20">
+                                               
+                                                <div class="col-xs-12 col-sm-9 col-sm-offset-1">
+                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
+                                                    <p>产业老人我来这次报告长时间有意老师本论坛犯，浙江满意电力生成就要日韩降低，资源互联网之一登录半年业主交流，广大群众否则选手白色，部门福州矛盾居民默认正在大厦则是一看专区收藏究竟走势，种子部队模拟始终美女图像无人有人之中本次直接小游戏目光，观察自己的相当体力才是前来成员课程。</p>
+                                                </div>
+
+
+                                            </div>
+
+
+
+
+
+
+                                             <!-- ////////////////////////////////// -->
+                                            <div class="row cus-qa-row zidx0 mgt20">
+                                               
+                                                <div class="col-xs-12 col-sm-9 col-sm-offset-1">
+                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
+                                                    <p>考核会议制品机关难得站内地图发帖站在下载次数主体，行为可以。</p>
+                                                </div>
+
+
+                                                <div class="col-xs-12 col-sm-9 col-sm-offset-2 well">
+                                                    <span class="text-info">藍色小舖</span><small class="mgl20">(2017-09-06)</small>
+                                                    <p>夏天屏幕人事购买立场那么多选项天然放，前进安装从事此次女性而在天使创造言论只能，杭州仪器分享中文尽管。</p>
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- --------------------------------------------------店家---------------------------------------------------------------------- -->
+
+
+    <div class="modal" id="store1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content fix-h scrollbar-macosx">
+
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+
+
+            <div class="container-floid">
+              <div class="row">
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                  
+                  <div id="store-cas" class="carousel slide" data-ride="carousel">
+                      <!-- 幻燈片主圖區 -->
+                      <div class="carousel-inner">
+                          <div class="item">
+                              <img class="img-responsive" src="res/img/s1.jpg" alt="">
+                          </div>
+                          <div class="item">
+                              <img class="img-responsive" src="res/img/s3.jpg" alt="">
+                          </div>
+                          <div class ="item active">
+                              <img class="img-responsive" src="res/img/s2.jpg" alt="">
+                          </div>
+                      </div>
+                      <!-- 上下頁控制區 -->
+                      <a class="left carousel-control" href="#store-cas" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                      <a class="right carousel-control" href="#store-cas" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                  </div>
+                    
+                  
+
+                </div>
+              </div>
+            </div>
+
+            <div class="container-floid">
+              <div class="row">
+                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                  <h3 class="text-info bold">藍色小舖</h3>
+                  <p>The Barn Coffee Roasters 的創辦人是 Ralf Rüller，他的第一間咖啡館創立於 2010 年的柏林，自己烘焙蛋糕、麵包，但是使用英國 Square Mile 的咖啡。兩年後，2012 年 9 月，他找到更大的空間，成立自己的咖啡烘焙坊，使用 Probat UG15 烘豆機，很快成為德國最受矚目的精品烘焙之一。
+
+                  手工採收的櫻桃、精品等級、偏好小農場，尤其是對改善品質充滿熱情的農場，是 Barn 選擇生豆的原則，新鮮、乾淨、永續耕種、可追溯性，Barn 從產地尋找當季生豆，付給農民比公平貿易好 2 到 3 倍的價格，如果直接貿易有困難，也是從世界上最好的生豆商那裡購買小農場的咖啡，例如 Nordic Approach。
+
+                  不論義式濃縮或手沖，The Barn 烘焙的咖啡只有單產區的豆子，他們追求的是單一莊園、農場、水洗廠或合作社的極致風味，表現在不同的酸質、甜度、水果滋味、喉韻、口感、平衡感。
+
+                  The Barn 的義式濃縮，與平常可能喝過的濃黑焦苦的義式完全不同，水果明亮的酸質非常明顯，按不同的豆種與產地，可以嘗到不同的風味，櫻桃、杏仁、血橙、葡萄乾，不一而足。然後基底的風味例如牛奶巧克力，會慢慢留在舌底，直到消散。口感非常滑順，成為他們的標誌特色。</p>
+
+                </div>
+                <div class="col-xs-12 col-sm-5 mgt20">
+                  <div class="">
+                    <p>
+                      地址： 高雄市鳥松區本館路72巷11-1號<br>
+                      電話： 07-3707263<br>
+                      營業時間： 10:00～18:00
+                    </p>
+                    <h4 class="text-warning">全店滿$1000免運費</h4>
+                    <small class="pull-right">店家編號 S1000000001</small>
+                  </div>
+
+                  <iframe class="h300 mg-auto padt20" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14467.808603196336!2d121.18294626474378!3d24.967742558315585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1b5e6ee66e9fec49!2z6LOH562W5pyD5Lit5aOiIFRpYmFNZSDlnIvpmpvkurrmiY3nmbzlsZXkuK3lv4M!5e0!3m2!1szh-TW!2stw!4v1504632882091"  frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="container-floid padt20">
+              <div class="row">
+                <div class="container-floid">
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3  padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
+                              <span class="text-info">42</span>
+                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+      
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3  padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
+                              <span class="text-info">42</span>
+                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+      
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3 padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
+                              <span class="tx-gray">42</span>
+                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3 padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
+                              <span class="text-info">42</span>
+                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+      
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3 padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
+                              <span class="text-info">42</span>
+                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+      
+                      <!-- ////////////////////////////// -->
+                      <div class="col-xs-12 col-sm-3 padt10">
+                        <a href="#">
+                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
+                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
+                          <p class="inline-b bold text-info">＄600/lb</p>
+
+                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
+                              <span class="tx-gray">42</span>
+                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
+                          </button>
+
+                          <p class="bold">巴西　水洗　深培</p>
+
+                          <div>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
+                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
+                              <span>(51)</span>
+                          </div>
+                        </a>
+                      </div>
+
+      
+
+
+
+
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="res/plugin/jquery.scrollbar.js"></script>
+
+
+<script>
+
+//func bar toogle
+var scrollPos = 0;
+window.onscroll = function() {myFunction()};
+
+function myFunction() {
+  if (document.body.scrollTop < 1) {
+    $("#funcbar").stop(true);
+        $("#funcbar").slideDown("300");
+        scrollPos = document.body.scrollTop;
+        return;
+  }
+    if ((document.body.scrollTop-scrollPos) >= 0) {
+      $("#funcbar").stop(true);
+        $("#funcbar").slideUp("300");
+        scrollPos = document.body.scrollTop;
+    } else {
+      $("#funcbar").stop(true);
+        $("#funcbar").slideDown("300");
+        scrollPos = document.body.scrollTop;
+    }
+}
+
+//odd row change side
+$(document).ready(function(){
+  $('.row.mgb30.mgt20:odd').children('div:first-child').addClass('col-sm-push-6')
+  $('.row.mgb30.mgt20:odd').children('div:last-child').addClass('col-sm-pull-6')
+});
+
+// scrollbar
+jQuery(document).ready(function(){
+    jQuery('.scrollbar-macosx').scrollbar();
+});
+
+</script>
+
+
+
+  </body>
+</html>

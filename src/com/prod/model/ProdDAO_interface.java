@@ -8,6 +8,7 @@ public interface ProdDAO_interface {
 	public void delete(String prod_no);
 	public ProdVO findByPrimaryKey(String prod_no);
 	public List<ProdVO> getAll();
-	public List<ProdVO> getAllToJSON();
-	public List<byte[]> getImage(String prod_no);
+	public List<ProdVO> getAllNoImg();
+	public List<byte[]> getImageByPK(String prod_no);
+	public List <ProdVO> getQueryResult(String bean_contry, String proc, String roast, String prod_name);
 }

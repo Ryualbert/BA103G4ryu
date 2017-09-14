@@ -1,7 +1,6 @@
 package com.prod.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,7 +65,7 @@ public class ProdDAO implements ProdDAO_interface {
 	private static final String DELETE = "DELETE FROM PROD WHERE PROD_NO = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM PROD";
 	private static final String GET_ONE_STMT = "SELECT * FROM PROD WHERE PROD_NO = ?"; 
-	private static final String GET_ALL_TO_JSON_STMT = "SELECT"
+	private static final String GET_ALL_NO_IMG_STMT = "SELECT "
 			+ "PROD_NO,"
 			+ "STORE_NO," 
 			+ "PROD_NAME," 
@@ -91,11 +90,11 @@ public class ProdDAO implements ProdDAO_interface {
 			+ "PROD_SUP," 
 			+ "PROD_CONT,"
 			+ "PROD_STAT," 
-			+ "ED_TIME"
+			+ "ED_TIME "
 			+ "FROM PROD";
 	
-	private static final String GET_IMG_STMT = "SELECT PROD_PIC1,PROD_PIC2,PROD_PIC3 FROM PROD WHERE PROD_NO = ?"; 
-
+	private static final String GET_IMG_BY_PK_STMT = "SELECT PROD_PIC1,PROD_PIC2,PROD_PIC3 FROM PROD WHERE PROD_NO = ?"; 
+	private static final String GET_QUERY_RESULT = "SELECT * FROM PROD WHERE BEAN_CONTRY LIKE ? AND PROC LIKE ? AND ROAST LIKE ? AND PROD_NAME LIKE ?";
 	
 	@Override
 	public void insert(ProdVO prodVO) {
@@ -219,7 +218,6 @@ public class ProdDAO implements ProdDAO_interface {
 		}	
 	}
 	
-
 	@Override
 	public void delete(String prod_no) {
 		Connection con = null;
@@ -227,6 +225,7 @@ public class ProdDAO implements ProdDAO_interface {
 		
 		try {
 			con = ds.getConnection();
+			pstmt = con.prepareStatement(DELETE);
 			con.setAutoCommit(false);
 			pstmt.setString(1, prod_no);
 			pstmt.executeUpdate();
@@ -421,7 +420,7 @@ public class ProdDAO implements ProdDAO_interface {
 	}
 	
 	@Override
-	public List<ProdVO> getAllToJSON() {
+	public List<ProdVO> getAllNoImg() {
 		List<ProdVO> list = new ArrayList<ProdVO>();
 		ProdVO prodVO = null;
 		Connection con = null;
@@ -430,7 +429,7 @@ public class ProdDAO implements ProdDAO_interface {
 		
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_STMT);
+			pstmt = con.prepareStatement(GET_ALL_NO_IMG_STMT);
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()){
@@ -493,7 +492,7 @@ public class ProdDAO implements ProdDAO_interface {
 	}
 
 	@Override
-	public List<byte[]> getImage(String prod_no) {
+	public List<byte[]> getImageByPK(String prod_no) {
 		List<byte[]> prodImgList = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -501,7 +500,7 @@ public class ProdDAO implements ProdDAO_interface {
 		
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_IMG_STMT);
+			pstmt = con.prepareStatement(GET_IMG_BY_PK_STMT);
 			pstmt.setString(1, prod_no);
 			rs = pstmt.executeQuery();
 			
@@ -539,6 +538,86 @@ public class ProdDAO implements ProdDAO_interface {
 			}
 		}
 		return prodImgList;
+	}
+
+	@Override
+	public List<ProdVO> getQueryResult(String bean_contry, String proc, String roast, String prod_name) {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		ProdVO prodVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(GET_QUERY_RESULT);
+			pstmt.setString(1, bean_contry);
+			pstmt.setString(2, proc);
+			pstmt.setString(3, roast);
+			pstmt.setString(4, prod_name);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodVO = new ProdVO();
+				prodVO.setProd_no(rs.getString("prod_no"));
+				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_name(rs.getString("prod_name"));
+				prodVO.setBean_type(rs.getString("bean_type"));
+				prodVO.setBean_grade(rs.getString("bean_grade"));
+				prodVO.setBean_contry(rs.getString("bean_contry"));
+				prodVO.setBean_region(rs.getString("bean_region"));
+				prodVO.setBean_farm(rs.getString("bean_farm"));
+				prodVO.setBean_farmer(rs.getString("bean_farmer"));
+				prodVO.setBean_el(rs.getInt("bean_el"));
+				prodVO.setProc(rs.getString("proc"));
+				prodVO.setRoast(rs.getString("roast"));
+				prodVO.setBean_attr_acid(rs.getInt("bean_attr_acid"));
+				prodVO.setBean_attr_aroma(rs.getInt("bean_attr_aroma"));
+				prodVO.setBean_attr_body(rs.getInt("bean_attr_body"));
+				prodVO.setBean_attr_after(rs.getInt("bean_attr_after"));
+				prodVO.setBean_attr_bal(rs.getInt("bean_attr_bal"));
+				prodVO.setBean_aroma(rs.getString("Bean_aroma"));
+				prodVO.setProd_price(rs.getInt("prod_price"));
+				prodVO.setProd_wt(rs.getInt("prod_wt"));
+				prodVO.setSend_fee(rs.getInt("send_fee"));
+				prodVO.setProd_sup(rs.getInt("prod_sup"));
+				prodVO.setProd_cont(rs.getString("prod_cont"));
+//				prodVO.setProd_pic1(rs.getBytes("prod_pic1"));
+//				prodVO.setProd_pic2(rs.getBytes("prod_pic2"));
+//				prodVO.setProd_pic3(rs.getBytes("prod_pic3"));
+				prodVO.setProd_stat(rs.getString("prod_stat"));
+				prodVO.setEd_time(rs.getDate("ed_time"));
+				list.add(prodVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 }

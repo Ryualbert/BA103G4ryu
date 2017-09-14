@@ -1,12 +1,5 @@
 package com.prod.model;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProdService {
@@ -122,12 +115,17 @@ public class ProdService {
 		return dao.getAll();
 	}
 
-	public List<ProdVO> getAllToJSON() {
-		return dao.getAllToJSON();
+	public List<ProdVO> getAllNoImg() {
+		return dao.getAllNoImg();
 
 	}
 
-	public List<byte[]> getImage(String prod_no) {
-		return dao.getImage(prod_no);
+	public List<byte[]> getImageByPK(String prod_no) {
+		return dao.getImageByPK(prod_no);
 	}
+	
+	public List<ProdVO> getQueryResult(String bean_contry, String proc, String roast, String prod_name) {
+		return dao.getQueryResult(bean_contry, proc, roast, prod_name);
+	}
+	
 }
