@@ -19,7 +19,7 @@ public class Sys_msgJNDIDAO implements Sys_msgDAO_Interface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/jdbc/BeanLifeDB");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BA103G4DB");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

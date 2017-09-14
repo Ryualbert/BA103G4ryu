@@ -1,0 +1,721 @@
+package com.prod.model;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
+import java.sql.*;
+
+
+public class ProdJDBCDAO implements ProdDAO_interface {
+	
+	String driver = "oracle.jdbc.driver.OracleDriver";
+	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	String userid = "ba103g4";
+	String passwd = "123456";
+	private static final String INSERT_STMT = "INSERT INTO PROD VALUES ('P'||prod_NO_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+	private static final String UPDATE = "UPDATE PROD SET "
+			+ "STORE_NO =?," 
+			+ "PROD_NAME =?," 
+			+ "BEAN_TYPE =?," 
+			+ "BEAN_GRADE =?," 
+			+ "BEAN_CONTRY =?," 
+			+ "BEAN_REGION =?," 
+			+ "BEAN_FARM =?," 
+			+ "BEAN_FARMER =?," 
+			+ "BEAN_EL =?," 
+			+ "PROC =?," 
+			+ "ROAST =?," 
+			+ "BEAN_ATTR_ACID =?," 
+			+ "BEAN_ATTR_AROMA =?," 
+			+ "BEAN_ATTR_BODY =?," 
+			+ "BEAN_ATTR_AFTER =?," 
+			+ "BEAN_ATTR_BAL =?," 
+			+ "BEAN_AROMA =?," 
+			+ "PROD_PRICE =?," 
+			+ "PROD_WT =?," 
+			+ "SEND_FEE =?," 
+			+ "PROD_SUP =?," 
+			+ "PROD_CONT =?," 
+			+ "PROD_PIC1 =?," 
+			+ "PROD_PIC2 =?," 
+			+ "PROD_PIC3 =?," 
+			+ "PROD_STAT =?," 
+			+ "ED_TIME =?"
+			+ "WHERE PROD_NO =?";
+	
+	private static final String DELETE = "DELETE FROM PROD WHERE PROD_NO = ?";
+	private static final String GET_ALL_STMT = "SELECT * FROM PROD";
+	private static final String GET_ONE_STMT = "SELECT * FROM PROD WHERE PROD_NO = ?";
+	
+	private static final String GET_ALL_TO_JSON_STMT = "SELECT"
+			+ "PROD_NO,"
+			+ "STORE_NO," 
+			+ "PROD_NAME," 
+			+ "BEAN_TYPE," 
+			+ "BEAN_GRADE," 
+			+ "BEAN_CONTRY," 
+			+ "BEAN_REGION," 
+			+ "BEAN_FARM," 
+			+ "BEAN_FARMER," 
+			+ "BEAN_EL," 
+			+ "PROC," 
+			+ "ROAST," 
+			+ "BEAN_ATTR_ACID," 
+			+ "BEAN_ATTR_AROMA," 
+			+ "BEAN_ATTR_BODY," 
+			+ "BEAN_ATTR_AFTER," 
+			+ "BEAN_ATTR_BAL," 
+			+ "BEAN_AROMA," 
+			+ "PROD_PRICE," 
+			+ "PROD_WT," 
+			+ "SEND_FEE," 
+			+ "PROD_SUP," 
+			+ "PROD_CONT,"
+			+ "PROD_STAT," 
+			+ "ED_TIME"
+			+ "FROM PROD";
+	
+	private static final String GET_IMG_STMT = "SELECT PROD_PIC1,PROD_PIC2,PROD_PIC3 FROM PROD WHERE PROD_NO = ?"; 
+	
+	@Override
+	public void insert(ProdVO prodVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+				
+		try {		
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+			pstmt.setString(1, prodVO.getStore_no());
+			pstmt.setString(2, prodVO.getProd_name());
+			pstmt.setString(3, prodVO.getBean_type());
+			pstmt.setString(4, prodVO.getBean_grade());
+			pstmt.setString(5, prodVO.getBean_contry());
+			pstmt.setString(6, prodVO.getBean_region());
+			pstmt.setString(7, prodVO.getBean_farm());
+			pstmt.setString(8, prodVO.getBean_farmer());
+			pstmt.setInt(9, prodVO.getBean_el());
+			pstmt.setString(10, prodVO.getProc());
+			pstmt.setString(11, prodVO.getRoast());
+			pstmt.setInt(12, prodVO.getBean_attr_acid());
+			pstmt.setInt(13, prodVO.getBean_attr_aroma());
+			pstmt.setInt(14, prodVO.getBean_attr_body());
+			pstmt.setInt(15, prodVO.getBean_attr_after());
+			pstmt.setInt(16, prodVO.getBean_attr_bal());
+			pstmt.setString(17, prodVO.getBean_aroma());
+			pstmt.setInt(18, prodVO.getProd_price());
+			pstmt.setInt(19, prodVO.getProd_wt());
+			pstmt.setInt(20, prodVO.getSend_fee());
+			pstmt.setInt(21, prodVO.getProd_sup());
+			pstmt.setString(22, prodVO.getProd_cont());
+			pstmt.setBytes(23, prodVO.getProd_pic1());
+			pstmt.setBytes(24, prodVO.getProd_pic2());
+			pstmt.setBytes(25, prodVO.getProd_pic3());
+			pstmt.setString(26, prodVO.getProd_stat());
+			pstmt.setDate(27, prodVO.getEd_time());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally{
+			if (pstmt != null) {
+				try{
+					pstmt.close();
+				} catch (SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}		
+	}
+
+	@Override
+	public void update(ProdVO prodVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;	
+		
+		try {		
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(UPDATE);
+			
+			pstmt.setString(1, prodVO.getStore_no());
+			pstmt.setString(2, prodVO.getProd_name());
+			pstmt.setString(3, prodVO.getBean_type());
+			pstmt.setString(4, prodVO.getBean_grade());
+			pstmt.setString(5, prodVO.getBean_contry());
+			pstmt.setString(6, prodVO.getBean_region());
+			pstmt.setString(7, prodVO.getBean_farm());
+			pstmt.setString(8, prodVO.getBean_farmer());
+			pstmt.setInt(9, prodVO.getBean_el());
+			pstmt.setString(10, prodVO.getProc());
+			pstmt.setString(11, prodVO.getRoast());
+			pstmt.setInt(12, prodVO.getBean_attr_acid());
+			pstmt.setInt(13, prodVO.getBean_attr_aroma());
+			pstmt.setInt(14, prodVO.getBean_attr_body());
+			pstmt.setInt(15, prodVO.getBean_attr_after());
+			pstmt.setInt(16, prodVO.getBean_attr_bal());
+			pstmt.setString(17, prodVO.getBean_aroma());
+			pstmt.setInt(18, prodVO.getProd_price());
+			pstmt.setInt(19, prodVO.getProd_wt());
+			pstmt.setInt(20, prodVO.getSend_fee());
+			pstmt.setInt(21, prodVO.getProd_sup());
+			pstmt.setString(22, prodVO.getProd_cont());
+			pstmt.setBytes(23, prodVO.getProd_pic1());
+			pstmt.setBytes(24, prodVO.getProd_pic2());
+			pstmt.setBytes(25, prodVO.getProd_pic3());
+			pstmt.setString(26, prodVO.getProd_stat());
+			pstmt.setDate(27, prodVO.getEd_time());
+			pstmt.setString(28, prodVO.getProd_no());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. "
+					+ e.getMessage());
+			
+		}
+		 catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}finally{
+			if (pstmt != null) {
+				try{
+					pstmt.close();
+				} catch (SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}	
+	}
+	
+	@Override
+	public void delete(String prod_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(DELETE);
+			pstmt.setString(1, prod_no);
+			pstmt.executeUpdate();
+			
+			con.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			if(con != null){
+				try {
+					con.rollback();
+				} catch (SQLException exc){
+					throw new RuntimeException("rollback error occured"
+							+ exc.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured ."
+					+ e.getMessage());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally{
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				}
+				catch(SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public ProdVO findByPrimaryKey(String prod_no) {
+		ProdVO prodVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_STMT);
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodVO = new ProdVO();
+				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_name(rs.getString("prod_name"));
+				prodVO.setBean_type(rs.getString("bean_type"));
+				prodVO.setBean_grade(rs.getString("bean_grade"));
+				prodVO.setBean_contry(rs.getString("bean_contry"));
+				prodVO.setBean_region(rs.getString("bean_region"));
+				prodVO.setBean_farm(rs.getString("bean_farm"));
+				prodVO.setBean_farmer(rs.getString("bean_farmer"));
+				prodVO.setBean_el(rs.getInt("bean_el"));
+				prodVO.setProc(rs.getString("proc"));
+				prodVO.setRoast(rs.getString("roast"));
+				prodVO.setBean_attr_acid(rs.getInt("bean_attr_acid"));
+				prodVO.setBean_attr_aroma(rs.getInt("bean_attr_aroma"));
+				prodVO.setBean_attr_body(rs.getInt("bean_attr_body"));
+				prodVO.setBean_attr_after(rs.getInt("bean_attr_after"));
+				prodVO.setBean_attr_bal(rs.getInt("bean_attr_bal"));
+				prodVO.setBean_aroma(rs.getString("Bean_aroma"));
+				prodVO.setProd_price(rs.getInt("prod_price"));
+				prodVO.setProd_wt(rs.getInt("prod_wt"));
+				prodVO.setSend_fee(rs.getInt("send_fee"));
+				prodVO.setProd_sup(rs.getInt("prod_sup"));
+				prodVO.setProd_cont(rs.getString("prod_cont"));
+				prodVO.setProd_pic1(rs.getBytes("prod_pic1"));
+				prodVO.setProd_pic2(rs.getBytes("prod_pic2"));
+				prodVO.setProd_pic3(rs.getBytes("prod_pic3"));
+				prodVO.setProd_stat(rs.getString("prod_stat"));
+				prodVO.setEd_time(rs.getDate("ed_time"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return prodVO;
+	}
+
+	@Override
+	public List<ProdVO> getAll() {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		ProdVO prodVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodVO = new ProdVO();
+				prodVO.setProd_no(rs.getString("prod_no"));
+				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_name(rs.getString("prod_name"));
+				prodVO.setBean_type(rs.getString("bean_type"));
+				prodVO.setBean_grade(rs.getString("bean_grade"));
+				prodVO.setBean_contry(rs.getString("bean_contry"));
+				prodVO.setBean_region(rs.getString("bean_region"));
+				prodVO.setBean_farm(rs.getString("bean_farm"));
+				prodVO.setBean_farmer(rs.getString("bean_farmer"));
+				prodVO.setBean_el(rs.getInt("bean_el"));
+				prodVO.setProc(rs.getString("proc"));
+				prodVO.setRoast(rs.getString("roast"));
+				prodVO.setBean_attr_acid(rs.getInt("bean_attr_acid"));
+				prodVO.setBean_attr_aroma(rs.getInt("bean_attr_aroma"));
+				prodVO.setBean_attr_body(rs.getInt("bean_attr_body"));
+				prodVO.setBean_attr_after(rs.getInt("bean_attr_after"));
+				prodVO.setBean_attr_bal(rs.getInt("bean_attr_bal"));
+				prodVO.setBean_aroma(rs.getString("Bean_aroma"));
+				prodVO.setProd_price(rs.getInt("prod_price"));
+				prodVO.setProd_wt(rs.getInt("prod_wt"));
+				prodVO.setSend_fee(rs.getInt("send_fee"));
+				prodVO.setProd_sup(rs.getInt("prod_sup"));
+				prodVO.setProd_cont(rs.getString("prod_cont"));
+				prodVO.setProd_pic1(rs.getBytes("prod_pic1"));
+				prodVO.setProd_pic2(rs.getBytes("prod_pic2"));
+				prodVO.setProd_pic3(rs.getBytes("prod_pic3"));
+				prodVO.setProd_stat(rs.getString("prod_stat"));
+				prodVO.setEd_time(rs.getDate("ed_time"));
+				list.add(prodVO);
+			}
+			
+		}  catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<ProdVO> getAllToJSON() {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		ProdVO prodVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodVO = new ProdVO();
+				prodVO.setProd_no(rs.getString("prod_no"));
+				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_name(rs.getString("prod_name"));
+				prodVO.setBean_type(rs.getString("bean_type"));
+				prodVO.setBean_grade(rs.getString("bean_grade"));
+				prodVO.setBean_contry(rs.getString("bean_contry"));
+				prodVO.setBean_region(rs.getString("bean_region"));
+				prodVO.setBean_farm(rs.getString("bean_farm"));
+				prodVO.setBean_farmer(rs.getString("bean_farmer"));
+				prodVO.setBean_el(rs.getInt("bean_el"));
+				prodVO.setProc(rs.getString("proc"));
+				prodVO.setRoast(rs.getString("roast"));
+				prodVO.setBean_attr_acid(rs.getInt("bean_attr_acid"));
+				prodVO.setBean_attr_aroma(rs.getInt("bean_attr_aroma"));
+				prodVO.setBean_attr_body(rs.getInt("bean_attr_body"));
+				prodVO.setBean_attr_after(rs.getInt("bean_attr_after"));
+				prodVO.setBean_attr_bal(rs.getInt("bean_attr_bal"));
+				prodVO.setBean_aroma(rs.getString("Bean_aroma"));
+				prodVO.setProd_price(rs.getInt("prod_price"));
+				prodVO.setProd_wt(rs.getInt("prod_wt"));
+				prodVO.setSend_fee(rs.getInt("send_fee"));
+				prodVO.setProd_sup(rs.getInt("prod_sup"));
+				prodVO.setProd_cont(rs.getString("prod_cont"));
+				prodVO.setProd_stat(rs.getString("prod_stat"));
+				prodVO.setEd_time(rs.getDate("ed_time"));
+				list.add(prodVO);
+			}
+			
+		}  catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<byte[]> getImage(String prod_no) {
+		List<byte[]> prodImgList = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_IMG_STMT);
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodImgList = new ArrayList<byte[]>();
+				prodImgList.add(rs.getBytes(1));
+				prodImgList.add(rs.getBytes(2));
+				prodImgList.add(rs.getBytes(3));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return prodImgList;
+	}
+	
+	public static void main (String[] args) throws IOException{
+		ProdJDBCDAO dao = new ProdJDBCDAO();		
+//		insertTest(dao);
+      updateTest(dao);
+//		dao.delete("P1000000019");
+//		getImageTest(dao);
+//		getAllTest(dao);
+//		getAllToJSONTest(dao);
+	}
+	
+	public static void insertTest(ProdJDBCDAO dao) throws IOException{
+		ProdVO prodVO01 = new ProdVO();
+				
+		prodVO01.setStore_no("S1000000002");
+		prodVO01.setProd_name("凱勇山 Kara批次");
+		prodVO01.setBean_type("衣索比亞原生");
+		prodVO01.setBean_grade("G1");
+		prodVO01.setBean_contry("衣索比亞");
+		prodVO01.setBean_region("歌迪歐");
+		prodVO01.setBean_farm("班可果丁丁村");
+		prodVO01.setBean_farmer("貝內費加");
+		prodVO01.setBean_el(1800);
+		prodVO01.setProc("水洗");
+		prodVO01.setRoast("中焙");
+		prodVO01.setBean_attr_acid(4);
+		prodVO01.setBean_attr_aroma(5);
+		prodVO01.setBean_attr_body(2);
+		prodVO01.setBean_attr_after(3);
+		prodVO01.setBean_attr_bal(3);
+		prodVO01.setBean_aroma("咖啡花檸檬甜香");
+		prodVO01.setProd_price(250);
+		prodVO01.setProd_wt(1);
+		prodVO01.setSend_fee(80);
+		prodVO01.setProd_sup(170);
+		prodVO01.setProd_cont("沿襲傳統工法於正午時分覆蓋棚架約三小時，以免過強的日曬加速乾燥時程而影響品質。");
+		prodVO01.setProd_pic1(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod01.jpg"));
+		prodVO01.setProd_pic2(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod02.jpg"));
+		prodVO01.setProd_pic3(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod03.jpg"));
+		prodVO01.setProd_stat("上架");
+		prodVO01.setEd_time(java.sql.Date.valueOf("2002-01-01"));
+		
+		dao.insert(prodVO01);
+		System.out.println("新增一筆商品");
+	}
+	
+	public static void updateTest(ProdJDBCDAO dao) throws IOException{
+		ProdVO prodVO01 = new ProdVO();
+		prodVO01.setProd_no("P1000000002");	
+		prodVO01.setStore_no("S1000000002");
+		prodVO01.setProd_name("勇士莊園 波旁Bourbon");
+		prodVO01.setBean_type("波旁Bourbon");
+		prodVO01.setBean_grade("G1G1");
+		prodVO01.setBean_contry("衣索比亞");
+		prodVO01.setBean_region("歌迪歐");
+		prodVO01.setBean_farm("班可果丁丁村");
+		prodVO01.setBean_farmer("貝內費加");
+		prodVO01.setBean_el(1800);
+		prodVO01.setProc("水洗");
+		prodVO01.setRoast("中焙");
+		prodVO01.setBean_attr_acid(4);
+		prodVO01.setBean_attr_aroma(5);
+		prodVO01.setBean_attr_body(2);
+		prodVO01.setBean_attr_after(3);
+		prodVO01.setBean_attr_bal(3);
+		prodVO01.setBean_aroma("咖啡花檸檬甜香");
+		prodVO01.setProd_price(250);
+		prodVO01.setProd_wt(1);
+		prodVO01.setSend_fee(80);
+		prodVO01.setProd_sup(170);
+		prodVO01.setProd_cont("沿襲傳統工法於正午時分覆蓋棚架約三小時，以免過強的日曬加速乾燥時程而影響品質。");
+		prodVO01.setProd_pic1(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod01.jpg"));
+		prodVO01.setProd_pic2(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod02.jpg"));
+		prodVO01.setProd_pic3(getPictureByteArray("C:\\Users\\Java\\Desktop\\專題用圖片\\product\\prod03.jpg"));
+		prodVO01.setProd_stat("上架");
+		prodVO01.setEd_time(java.sql.Date.valueOf("2002-01-01"));
+		
+		dao.update(prodVO01);
+		System.out.println("修改一筆商品");
+	}
+	
+	public static void getImageTest(ProdJDBCDAO dao) throws IOException{
+		List<byte[]> prodImgList;
+		prodImgList= dao.getImage("P1000000004");
+		System.out.print(prodImgList.get(0).toString()+ ",");
+		System.out.print(prodImgList.get(1).toString() + ",");
+		System.out.println(prodImgList.get(2).toString());
+		System.out.print("============取得商品圖片==============");
+	}
+	
+	public static void getAllTest(ProdJDBCDAO dao){
+		List<ProdVO> list = dao.getAllToJSON();
+		for (ProdVO prodVO : list) {
+			System.out.print(prodVO.getProd_no() + ", ");
+			System.out.print(prodVO.getStore_no() + ", ");
+			System.out.print(prodVO.getProd_name() + ", ");
+			System.out.print(prodVO.getBean_type() + ", ");
+			System.out.print(prodVO.getBean_grade() + ", ");
+			System.out.print(prodVO.getBean_contry() + ", ");
+			System.out.print(prodVO.getBean_region() + ", ");
+			System.out.print(prodVO.getBean_farm() + ", ");
+			System.out.print(prodVO.getBean_farmer() + ", ");
+			System.out.print(prodVO.getBean_el() + ", ");
+			System.out.print(prodVO.getProc() + ", ");
+			System.out.print(prodVO.getRoast() + ", ");
+			System.out.print(prodVO.getBean_attr_acid() + ", ");
+			System.out.print(prodVO.getBean_attr_aroma() + ", ");
+			System.out.print(prodVO.getBean_attr_body() + ", ");
+			System.out.print(prodVO.getBean_attr_after() + ", ");
+			System.out.print(prodVO.getBean_attr_bal() + ", ");
+			System.out.print(prodVO.getBean_aroma() + ", ");
+			System.out.print(prodVO.getProd_price() + ", ");
+			System.out.print(prodVO.getProd_wt() + ", ");
+			System.out.print(prodVO.getSend_fee() + ", ");
+			System.out.print(prodVO.getProd_sup() + ", ");
+			System.out.print(prodVO.getProd_cont() + ", ");
+			System.out.print(prodVO.getProd_pic1() + ", ");
+			System.out.print(prodVO.getProd_pic2() + ", ");
+			System.out.print(prodVO.getProd_pic3() + ", ");
+			System.out.print(prodVO.getProd_stat() + ", ");
+			System.out.print(prodVO.getEd_time() + ", ");
+			System.out.println();
+		}
+	}
+	
+	public static void getAllToJSONTest(ProdJDBCDAO dao){
+		List<ProdVO> list = dao.getAll();
+		for (ProdVO prodVO : list) {
+			System.out.print(prodVO.getProd_no() + ", ");
+			System.out.print(prodVO.getStore_no() + ", ");
+			System.out.print(prodVO.getProd_name() + ", ");
+			System.out.print(prodVO.getBean_type() + ", ");
+			System.out.print(prodVO.getBean_grade() + ", ");
+			System.out.print(prodVO.getBean_contry() + ", ");
+			System.out.print(prodVO.getBean_region() + ", ");
+			System.out.print(prodVO.getBean_farm() + ", ");
+			System.out.print(prodVO.getBean_farmer() + ", ");
+			System.out.print(prodVO.getBean_el() + ", ");
+			System.out.print(prodVO.getProc() + ", ");
+			System.out.print(prodVO.getRoast() + ", ");
+			System.out.print(prodVO.getBean_attr_acid() + ", ");
+			System.out.print(prodVO.getBean_attr_aroma() + ", ");
+			System.out.print(prodVO.getBean_attr_body() + ", ");
+			System.out.print(prodVO.getBean_attr_after() + ", ");
+			System.out.print(prodVO.getBean_attr_bal() + ", ");
+			System.out.print(prodVO.getBean_aroma() + ", ");
+			System.out.print(prodVO.getProd_price() + ", ");
+			System.out.print(prodVO.getProd_wt() + ", ");
+			System.out.print(prodVO.getSend_fee() + ", ");
+			System.out.print(prodVO.getProd_sup() + ", ");
+			System.out.print(prodVO.getProd_cont() + ", ");
+			System.out.print(prodVO.getProd_stat() + ", ");
+			System.out.print(prodVO.getEd_time() + ", ");
+			System.out.println();
+		}
+	}
+		
+	public static byte[] getPictureByteArray(String path) throws IOException {
+		File file = new File(path);
+		FileInputStream fis = new FileInputStream(file);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] buffer = new byte[8192];
+		int i;
+		while ((i = fis.read(buffer)) != -1) {
+			baos.write(buffer, 0, i);
+		}
+		baos.close();
+		fis.close();
+
+		return baos.toByteArray();
+	}
+
+	
+	
+}

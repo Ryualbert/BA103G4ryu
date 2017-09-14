@@ -15,8 +15,8 @@ public class QaJDBCDAO implements QaDAO_interface {
 
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "bean";
-	String passwd = "bean";
+	String userid = "ba103g4";
+	String passwd = "123456";
 	
 	static String key;
 

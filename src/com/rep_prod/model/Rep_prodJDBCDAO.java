@@ -12,8 +12,8 @@ import java.util.List;
 public class Rep_prodJDBCDAO implements Rep_prodDAO_interface{
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "bean";
-	String passwd = "bean";
+	String userid = "ba103g4";
+	String passwd = "123456";
 
 	private static final String INSERT_STMT = 
 		"INSERT INTO REP_PROD (prod_no, mem_ac, rep_type, rep_cont, rep_date, rep_stat, rep_stat_cont, stat_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

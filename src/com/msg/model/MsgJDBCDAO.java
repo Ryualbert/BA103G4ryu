@@ -14,8 +14,8 @@ import java.util.List;
 public class MsgJDBCDAO implements MsgDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "bean";
-	String passwd = "bean";
+	String userid = "ba103g4";
+	String passwd = "ba103g4";
 	
 	static String key;	
 	

@@ -12,8 +12,8 @@ public class Cart_listJDBCDAO implements Cart_listDAO_interface{
 	
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "bean";
-	String passwd = "bean";
+	String userid = "ba103g4";
+	String passwd = "123456";
 	
 	
 	private static final String INSERT_STMT = 

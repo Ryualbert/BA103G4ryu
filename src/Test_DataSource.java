@@ -19,14 +19,14 @@ public class Test_DataSource extends HttpServlet {
 
 		try {
 			Context ctx = new javax.naming.InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BeanLifeDB");
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BA103G4DB");
 			if (ds != null) {
 				Connection conn = ds.getConnection();
 
 				if (conn != null) {
 					out.println("Got Connection: " + conn.toString());
 					Statement stmt = conn.createStatement();
-					ResultSet rs = stmt.executeQuery("select * from review");
+					ResultSet rs = stmt.executeQuery("select * from mem");
 					while (rs.next()) {
 						out.println("store_no = " + rs.getString(1) + " mem_ac = " + rs.getString(2));
 					}

@@ -21,7 +21,7 @@ public class ReviewDAO implements ReviewDAO_interface {
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BeanLifeDB");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BA103G4DB");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
