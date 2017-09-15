@@ -9,7 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-
   <resource-ref>
     <description>DB Connection</description>
     <res-ref-name>jdbc/BA103G4DB</res-ref-name>

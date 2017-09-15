@@ -1,3 +1,11 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*"%>
+<%@ page import="com.prod.model.*"%>
+
+
+
+
 <!DOCTYPE html>
 <html lang="">
   <head>
@@ -5,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>BeanLife</title>
-    <link rel="Shortcut Icon" type="image/x-icon" href="res/img/logo/BeanLifeIco2.ico" />
+    <link rel="Shortcut Icon" type="image/x-icon" href="<%=request.getContextPath()%>/FrontEnd/res/img/logo/BeanLifeIco2.ico" />
 
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -15,9 +23,9 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="res/plugin/jquery.scrollbar.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
 
-    <link rel="stylesheet" href="res/css/BeanLifeBase.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
 
 
   </head>
@@ -36,8 +44,8 @@
 
 
           <div class="pull-left">
-            <a href="index.html">
-              <img class="w50 padt5 padb2 mgr20" src="res/img/BeanLifeLogoR.png">
+            <a href="<%=request.getContextPath()%>/FrontEnd/index/index.jsp">
+              <img class="w50 padt5 padb2 mgr20" src="<%=request.getContextPath()%>/FrontEnd/res/img/BeanLifeLogoR.png">
             </a>
           </div>
           
@@ -86,9 +94,9 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <!-- 左選單 -->
           <ul class="nav navbar-nav">
-            <li><a class="padt20 padb17" href="shop.html">找豆</a></li>
-            <li><a class="padt20 padb17" href="forum.html">討論板</a></li>
-            <li><a class="padt20 padb17" href="activity.html">辦活動</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.html">找豆</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/forum/forum.html">討論板</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/activity/activity.html">辦活動</a></li>
             <li><a class="padt20 padb17" href="#">地圖</a></li>
           </ul>
         </div>
@@ -117,7 +125,7 @@
 			    <!-- 幻燈片主圖區 -->
 			    <div class="carousel-inner">
 			        <div class="item">
-			            <img src="res/img/in1.png" alt="">
+			            <img src="<%=request.getContextPath()%>/FrontEnd/res/img/in1.png" alt="">
 			            <div class="container">
 			                <div class="carousel-caption">
 			                    <h2 class="pull-left">快速挑選咖啡豆</h2 class="pull-left">
@@ -125,7 +133,7 @@
 			            </div>
 			        </div>
 			        <div class="item">
-			            <img src="res/img/in2.png" alt="">
+			            <img src="<%=request.getContextPath()%>/FrontEnd/res/img/in2.png" alt="">
 			            <div class="container">
 			                <div class="carousel-caption">
 			                    <h2 class="pull-left">活動與同好聚會</h2>
@@ -133,7 +141,7 @@
 			            </div>
 			        </div>
 			        <div class="item active">
-			            <img src="res/img/in3.png" alt="">
+			            <img src="<%=request.getContextPath()%>/FrontEnd/res/img/in3.png" alt="">
 			            <div class="container">
 			                <div class="carousel-caption">
 			                    <h2 class="pull-left">達人經驗分享</h2>
@@ -195,20 +203,29 @@
 								<div class="container-floid">
 									<div class="row">
 
+									<%
+									    ProdService prodSvc = new ProdService();
+									    List<ProdVO> list = prodSvc.getAll();
+									    pageContext.setAttribute("list",list);
+									%>
+
+									<c:forEach var="prodVO" items="${list}">
 
 				                      <!-- ////////////////////////////// -->
 				                      <div class="col-xs-12 col-sm-3 padt10">
 				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
+				                          
+				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=2">
+				                          
+				                          <h4 class="bold">${prodVO.prod_name}</h4>
+				                          <p class="inline-b bold text-info">$NT ${prodVO.prod_price}</p>
 
 				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
 				                              <span class="text-info">42</span>
 				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
 				                          </button>
 
-				                          <p class="bold">巴西　水洗　深培</p>
+				                          <p class="bold">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}</p>
 
 				                          <div>
 				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
@@ -221,185 +238,9 @@
 				                        </a>
 				                      </div>
 
-				      
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
+				                    </c:forEach>
 
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">42</span>
-				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-				                          </button>
 
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-
-				      
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
-				                              <span class="tx-gray">42</span>
-				                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">42</span>
-				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-
-				      
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">42</span>
-				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-
-				      
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
-				                              <span class="tx-gray">42</span>
-				                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">42</span>
-				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-
-				      
-				                      <!-- ////////////////////////////// -->
-				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
-				                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-				                          <p class="inline-b bold text-info">＄600/lb</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
-				                              <span class="tx-gray">42</span>
-				                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-				                          </button>
-
-				                          <p class="bold">巴西　水洗　深培</p>
-
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
-				                          </div>
-				                        </a>
-				                      </div>
-										
 
 
 
@@ -686,46 +527,8 @@
 		
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="res/plugin/jquery.scrollbar.js"></script>
-
-
-<script>
-
-//func bar toogle
-var scrollPos = 0;
-window.onscroll = function() {myFunction()};
-
-function myFunction() {
-  if (document.body.scrollTop < 1) {
-    $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-        return;
-  }
-    if ((document.body.scrollTop-scrollPos) >= 0) {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideUp("300");
-        scrollPos = document.body.scrollTop;
-    } else {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-    }
-}
-
-//odd row change side
-$(document).ready(function(){
-  $('.row.mgb30.mgt20:odd').children('div:first-child').addClass('col-sm-push-6')
-  $('.row.mgb30.mgt20:odd').children('div:last-child').addClass('col-sm-pull-6')
-});
-
-// scrollbar
-jQuery(document).ready(function(){
-    jQuery('.scrollbar-macosx').scrollbar();
-});
-
-</script>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
 
 
   </body>
