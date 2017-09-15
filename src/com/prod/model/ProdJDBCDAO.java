@@ -682,7 +682,9 @@ public class ProdJDBCDAO implements ProdDAO_interface {
 //		getAllTest(dao);
 //		getAllNoImgTest(dao);
 		//只新增照片方法，暫為測試用
+		for(int i = 1; i<10 ;i++){
 			String prod_no = "P100000000" + i;
+			updateImg1Test(dao,prod_no ,"D:\\apache-tomcat-7.0.75\\webapps\\BeanLife_front\\res\\img\\p"+((i % 3)+1)+".jpg" );
 		}
 		
 	}
