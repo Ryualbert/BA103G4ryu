@@ -9,5 +9,6 @@ public interface Like_revDAO_interface {
 	   public void delete(String rev_no, String mem_ac);
 	   public Like_revVO findByPrimaryKey(String rev_no, String mem_ac);
 	   public List<Like_revVO> getAll();
+	   public int countByReview(String rev_no);
 
 }

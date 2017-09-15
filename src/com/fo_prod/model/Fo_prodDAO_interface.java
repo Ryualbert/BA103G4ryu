@@ -9,4 +9,6 @@ public interface Fo_prodDAO_interface {
     public void delete(String prod_no, String mem_ac);
     public Fo_prodVO findByPrimaryKey(String prod_no, String mem_ac);
     public List<Fo_prodVO> getAll();
+    public int countByProd(String prod_no);
+    public List<Fo_prodVO> getByMem(String mem_ac);
 }

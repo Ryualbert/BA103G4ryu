@@ -27,6 +27,10 @@ public class Fo_prodJDBCDAO implements Fo_prodDAO_interface{
 		"DELETE FROM fo_prod where prod_no = ? and mem_ac =?";
 	private static final String UPDATE = 
 		"UPDATE fo_prod set fo_date = ? where prod_no=? and mem_ac=?";
+	private static final String GET_COUNT_BY_PROD =
+		"SELECT count(*) FROM FO_PROD WHERE PROD_NO = ?";
+	private static final String GET_FO_BY_MEM =
+		"SELECT * FROM FO_PROD WHERE mem_ac = ?";
 
 	
 	@Override
@@ -280,6 +284,121 @@ public class Fo_prodJDBCDAO implements Fo_prodDAO_interface{
 		return list;
 	}
 	
+	@Override
+	public int countByProd(String prod_no) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Integer count = 0;
+		
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_COUNT_BY_PROD);		
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public List<Fo_prodVO> getByMem(String mem_ac) {
+		List<Fo_prodVO> list = new ArrayList<Fo_prodVO>();
+		Fo_prodVO fo_prodVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_FO_BY_MEM);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				fo_prodVO = new Fo_prodVO();
+				fo_prodVO.setProd_no(rs.getString("prod_no"));
+				fo_prodVO.setMem_ac(rs.getString("mem_ac"));
+				fo_prodVO.setFo_date(rs.getDate("fo_date"));
+				list.add(fo_prodVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
 	public static void main(String[] args) {
 
 		Fo_prodJDBCDAO dao = new Fo_prodJDBCDAO();
@@ -295,7 +414,7 @@ public class Fo_prodJDBCDAO implements Fo_prodDAO_interface{
 		Fo_prodVO fo_prodVO2 = new Fo_prodVO();
 		fo_prodVO2.setProd_no("P1000000001");
 		fo_prodVO2.setMem_ac("amy39");
-		fo_prodVO2.setFo_date(Date.valueOf("2017-01-01"));
+		fo_prodVO2.setFo_date(Date.valueOf(java.time.LocalDate.now()));
 		dao.update(fo_prodVO2);
 
 		
@@ -313,6 +432,18 @@ public class Fo_prodJDBCDAO implements Fo_prodDAO_interface{
 		// 查詢
 		List<Fo_prodVO> list = dao.getAll();
 		for (Fo_prodVO afo_prodVO : list) {
+			System.out.print(afo_prodVO.getProd_no() + ",");
+			System.out.print(afo_prodVO.getMem_ac() + ",");
+			System.out.print(afo_prodVO.getFo_date() + ",");
+			System.out.println();
+		}
+		
+		//查人數
+		System.out.println(dao.countByProd("P1000000001"));
+		
+		// 查詢
+		List<Fo_prodVO> list2 = dao.getByMem("mrbrown");
+		for (Fo_prodVO afo_prodVO : list2) {
 			System.out.print(afo_prodVO.getProd_no() + ",");
 			System.out.print(afo_prodVO.getMem_ac() + ",");
 			System.out.print(afo_prodVO.getFo_date() + ",");

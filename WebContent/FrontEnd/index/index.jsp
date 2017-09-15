@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.prod.model.*"%>
+<%@ page import="com.fo_prod.model.*"%>
 
 
 
@@ -207,21 +208,24 @@
 									    ProdService prodSvc = new ProdService();
 									    List<ProdVO> list = prodSvc.getAll();
 									    pageContext.setAttribute("list",list);
+									    Fo_prodService fo_prodSvc = new Fo_prodService();
+									    pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
 									%>
 
 									<c:forEach var="prodVO" items="${list}">
-
+									
+									
 				                      <!-- ////////////////////////////// -->
 				                      <div class="col-xs-12 col-sm-3 padt10">
 				                        <a href="#">
 				                          
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=2">
+				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 				                          
 				                          <h4 class="bold">${prodVO.prod_name}</h4>
-				                          <p class="inline-b bold text-info">$NT ${prodVO.prod_price}</p>
+				                          <p class="inline-b bold text-info">NT$ ${prodVO.prod_price}</p>
 
 				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">42</span>
+				                              <span class="text-info">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
 				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
 				                          </button>
 

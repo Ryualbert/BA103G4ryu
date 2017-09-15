@@ -27,6 +27,8 @@ public class Fo_storeJDBCDAO implements Fo_storeDAO_interface{
 			"DELETE FROM fo_store where store_no = ? and mem_ac =?";
 		private static final String UPDATE = 
 			"UPDATE fo_store set fo_date = ? where store_no=? and mem_ac=?";
+		private static final String GET_COUNT_BY_STORE =
+				"SELECT count(*) FROM fo_store WHERE store_no = ?";
 
 		@Override
 		public void insert(Fo_storeVO fo_storeVO) {

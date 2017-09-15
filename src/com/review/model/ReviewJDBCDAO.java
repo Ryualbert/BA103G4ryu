@@ -31,6 +31,8 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 		"DELETE FROM REVIEW where rev_no = ?";
 	private static final String UPDATE = 
 		"UPDATE REVIEW set ord_no=?, prod_no=?, prod_score=?, use_way=?, rev_cont=?, rev_date=? where rev_no = ?";
+	private static final String GET_COUNT_BY_PROD =
+			"SELECT count(*) FROM review WHERE PROD_NO = ?";
 	
 	
 	@Override
@@ -325,61 +327,118 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 	}
 	
 	
+	@Override
+	public int countByProd(String prod_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Integer count = 0;
+		
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_COUNT_BY_PROD);		
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return count;
+	}
+
 	public static void main(String[] args) {
 
 		ReviewJDBCDAO dao = new ReviewJDBCDAO();
 
 		// 新增
-		ReviewVO reviewVO1 = new ReviewVO();
-		reviewVO1.setOrd_no("O1000000001");
-		reviewVO1.setProd_no("P1000000001");
-		reviewVO1.setProd_score(5);
-		reviewVO1.setUse_way("25,250,90,60");
-		reviewVO1.setRev_cont("不錯喝");
-		reviewVO1.setRev_date(Date.valueOf("2005-01-01"));
-		dao.insert(reviewVO1);
+//		ReviewVO reviewVO1 = new ReviewVO();
+//		reviewVO1.setOrd_no("O1000000001");
+//		reviewVO1.setProd_no("P1000000001");
+//		reviewVO1.setProd_score(5);
+//		reviewVO1.setUse_way("25,250,90,60");
+//		reviewVO1.setRev_cont("不錯喝");
+//		reviewVO1.setRev_date(Date.valueOf("2005-01-01"));
+//		dao.insert(reviewVO1);
 		
 
 		// 修改
-		ReviewVO reviewVO2 = new ReviewVO();
-		reviewVO2.setRev_no(key);
-		reviewVO2.setOrd_no("O1000000001");
-		reviewVO2.setProd_no("P1000000001");
-		reviewVO2.setProd_score(2);
-		reviewVO2.setUse_way("25,250,87,60");
-		reviewVO2.setRev_cont("不錯喝!!");
-		reviewVO2.setRev_date(Date.valueOf(java.time.LocalDate.now()));
-		
-		dao.update(reviewVO2);
+//		ReviewVO reviewVO2 = new ReviewVO();
+//		reviewVO2.setRev_no(key);
+//		reviewVO2.setOrd_no("O1000000001");
+//		reviewVO2.setProd_no("P1000000001");
+//		reviewVO2.setProd_score(2);
+//		reviewVO2.setUse_way("25,250,87,60");
+//		reviewVO2.setRev_cont("不錯喝!!");
+//		reviewVO2.setRev_date(Date.valueOf(java.time.LocalDate.now()));
+//		
+//		dao.update(reviewVO2);
 
 
 
 		// 查詢
-		ReviewVO reviewVO3 = dao.findByPrimaryKey(key);
-		System.out.print(reviewVO3.getRev_no() + ",");
-		System.out.print(reviewVO3.getOrd_no() + ",");
-		System.out.print(reviewVO3.getProd_no() + ",");
-		System.out.print(reviewVO3.getProd_score() + ",");
-		System.out.print(reviewVO3.getUse_way() + ",");
-		System.out.print(reviewVO3.getRev_cont() + ",");
-		System.out.println(reviewVO3.getRev_date());
-		System.out.println("---------------------");
+//		ReviewVO reviewVO3 = dao.findByPrimaryKey(key);
+//		System.out.print(reviewVO3.getRev_no() + ",");
+//		System.out.print(reviewVO3.getOrd_no() + ",");
+//		System.out.print(reviewVO3.getProd_no() + ",");
+//		System.out.print(reviewVO3.getProd_score() + ",");
+//		System.out.print(reviewVO3.getUse_way() + ",");
+//		System.out.print(reviewVO3.getRev_cont() + ",");
+//		System.out.println(reviewVO3.getRev_date());
+//		System.out.println("---------------------");
 		
 		// 刪除
-		dao.delete(key);
+//		dao.delete(key);
 
 		// 查詢
-		List<ReviewVO> list = dao.getAll();
-		for (ReviewVO aReviewVO : list) {
-			System.out.print(aReviewVO.getRev_no() + ",");
-			System.out.print(aReviewVO.getOrd_no() + ",");
-			System.out.print(aReviewVO.getProd_no() + ",");
-			System.out.print(aReviewVO.getProd_score() + ",");
-			System.out.print(aReviewVO.getUse_way() + ",");
-			System.out.print(aReviewVO.getRev_cont() + ",");
-			System.out.println(aReviewVO.getRev_date());
-			System.out.println();
-		}
+//		List<ReviewVO> list = dao.getAll();
+//		for (ReviewVO aReviewVO : list) {
+//			System.out.print(aReviewVO.getRev_no() + ",");
+//			System.out.print(aReviewVO.getOrd_no() + ",");
+//			System.out.print(aReviewVO.getProd_no() + ",");
+//			System.out.print(aReviewVO.getProd_score() + ",");
+//			System.out.print(aReviewVO.getUse_way() + ",");
+//			System.out.print(aReviewVO.getRev_cont() + ",");
+//			System.out.println(aReviewVO.getRev_date());
+//			System.out.println();
+//		}
+		
+		//查人數
+		System.out.println(dao.countByProd("P1000000002"));
 	}
 
 }

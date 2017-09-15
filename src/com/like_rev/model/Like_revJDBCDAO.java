@@ -27,6 +27,8 @@ public class Like_revJDBCDAO implements Like_revDAO_interface {
 		"DELETE FROM like_rev where rev_no = ? and mem_ac =?";
 	private static final String UPDATE = 
 		"";	
+	private static final String GET_COUNT_BY_REV =
+			"SELECT count(*) FROM like_rev WHERE rev_no = ?";
 	
 	@Override
 	public void insert(Like_revVO like_revVO) {

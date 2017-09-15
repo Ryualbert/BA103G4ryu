@@ -43,7 +43,7 @@ public class ProdImg extends HttpServlet {
 				"SELECT prod_pic"+index+" FROM prod WHERE prod_no='"+prod_no+"'");
 
 			if (rs.next()) {
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("prod_pic"+index));
+				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream(1));
 				byte[] buf = new byte[4 * 1024]; // 4K buffer
 				int len;
 				while ((len = in.read(buf)) != -1) {

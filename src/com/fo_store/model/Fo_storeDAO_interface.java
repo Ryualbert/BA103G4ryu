@@ -9,5 +9,6 @@ public interface Fo_storeDAO_interface {
     public void delete(String store_no, String mem_ac);
     public Fo_storeVO findByPrimaryKey(String store_no, String mem_ac);
     public List<Fo_storeVO> getAll();
+    public int countByStore(String store_no);
 
 }
