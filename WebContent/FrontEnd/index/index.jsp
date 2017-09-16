@@ -4,6 +4,7 @@
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
 <%@ page import="com.review.model.*"%>
+<%@ page import="com.act.model.*"%>
 
 
 
@@ -416,87 +417,37 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
+							<%
+								ActService actSvc = new ActService();
+								List<ActVO> actlist = actSvc.getAll();
+							    pageContext.setAttribute("actlist",actlist);    
+							  
+							%>
 
 
 					        <!-- tab333333333333333333333333333333333 -->
 					        <div role="tabpanel" class="tab-pane" id="tab3">
 								<div class="container-floid">
 
-											<!-- ///////////////////////// -->
-									<div class="row mgb30 mgt20 ">
-										<div class="col-xs-12 col-sm-6">
-											<img class="img-responsive  mg-auto vam-img" src="res/img/a1.jpg">
+									<c:forEach var="actVO" items="actlist">
+									${actVO.act_no}
+										<div class="row mgb30 mgt20 ">
+											<div class="col-xs-12 col-sm-6">
+												<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/index/actImg.do?act_no=${actVO.act_no}&index=1">
+											</div>
+											<div class="col-xs-12 col-sm-6">
+												<h4 class="inline-b bold">${actVO.act_name}</h4>
+												<p>${actVO.act_cont}</p>
+												<h5 class="inline-b pull-left text-info">${actVO.act_op_date}</h5>
+												<h5 class="inline-b pull-left mgl20 text-info">${actVO.act_add}</h5>
+												<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
+						        					<span class="tx-gray">42</span>
+													<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
+												</button>
+											</div>
 										</div>
-										<div class="col-xs-12 col-sm-6">
-											<h4 class="inline-b bold">和大師學手沖--手沖咖啡實作課</h4>
-											<p>一杯好口感的手沖咖啡，除了咖啡豆本身的品質，手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。</p>
-											<h5 class="inline-b pull-left text-info">2016-12-08(四)</h5>
-											<h5 class="inline-b pull-left mgl20 text-info">桃園市</h5>
-											<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
-					        					<span class="tx-gray">42</span>
-												<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
-									<!-- ////////////////////// -->
-									<div class="row mgb30 mgt20 ">
-										<div class="col-xs-12 col-sm-6">
-											<img class="img-responsive" src="res/img/a2.jpg">
-										</div>
-										<div class="col-xs-12 col-sm-6">
-											<h4 class="inline-b bold">和大師學手沖--手沖咖啡實作課</h4>
-											<p>一杯好口感的手沖咖啡，除了咖啡豆本身的品質，手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。</p>
-											<h5 class="inline-b pull-left text-info">2016-12-08(四)</h5>
-											<h5 class="inline-b pull-left mgl20 text-info">桃園市</h5>
-											<button type="button" class="btn btn-default btn-sm zidx5 pull-right bor-info" aria-label="Left Align">
-					        					<span class="text-info">42</span>
-												<span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
+									</c:forEach>
 									
-									<!-- ///////////////////////// -->
-									<div class="row mgb30 mgt20 ">
-										<div class="col-xs-12 col-sm-6">
-											<img class="img-responsive  mg-auto vam-img" src="res/img/a1.jpg">
-										</div>
-										<div class="col-xs-12 col-sm-6">
-											<h4 class="inline-b bold">和大師學手沖--手沖咖啡實作課</h4>
-											<p>一杯好口感的手沖咖啡，除了咖啡豆本身的品質，手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。</p>
-											<h5 class="inline-b pull-left text-info">2016-12-08(四)</h5>
-											<h5 class="inline-b pull-left mgl20 text-info">桃園市</h5>
-											<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
-					        					<span class="tx-gray">42</span>
-												<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
-									<!-- ////////////////////// -->
-									<div class="row mgb30 mgt20 ">
-										<div class="col-xs-12 col-sm-6">
-											<img class="img-responsive" src="res/img/a2.jpg">
-										</div>
-										<div class="col-xs-12 col-sm-6">
-											<h4 class="inline-b bold">和大師學手沖--手沖咖啡實作課</h4>
-											<p>一杯好口感的手沖咖啡，除了咖啡豆本身的品質，手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。手沖時的水溫，濾杯，沖泡壺，沖泡手勢等等的變化都會影響咖啡的口感。在這堂課裡，老師會對每一個變項做清楚的說明。並讓同學試喝後發現口中的驚奇。</p>
-											<h5 class="inline-b pull-left text-info">2016-12-08(四)</h5>
-											<h5 class="inline-b pull-left mgl20 text-info">桃園市</h5>
-											<button type="button" class="btn btn-default btn-sm zidx5 pull-right bor-info" aria-label="Left Align">
-					        					<span class="text-info">42</span>
-												<span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
 
 
 
