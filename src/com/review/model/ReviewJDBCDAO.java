@@ -1,7 +1,6 @@
 package com.review.model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +31,9 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 	private static final String UPDATE = 
 		"UPDATE REVIEW set ord_no=?, prod_no=?, prod_score=?, use_way=?, rev_cont=?, rev_date=? where rev_no = ?";
 	private static final String GET_COUNT_BY_PROD =
-			"SELECT count(*) FROM review WHERE PROD_NO = ?";
+		"SELECT count(*) FROM review WHERE PROD_NO = ?";
+	private static final String GET_SCORE_BY_PROD =
+		"select avg(prod_score) from review where prod_no = ?";
 	
 	
 	@Override
@@ -380,6 +381,63 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 		}
 		return count;
 	}
+	
+	@Override
+	public Double scoreByProd(String prod_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Double score = 0.0;
+		
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_SCORE_BY_PROD);		
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				score = rs.getDouble(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return score;
+	}
+	
+	
+	
 
 	public static void main(String[] args) {
 
@@ -437,8 +495,11 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 //			System.out.println();
 //		}
 		
-		//查人數
+		//查心得分享人數
 		System.out.println(dao.countByProd("P1000000002"));
+		
+		//查分數
+		System.out.println(dao.scoreByProd("P1000000002"));
 	}
 
 }

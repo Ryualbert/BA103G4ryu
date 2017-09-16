@@ -1,6 +1,7 @@
 package com.review.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -39,6 +40,10 @@ public class ReviewDAO implements ReviewDAO_interface {
 		"DELETE FROM REVIEW where rev_no = ?";
 	private static final String UPDATE = 
 		"UPDATE REVIEW set ord_no=?, prod_no=?, prod_score=?, use_way=?, rev_cont=?, rev_date=? where rev_no = ?";
+	private static final String GET_COUNT_BY_PROD =
+		"SELECT count(*) FROM review WHERE PROD_NO = ?";
+	private static final String GET_SCORE_BY_PROD =
+		"select avg(prod_score) from review where prod_no = ?";
 	
 	
 	@Override
@@ -305,6 +310,106 @@ public class ReviewDAO implements ReviewDAO_interface {
 			}
 		}
 		return list;
+	}
+	
+	@Override
+	public int countByProd(String prod_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Integer count = 0;
+		
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_COUNT_BY_PROD);		
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return count;
+	}
+	
+	@Override
+	public Double scoreByProd(String prod_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Double score = 0.0;
+		
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_SCORE_BY_PROD);		
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				score = rs.getDouble(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return score;
 	}
 
 }

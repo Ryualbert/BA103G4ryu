@@ -10,4 +10,5 @@ public interface ReviewDAO_interface {
     public ReviewVO findByPrimaryKey(String rev_no);
     public List<ReviewVO> getAll();
     public int countByProd(String prod_no);
+    public Double scoreByProd(String prod_no);
 }

@@ -241,28 +241,82 @@ public class Like_revJDBCDAO implements Like_revDAO_interface {
 		return list;
 	}
 	
+	@Override
+	public int countByReview(String rev_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		Integer count = 0;
+		
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_COUNT_BY_REV);		
+			pstmt.setString(1, rev_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return count;
+	}
+
 	public static void main(String[] args) {
 
 		Like_revJDBCDAO dao = new Like_revJDBCDAO();
 
 		// 新增
-		Like_revVO like_revVO = new Like_revVO();
-		like_revVO.setRev_no("R1000000001");
-		like_revVO.setMem_ac("amy39");
-		dao.insert(like_revVO);
+//		Like_revVO like_revVO = new Like_revVO();
+//		like_revVO.setRev_no("R1000000001");
+//		like_revVO.setMem_ac("amy39");
+//		dao.insert(like_revVO);
 
 		// 修改
 
 
 	
 		// 查詢
-		Like_revVO like_revVO3 = dao.findByPrimaryKey("R1000000001", "amy39");
-		System.out.print(like_revVO3.getRev_no() + ",");
-		System.out.println(like_revVO3.getMem_ac() + ",");
-		System.out.println("---------------------");
+//		Like_revVO like_revVO3 = dao.findByPrimaryKey("R1000000001", "amy39");
+//		System.out.print(like_revVO3.getRev_no() + ",");
+//		System.out.println(like_revVO3.getMem_ac() + ",");
+//		System.out.println("---------------------");
 		
 		// 刪除
-		dao.delete("R1000000001", "amy39");
+//		dao.delete("R1000000001", "amy39");
 
 		// 查詢
 		List<Like_revVO> list = dao.getAll();
@@ -271,6 +325,9 @@ public class Like_revJDBCDAO implements Like_revDAO_interface {
 			System.out.print(alike_rev.getMem_ac() + ",");
 			System.out.println();
 		}
+		
+		//查人數
+		System.out.println(dao.countByReview("R1000000001"));
 	}
 
 }

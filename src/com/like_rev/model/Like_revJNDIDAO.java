@@ -36,6 +36,8 @@ public class Like_revJNDIDAO implements Like_revDAO_interface {
 		"DELETE FROM like_rev where rev_no = ? and mem_ac =?";
 	private static final String UPDATE = 
 		"";	
+	private static final String GET_COUNT_BY_REV =
+			"SELECT count(*) FROM like_rev WHERE rev_no = ?";
 	
 	@Override
 	public void insert(Like_revVO like_revVO) {
@@ -231,36 +233,55 @@ public class Like_revJNDIDAO implements Like_revDAO_interface {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-
-		Like_revJNDIDAO dao = new Like_revJNDIDAO();
-
-		// 新增
-		Like_revVO like_revVO = new Like_revVO();
-		like_revVO.setRev_no("R1000000001");
-		like_revVO.setMem_ac("amy39");
-		dao.insert(like_revVO);
-
-		// 修改
-
-
 	
-		// 查詢
-		Like_revVO like_revVO3 = dao.findByPrimaryKey("R1000000001", "amy39");
-		System.out.print(like_revVO3.getRev_no() + ",");
-		System.out.println(like_revVO3.getMem_ac() + ",");
-		System.out.println("---------------------");
+	@Override
+	public int countByReview(String rev_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
-		// 刪除
-		dao.delete("R1000000001", "amy39");
+		Integer count = 0;
+		
+		try {
 
-		// 查詢
-		List<Like_revVO> list = dao.getAll();
-		for (Like_revVO alike_rev : list) {
-			System.out.print(alike_rev.getRev_no() + ",");
-			System.out.print(alike_rev.getMem_ac() + ",");
-			System.out.println();
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_COUNT_BY_REV);		
+			pstmt.setString(1, rev_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
 		}
+		return count;
 	}
 
 }

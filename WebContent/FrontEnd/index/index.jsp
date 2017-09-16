@@ -3,6 +3,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
+<%@ page import="com.review.model.*"%>
 
 
 
@@ -205,16 +206,46 @@
 									<div class="row">
 
 									<%
+										/////
+										pageContext.setAttribute("mem_ac", "mrbrown");
+									
 									    ProdService prodSvc = new ProdService();
 									    List<ProdVO> list = prodSvc.getAll();
 									    pageContext.setAttribute("list",list);
+									    
 									    Fo_prodService fo_prodSvc = new Fo_prodService();
 									    pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
+									    List<Fo_prodVO> fo_list = fo_prodSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
+									    
+									    ReviewService reviewSvc = new ReviewService();
+									    pageContext.setAttribute("reviewSvc",reviewSvc);
 									%>
 
 									<c:forEach var="prodVO" items="${list}">
-									
-									
+									<%
+										String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
+										//此會員對此商品是否Follow的Boolean
+		                              	Boolean isFollow = false;
+		                              	for (Fo_prodVO fo_prodVO: fo_list){
+		                              		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
+		                              			isFollow = true;
+		                              		}
+		                              	}
+		                              	pageContext.setAttribute("isFollow",isFollow);
+
+
+		                              	
+		                              	//此商品的分數轉換星星Boolean
+		                              	Boolean [] star = new Boolean[5];
+		                              	Double score = ((ReviewService)(pageContext.getAttribute("reviewSvc"))).getScoreByProd(prod_no);
+		                              	long scoreLong = Math.round(score);
+		                              	for (int i = 0 ; i < scoreLong ; i++){
+		                              		star[i] = true;
+		                              	}
+		                              	pageContext.setAttribute("star",star);
+		                              	      	
+		                            %>
+
 				                      <!-- ////////////////////////////// -->
 				                      <div class="col-xs-12 col-sm-3 padt10">
 				                        <a href="#">
@@ -223,21 +254,23 @@
 				                          
 				                          <h4 class="bold">${prodVO.prod_name}</h4>
 				                          <p class="inline-b bold text-info">NT$ ${prodVO.prod_price}</p>
-
-				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-				                              <span class="text-info">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
-				                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
+				                          
+										  
+				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right ${(isFollow)?'bor-info':''}" aria-label="Left Align">
+				                              <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
+				                              <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>	
 				                          </button>
 
 				                          <p class="bold">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}</p>
 
-				                          <div>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-				                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-				                              <span>(51)</span>
+				                          <div title="${reviewSvc.getScoreByProd(prodVO.prod_no)}/5.0">
+				                          	  
+				                              <span class="glyphicon glyphicon-star ${(star['0'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+				                              <span class="glyphicon glyphicon-star ${(star['1'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+				                              <span class="glyphicon glyphicon-star ${(star['2'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+				                              <span class="glyphicon glyphicon-star ${(star['3'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+				                              <span class="glyphicon glyphicon-star ${(star['4'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+				                              <span>(${reviewSvc.getCountByProd(prodVO.prod_no)})</span>
 				                          </div>
 				                        </a>
 				                      </div>

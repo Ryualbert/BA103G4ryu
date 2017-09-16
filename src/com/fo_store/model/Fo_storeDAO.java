@@ -35,6 +35,10 @@ public class Fo_storeDAO implements Fo_storeDAO_interface{
 			"DELETE FROM fo_store where store_no = ? and mem_ac =?";
 		private static final String UPDATE = 
 			"UPDATE fo_store set fo_date = ? where store_no=? and mem_ac=?";
+		private static final String GET_COUNT_BY_STORE =
+				"SELECT count(*) FROM fo_store WHERE store_no = ?";
+		private static final String GET_FO_BY_MEM =
+				"SELECT * FROM fo_store WHERE mem_ac = ?";
 
 		@Override
 		public void insert(Fo_storeVO fo_storeVO) {
@@ -223,6 +227,112 @@ public class Fo_storeDAO implements Fo_storeDAO_interface{
 
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(GET_ALL_STMT);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					// empVO 也稱為 Domain objects
+					fo_storeVO = new Fo_storeVO();
+					fo_storeVO.setStore_no(rs.getString("store_no"));
+					fo_storeVO.setMem_ac(rs.getString("mem_ac"));
+					fo_storeVO.setFo_date(rs.getDate("fo_date"));
+					list.add(fo_storeVO); // Store the row in the list
+				}
+
+				// Handle any driver errors
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "
+						+ se.getMessage());
+				// Clean up JDBC resources
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+			return list;
+		}
+		
+		@Override
+		public int countByStore(String store_no) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			Integer count = 0;
+			
+			try {
+
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(GET_COUNT_BY_STORE);		
+				pstmt.setString(1, store_no);
+				rs = pstmt.executeQuery();
+		
+				while (rs.next()) {
+					count = rs.getInt(1);
+				}
+
+				// Handle any driver errors
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "
+						+ se.getMessage());
+				// Clean up JDBC resources
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+			return count;
+		}
+		
+		@Override
+		public List<Fo_storeVO> getByMem(String mem_ac) {
+			List<Fo_storeVO> list = new ArrayList<Fo_storeVO>();
+			Fo_storeVO fo_storeVO = null;
+
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(GET_FO_BY_MEM);
+				pstmt.setString(1, mem_ac);
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
