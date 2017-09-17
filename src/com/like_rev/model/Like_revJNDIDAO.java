@@ -37,7 +37,11 @@ public class Like_revJNDIDAO implements Like_revDAO_interface {
 	private static final String UPDATE = 
 		"";	
 	private static final String GET_COUNT_BY_REV =
-			"SELECT count(*) FROM like_rev WHERE rev_no = ?";
+		"SELECT count(*) FROM like_rev WHERE rev_no = ?";
+	private static final String GET_LIKE_BY_MEM =
+		"SELECT * FROM like_rev WHERE mem_ac = ?";
+	
+	
 	
 	@Override
 	public void insert(Like_revVO like_revVO) {
@@ -192,6 +196,64 @@ public class Like_revJNDIDAO implements Like_revDAO_interface {
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				like_revVO = new Like_revVO();
+				like_revVO.setRev_no(rs.getString("rev_no"));
+				like_revVO.setMem_ac(rs.getString("mem_ac"));
+				list.add(like_revVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
+	
+	@Override
+	public List<Like_revVO> getByMem(String mem_ac) {
+		
+		List<Like_revVO> list = new ArrayList<Like_revVO>();
+		Like_revVO like_revVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_LIKE_BY_MEM);
+			pstmt.setString(1, mem_ac);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

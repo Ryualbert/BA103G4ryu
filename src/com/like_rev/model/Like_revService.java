@@ -2,6 +2,8 @@ package com.like_rev.model;
 
 import java.util.List;
 
+import com.fo_store.model.Fo_storeVO;
+
 public class Like_revService {
 	private Like_revDAO_interface dao;
 	
@@ -29,6 +31,10 @@ public class Like_revService {
 
 	public int getCountByRev(String rev_no) {
 		return  dao.countByReview(rev_no);
+	}
+	
+	public  List<Like_revVO> getAllByMem(String mem_ac) {
+		return  dao.getByMem(mem_ac);
 	}
 	
 }

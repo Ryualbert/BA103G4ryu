@@ -55,6 +55,10 @@ public class ReviewService {
 		return dao.getAll();
 	}
 	
+	public List<ReviewVO> getVOByProd(String prod_no) {
+		return dao.getByProd(prod_no);
+	}
+	
 	public int getCountByProd(String prod_no) {
 		return  dao.countByProd(prod_no);
 	}

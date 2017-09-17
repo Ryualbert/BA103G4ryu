@@ -44,6 +44,8 @@ public class ReviewDAO implements ReviewDAO_interface {
 		"SELECT count(*) FROM review WHERE PROD_NO = ?";
 	private static final String GET_SCORE_BY_PROD =
 		"select avg(prod_score) from review where prod_no = ?";
+	private static final String GET_VO_BY_PROD = 
+		"SELECT rev_no, ord_no, prod_no, prod_score, use_way, rev_cont, to_char(rev_date,'yyyy-mm-dd') rev_date FROM REVIEW where prod_no = ? order by rev_no";
 	
 	
 	@Override
@@ -311,6 +313,69 @@ public class ReviewDAO implements ReviewDAO_interface {
 		}
 		return list;
 	}
+	
+	
+	@Override
+	public List<ReviewVO> getByProd(String prod_no) {
+		
+		List<ReviewVO> list = new ArrayList<ReviewVO>();
+		ReviewVO reviewVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_VO_BY_PROD);
+			pstmt.setString(1, prod_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				reviewVO = new ReviewVO();
+				reviewVO.setRev_no(rs.getString("rev_no"));
+				reviewVO.setOrd_no(rs.getString("ord_no"));
+				reviewVO.setProd_no(rs.getString("prod_no"));
+				reviewVO.setProd_score(rs.getInt("prod_score"));
+				reviewVO.setUse_way(rs.getString("use_way"));
+				reviewVO.setRev_cont(rs.getString("rev_cont"));
+				reviewVO.setRev_date(rs.getDate("rev_date"));
+				list.add(reviewVO); // Store the row in the list
+			}
+	
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
 	
 	@Override
 	public int countByProd(String prod_no) {

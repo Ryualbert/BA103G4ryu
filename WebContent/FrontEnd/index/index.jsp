@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
@@ -97,9 +98,9 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <!-- 左選單 -->
           <ul class="nav navbar-nav">
-            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.html">找豆</a></li>
-            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/forum/forum.html">討論板</a></li>
-            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/activity/activity.html">辦活動</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.jsp">找豆</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/forum/forum.jsp">討論板</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/activity/activity.jsp">辦活動</a></li>
             <li><a class="padt20 padb17" href="#">地圖</a></li>
           </ul>
         </div>
@@ -211,8 +212,8 @@
 										pageContext.setAttribute("mem_ac", "mrbrown");
 									
 									    ProdService prodSvc = new ProdService();
-									    List<ProdVO> list = prodSvc.getAll();
-									    pageContext.setAttribute("list",list);
+									    List<ProdVO> prodlist = prodSvc.getAll();
+									    pageContext.setAttribute("prodlist",prodlist);
 									    
 									    Fo_prodService fo_prodSvc = new Fo_prodService();
 									    pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
@@ -222,7 +223,7 @@
 									    pageContext.setAttribute("reviewSvc",reviewSvc);
 									%>
 
-									<c:forEach var="prodVO" items="${list}">
+									<c:forEach var="prodVO" items="${prodlist}">
 									<%
 										String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 										//此會員對此商品是否Follow的Boolean
@@ -421,7 +422,6 @@
 								ActService actSvc = new ActService();
 								List<ActVO> actlist = actSvc.getAll();
 							    pageContext.setAttribute("actlist",actlist);    
-							  
 							%>
 
 
@@ -429,17 +429,16 @@
 					        <div role="tabpanel" class="tab-pane" id="tab3">
 								<div class="container-floid">
 
-									<c:forEach var="actVO" items="actlist">
-									${actVO.act_no}
+									<c:forEach var="actVO" items="${actlist}">
 										<div class="row mgb30 mgt20 ">
 											<div class="col-xs-12 col-sm-6">
 												<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/index/actImg.do?act_no=${actVO.act_no}&index=1">
 											</div>
 											<div class="col-xs-12 col-sm-6">
 												<h4 class="inline-b bold">${actVO.act_name}</h4>
-												<p>${actVO.act_cont}</p>
+												<p>${fn:substring(actVO.act_cont,0,160)}...</p>
 												<h5 class="inline-b pull-left text-info">${actVO.act_op_date}</h5>
-												<h5 class="inline-b pull-left mgl20 text-info">${actVO.act_add}</h5>
+												<h5 class="inline-b pull-left mgl20 text-info">${fn:substring(actVO.act_add,0,3)}</h5>
 												<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
 						        					<span class="tx-gray">42</span>
 													<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>

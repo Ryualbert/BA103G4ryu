@@ -14,12 +14,12 @@ public class Pic_Util {
 	public static void main (String[] args) throws IOException{
 					
 	
-			for(Integer i = 1; i<=4 ;i++){  //編號1~11
+			for(Integer i = 1; i<=10 ;i++){  //編號1~11
 				
-				String no = "A10000000" + String.format("%02d", i);  // P10000000 S10000000 A10000000
-				String table = "ACT"; //  STORE PROD ACT  table名稱
+				String no = "P10000000" + String.format("%02d", i);  // P10000000 S10000000 A10000000
+				String table = "PROD"; //  STORE PROD ACT  table名稱
 				String index="1"; //  1 2 3 第幾張照片
-				String path ="D:\\apache-tomcat-7.0.75\\webapps\\BeanLife_front\\res\\img\\a"+((i % 7)+1)+".jpg" ; //p1.jpg p2.jpg p3.jpg 三張圖片循環塞入 自己的圖片位置
+				String path ="D:\\apache-tomcat-7.0.75\\webapps\\BeanLife_front\\res\\img\\p"+((i) % 3)+".jpg" ; //p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
 				updateImg(no,table,index,getPictureByteArray(path));
 				System.out.println("修改"+table+" "+no+"照片"+index);
 			}

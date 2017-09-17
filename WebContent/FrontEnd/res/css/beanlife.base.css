@@ -119,6 +119,9 @@ div .bold{
 .padt10{
 	padding-top: 10px;
 }
+.padt20{
+	padding-top: 20px;
+}
 .navbar-nav>li>a.padt20{
 	padding-top: 20px;
 }
