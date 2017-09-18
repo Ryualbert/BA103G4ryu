@@ -13,25 +13,72 @@ public class Pic_Util {
 
 	public static void main (String[] args) throws IOException{
 					
-	
+			//塞PROD
 			for(Integer i = 1; i<=10 ;i++){  //編號1~11
-				
 				String no = "P10000000" + String.format("%02d", i);  // P10000000 S10000000 A10000000
 				String table = "PROD"; //  STORE PROD ACT  table名稱
-				String index="1"; //  1 2 3 第幾張照片
-				String path ="D:\\apache-tomcat-7.0.75\\webapps\\BeanLife_front\\res\\img\\p"+((i) % 3)+".jpg" ; //p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
-				updateImg(no,table,index,getPictureByteArray(path));
-				System.out.println("修改"+table+" "+no+"照片"+index);
+				for(int j = 1; j<=3; j++){
+					String index= String.valueOf(j); //  1 2 3 第幾張照片
+					//p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
+					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\p"+(((i+j) % 3)+1)+".jpg";
+					updateImg(no,table,table,index,getPictureByteArray(path));
+					System.out.println("修改"+table+" "+no+"照片"+index);			
+				}	
 			}
+		
+//			//塞ACT
+			for(Integer i = 1; i<=4 ;i++){  //編號1~11
+				String no = "A10000000" + String.format("%02d", i);  // P10000000 S10000000 A10000000
+				String table = "ACT"; //  STORE PROD ACT  table名稱
+				for(int j = 1; j<=3; j++){
+					String index= String.valueOf(j); //  1 2 3 第幾張照片
+    				//p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
+					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\a"+(((i+j) % 4)+1)+".jpg";
+					updateImg(no,table,table,index,getPictureByteArray(path));
+					System.out.println("修改"+table+" "+no+"照片"+index);			
+				}	
+			}
+			
+			//塞STORE
+			for(Integer i = 1; i<=10 ;i++){  //編號1~11
+				String no = "S10000000" + String.format("%02d", i);  // P10000000 S10000000 A10000000
+				String table = "STORE"; //  STORE PROD ACT  table名稱
+				for(int j = 1; j<=3; j++){
+					String index= String.valueOf(j); //  1 2 3 第幾張照片
+    				//p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
+					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\a"+(((i+j) % 3)+1)+".jpg";
+					updateImg(no,table,table,index,getPictureByteArray(path));
+					System.out.println("修改"+table+" "+no+"照片"+index);			
+				}	
+			}
+			
+			//塞MEM
+			for(Integer i = 1; i<=6 ;i++){  //編號1~11
+				
+//				String MEM = "update mem set mem_pic = hextoraw('ff') where grade_no =";
+				
+				String no = String.valueOf(i);  // P10000000 S10000000 A10000000
+				String table = "MEM"; //  STORE PROD ACT  table名稱
+				String where = "GRADE";
+//				for(int j = 1; j<=3; j++){
+					String index= ""; //  1 2 3 第幾張照片
+    				//p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
+					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\m"+(((i) % 6)+1)+".jpg";
+					updateImg(no,table,where,index,getPictureByteArray(path));
+					System.out.println("修改"+table+" "+no+"照片"+index);			
+//				}	
+			}
+			
+			
 			
 		}
 
-	public static void updateImg(String no, String table ,String index,byte[] pic) {
+	public static void updateImg(String no, String table, String where, String index, byte[] pic) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:XE";
 		String userid = "ba103g4";
 		String passwd = "123456";
-		String MEM = "update mem set mem_pic =? where mem_ac like '%%'";
+		
 
 		Connection con = null;
 		PreparedStatement pstmt = null;	
@@ -40,7 +87,7 @@ public class Pic_Util {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			
-			pstmt = con.prepareStatement("UPDATE "+table+" SET "+table+"_PIC"+index+"=? WHERE "+table+"_NO =?");
+			pstmt = con.prepareStatement("UPDATE "+table+" SET "+table+"_PIC"+index+"=? WHERE "+where+"_NO =?");
 			
 			pstmt.setBytes(1, pic);
 			pstmt.setString(2, no);
