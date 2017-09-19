@@ -454,7 +454,7 @@
 
     <div class="modal" id="prod${p_index.count}">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content fix-h scrollbar-macosx">
+            <div class="modal-content fix-h scrollbar-macosx" id="xxx">
 
 
                 <div class="modal-header">
@@ -528,7 +528,7 @@
                                         海拔：${prodVO.bean_el}m<br>
                                         <br>
                                         處理法：${prodVO.proc}<br>
-                                        烘焙度：${prodVO.roast}<br>
+                                        烘焙度：${prodVO.roast}<br><input type="button" value="Load" id="buttonLoad">
                                         <br>
                                         <small>商品編號：${prodVO.prod_no}</small>
                                     </p>
@@ -1111,6 +1111,25 @@ jQuery(document).ready(function(){
 // $(document).ready(function () {
 // 	 $("a[href='#prod${param.prodNo}']").click();
 // });
+
+var $myDiv = $("#xxx");
+var $btn = $("#buttonLoad").click(function(){
+	$.ajax({
+		url : 'http://localhost:8081/BA103G4ryu/FrontEnd/store/storePage.jsp?storeNo=S1000000007',
+		type : 'GET',
+		dataType: "html",
+		success : function(result) {
+			while($myDiv.children().length > 0){
+				$myDiv.empty();
+			}
+			console.log(result);
+			$myDiv.html(result);
+		},
+		error : function(xhr) {
+			alert('Ajax request 發生錯誤');
+		}
+	});
+});
 
 </script>
 

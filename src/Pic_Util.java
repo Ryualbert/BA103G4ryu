@@ -46,7 +46,7 @@ public class Pic_Util {
 				for(int j = 1; j<=3; j++){
 					String index= String.valueOf(j); //  1 2 3 第幾張照片
     				//p0.jpg p1.jpg p2.jpg 三張圖片循環塞入 自己的圖片位置
-					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\a"+(((i+j) % 3)+1)+".jpg";
+					String path ="..\\BA103G4ryu\\WebContent\\FrontEnd\\res\\img\\s"+(((i+j) % 3)+1)+".jpg";
 					updateImg(no,table,table,index,getPictureByteArray(path));
 					System.out.println("修改"+table+" "+no+"照片"+index);			
 				}	

@@ -10,7 +10,7 @@
 <%@ page import="com.qa.model.*"%>
 
 
-
+<%-- 
 <!DOCTYPE html>
 <html lang="">
   <head>
@@ -34,17 +34,17 @@
 
 
   </head>
-  <body>
+  <body> --%>
 
 
 
 <!-- --------------------------------------------------店家---------------------------------------------------------------------- -->
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
+<c:set var="storeVO" value="${storeSvc.getonestore(param.storeNo)}" scope="page"/>
 
-
-    <div class="modal" id="store1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content fix-h scrollbar-macosx">
+<!--     <div class="modal" id="store1"> -->
+<!--       <div class="modal-dialog modal-lg"> -->
+<!--         <div class="modal-content fix-h scrollbar-macosx"> -->
 
 		
           <div class="modal-header">
@@ -61,13 +61,13 @@
                       <!-- 幻燈片主圖區 -->
                       <div class="carousel-inner">
                           <div class="item active">
-                              <img class="img-responsive" src="<%=request.getContextPath()%>/FrontEnd/res/img/s1.jpg" alt="">
+                              <img class="img-responsive" src="<%=request.getContextPath()%>/store/storeImg.do?store_no=${storeVO.store_no}&index=1" alt="store_pic1">
                           </div>
                           <div class="item">
-                              <img class="img-responsive" src="<%=request.getContextPath()%>/FrontEnd/res/img/s3.jpg" alt="">
+                              <img class="img-responsive" src="<%=request.getContextPath()%>/store/storeImg.do?store_no=${storeVO.store_no}&index=2" alt="store_pic2">
                           </div>
                           <div class ="item">
-                              <img class="img-responsive" src="<%=request.getContextPath()%>/FrontEnd/res/img/s2.jpg" alt="">
+                              <img class="img-responsive" src="<%=request.getContextPath()%>/store/storeImg.do?store_no=${storeVO.store_no}&index=3" alt="store_pic3">
                           </div>
                       </div>
                       <!-- 上下頁控制區 -->
@@ -84,27 +84,21 @@
             <div class="container-floid">
               <div class="row">
                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
-                ${param.storeNo}
                 
-                  <h3 class="text-info bold">藍色小舖${storeSvc.getonestore(param.storeNo)}</h3>
-                  <p>The Barn Coffee Roasters 的創辦人是 Ralf Rüller，他的第一間咖啡館創立於 2010 年的柏林，自己烘焙蛋糕、麵包，但是使用英國 Square Mile 的咖啡。兩年後，2012 年 9 月，他找到更大的空間，成立自己的咖啡烘焙坊，使用 Probat UG15 烘豆機，很快成為德國最受矚目的精品烘焙之一。
-
-                  手工採收的櫻桃、精品等級、偏好小農場，尤其是對改善品質充滿熱情的農場，是 Barn 選擇生豆的原則，新鮮、乾淨、永續耕種、可追溯性，Barn 從產地尋找當季生豆，付給農民比公平貿易好 2 到 3 倍的價格，如果直接貿易有困難，也是從世界上最好的生豆商那裡購買小農場的咖啡，例如 Nordic Approach。
-
-                  不論義式濃縮或手沖，The Barn 烘焙的咖啡只有單產區的豆子，他們追求的是單一莊園、農場、水洗廠或合作社的極致風味，表現在不同的酸質、甜度、水果滋味、喉韻、口感、平衡感。
-
-                  The Barn 的義式濃縮，與平常可能喝過的濃黑焦苦的義式完全不同，水果明亮的酸質非常明顯，按不同的豆種與產地，可以嘗到不同的風味，櫻桃、杏仁、血橙、葡萄乾，不一而足。然後基底的風味例如牛奶巧克力，會慢慢留在舌底，直到消散。口感非常滑順，成為他們的標誌特色。</p>
+                
+                  <h3 class="text-info bold">${storeVO.store_name}</h3>
+                  <p>${storeVO.store_cont}</p>
 
                 </div>
                 <div class="col-xs-12 col-sm-5 mgt20">
                   <div class="">
                     <p>
-                      地址： 高雄市鳥松區本館路72巷11-1號<br>
-                      電話： 07-3707263<br>
-                      營業時間： 10:00～18:00
+                      地址： ${storeVO.store_add}<br>
+                      電話：  ${storeVO.store_phone}<br>
+                      營業時間： 10:00～18:00??
                     </p>
-                    <h4 class="text-warning">全店滿$1000免運費</h4>
-                    <small class="pull-right">店家編號 S1000000001</small>
+                    <h4 class="text-warning">全店滿$${storeVO.store_free_ship}免運費</h4>
+                    <small class="pull-right">店家編號 ${storeVO.store_no}</small>
                   </div>
 
                   <iframe class="h300 mg-auto padt20" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14467.808603196336!2d121.18294626474378!3d24.967742558315585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1b5e6ee66e9fec49!2z6LOH562W5pyD5Lit5aOiIFRpYmFNZSDlnIvpmpvkurrmiY3nmbzlsZXkuK3lv4M!5e0!3m2!1szh-TW!2stw!4v1504632882091"  frameborder="0" style="border:0" allowfullscreen></iframe>
@@ -146,137 +140,7 @@
                       </div>
 
       
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3  padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
-
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-                              <span class="text-info">42</span>
-                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-                          </button>
-
-                          <p class="bold">巴西　水洗　深培</p>
-
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
-
-      
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3 padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
-
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
-                              <span class="tx-gray">42</span>
-                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-                          </button>
-
-                          <p class="bold">巴西　水洗　深培</p>
-
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
-
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3 padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
-
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-                              <span class="text-info">42</span>
-                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-                          </button>
-
-                          <p class="bold">巴西　水洗　深培</p>
-
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
-
-      
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3 padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p2.jpg">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
-
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-                              <span class="text-info">42</span>
-                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-                          </button>
-
-                          <p class="bold">巴西　水洗　深培</p>
-
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
-
-      
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3 padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/p3.jpg">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
-
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right" aria-label="Left Align">
-                              <span class="tx-gray">42</span>
-                              <span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-                          </button>
-
-                          <p class="bold">巴西　水洗　深培</p>
-
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
-
-      
-
-
+                   
 
 
 
@@ -290,16 +154,16 @@
 
 
           </div>
-        </div>
-      </div>
-    </div>
+<!--         </div> -->
+<!--       </div> -->
+<!--     </div> -->
 
 
 
 
 
 
-
+<%-- 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
@@ -350,4 +214,4 @@ $(document).ready(function () {
 
 
   </body>
-</html>
+</html> --%>
