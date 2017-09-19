@@ -1,6 +1,7 @@
 package com.qa.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -38,6 +39,8 @@ public class QaJNDIDAO implements QaDAO_interface {
 		"DELETE FROM QA where qa_no = ?";
 	private static final String UPDATE = 
 		"UPDATE QA set prod_no=?, mem_ac=?, qa_cont=?, qa_date=?, qa_reply_cont=?, qa_reply_date=? where qa_no =?";
+	private static final String GET_VO_BY_PROD = 
+		"SELECT qa_no, prod_no, mem_ac, qa_cont, to_char(qa_date,'yyyy-mm-dd') qa_date, qa_reply_cont, to_char(qa_reply_date,'yyyy-mm-dd') qa_reply_date  FROM QA where prod_no = ?";
 		
 	
 	@Override
@@ -256,6 +259,67 @@ public class QaJNDIDAO implements QaDAO_interface {
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				qaVO = new QaVO();
+				qaVO.setQa_no(rs.getString("qa_no"));
+				qaVO.setProd_no(rs.getString("prod_no"));
+				qaVO.setMem_ac(rs.getString("mem_ac"));
+				qaVO.setQa_cont(rs.getString("qa_cont"));
+				qaVO.setQa_date(rs.getDate("qa_date"));
+				qaVO.setQa_reply_cont(rs.getString("qa_reply_cont"));
+				qaVO.setQa_reply_date(rs.getDate("qa_reply_date"));
+				list.add(qaVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
+	@Override
+	public List<QaVO> getByProd(String prod_no) {
+		List<QaVO> list = new ArrayList<QaVO>();
+		QaVO qaVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_VO_BY_PROD);
+			pstmt.setString(1, prod_no);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

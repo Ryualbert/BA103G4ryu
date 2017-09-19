@@ -1,4 +1,4 @@
-package com.index.controller;
+package com.store.controller;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 /**
  * Servlet implementation class Img
  */
-@WebServlet("/index/prodImg.do")
+@WebServlet("/store/storePage.do")
 public class ProdImg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

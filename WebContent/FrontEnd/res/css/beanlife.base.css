@@ -314,7 +314,7 @@ body .navbar-default .navbar-nav>li>a:hover{
 }
 
 .fix-h{
-	height:1000px;
+	height:92vh;
 	overflow-y: auto;
 	overflow-x: hidden;
 }

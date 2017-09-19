@@ -252,11 +252,11 @@
 				                      <div class="col-xs-12 col-sm-3 padt10">
 				                        <a href="#">
 				                          
-				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
+				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 				                          
 				                          <h4 class="bold">${prodVO.prod_name}</h4>
 				                          <p class="inline-b bold text-info">NT$ ${prodVO.prod_price}</p>
-				                          
+				                         
 										  
 				                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right ${(isFollow)?'bor-info':''}" aria-label="Left Align">
 				                              <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
@@ -432,7 +432,7 @@
 									<c:forEach var="actVO" items="${actlist}">
 										<div class="row mgb30 mgt20 ">
 											<div class="col-xs-12 col-sm-6">
-												<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/index/actImg.do?act_no=${actVO.act_no}&index=1">
+												<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/act/actImg.do?act_no=${actVO.act_no}&index=1">
 											</div>
 											<div class="col-xs-12 col-sm-6">
 												<h4 class="inline-b bold">${actVO.act_name}</h4>

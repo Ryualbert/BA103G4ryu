@@ -1,4 +1,4 @@
-package com.index.controller;
+package com.prod.controller;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,8 +21,8 @@ import javax.sql.DataSource;
 /**
  * Servlet implementation class Img
  */
-@WebServlet("/index/actImg.do")
-public class ActImg extends HttpServlet {
+@WebServlet("/prod/prodImg.do")
+public class ProdImg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Connection con;
@@ -36,11 +36,11 @@ public class ActImg extends HttpServlet {
 
 		try {
 			Statement stmt = con.createStatement();
-			String act_no = req.getParameter("act_no");
+			String prod_no = req.getParameter("prod_no");
 			String index = req.getParameter("index");
 //      prod_no = new String(prod_no.getBytes("ISO-8859-1"),"UTF-8");
 			ResultSet rs = stmt.executeQuery(
-				"SELECT act_pic"+index+" FROM act WHERE act_no='"+act_no+"'");
+				"SELECT prod_pic"+index+" FROM prod WHERE prod_no='"+prod_no+"'");
 
 			if (rs.next()) {
 				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream(1));

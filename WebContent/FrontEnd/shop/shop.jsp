@@ -8,6 +8,7 @@
 <%@ page import="com.fo_prod.model.*"%>
 <%@ page import="com.review.model.*"%>
 <%@ page import="com.like_rev.model.*"%>
+<%@ page import="com.qa.model.*"%>
 
 
 
@@ -228,29 +229,40 @@
 
 
     <!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
+    <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+    <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+    <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
+    <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
+    <jsp:useBean id="like_revSvc" scope="page" class="com.like_rev.model.Like_revService" />
+    <jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
     
-	<%
-		/////
-		pageContext.setAttribute("mem_ac", "mrbrown");
+    <c:set var="mem_ac" value="mrbrown" scope="page"/>
+    <c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
+    <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
+    <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
+
+    
+	<% //***************************改成useBean的寫法**************
+// 		pageContext.setAttribute("mem_ac", "mrbrown");
 	
-		ProdService prodSvc = new ProdService();
-		List<ProdVO> prodlist = prodSvc.getAll();
-		pageContext.setAttribute("prodlist",prodlist);
+// 		ProdService prodSvc = new ProdService();
+// 		List<ProdVO> prodlist = prodSvc.getAll();
+// 		pageContext.setAttribute("prodlist",prodlist);
+		
 	
-		Fo_prodService fo_prodSvc = new Fo_prodService();
-		pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
-		List<Fo_prodVO> fo_list = fo_prodSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
+// 		Fo_prodService fo_prodSvc = new Fo_prodService();
+// 		pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
+// 		List<Fo_prodVO> fo_list = fo_prodSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
 	
-		ReviewService reviewSvc = new ReviewService();
-		pageContext.setAttribute("reviewSvc",reviewSvc);
+// 		ReviewService reviewSvc = new ReviewService();
+// 		pageContext.setAttribute("reviewSvc",reviewSvc);
 		
-		StoreService stroeSvc = new StoreService();
-		pageContext.setAttribute("stroeSvc",stroeSvc);
+// 		StoreService storeSvc = new StoreService();
+// 		pageContext.setAttribute("storeSvc",storeSvc);
 		
-		Like_revService like_revSvc = new Like_revService();
-		pageContext.setAttribute("like_revSvc",like_revSvc);
-		List<Like_revVO> like_rev_list = like_revSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
-		
+// 		Like_revService like_revSvc = new Like_revService();
+// 		pageContext.setAttribute("like_revSvc",like_revSvc);
+// 		List<Like_revVO> like_rev_list = like_revSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
 	%>
 
     <div class="container">
@@ -285,6 +297,7 @@
 		    		String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 		    		//此會員對此商品是否Follow的Boolean
 		           	Boolean isFollow = false;
+		           	List<Fo_prodVO> fo_list = (List<Fo_prodVO>)pageContext.getAttribute("fo_list");
 		           	for (Fo_prodVO fo_prodVO: fo_list){
 		           		if(fo_prodVO.getProd_no().equals(prod_no)){
 		           			isFollow = true;
@@ -304,13 +317,13 @@
 				
                 <div class="row cus-prod-row zidx0">
                   <div class="col-xs-12 col-sm-2 vam-div150">
-                    <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
+                    <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
                   </div>
                   <a href='#prod${p_index.count}' data-toggle="modal">
                     <div class="col-xs-12 col-sm-10">
                       <h4 class="inline-b bold">${prodVO.prod_name}</h4><small class="inline-b pull-right">${prodVO.ed_time}</small>
                       <div>
-                        <h5 class="inline-b bold text-info">NT$ ${prodVO.prod_price}　${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${stroeSvc.getonestore(prodVO.store_no).store_name}</h5>
+                        <h5 class="inline-b bold text-info">NT$ ${prodVO.prod_price}　${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${storeSvc.getonestore(prodVO.store_no).store_name}</h5>
                         <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 ${(isFollow)?'bor-info':''}" aria-label="Left Align">
                             <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
                             <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
@@ -324,7 +337,7 @@
                             <span>(${reviewSvc.getCountByProd(prodVO.prod_no)})</span>
                         </div>
                       </div>
-                      <p>${fn:substring(prodVO.prod_cont,0,120)} ${(prodVO.prod_cont.length()>120)? '...' : ''}</p>
+                      <p>${fn:substring(prodVO.prod_cont,0,120)} ${(prodVO.prod_cont.length() >120)? '...' : ''}</p>
                     </div>
                   </a>
                 </div>
@@ -419,6 +432,7 @@
 	String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 	//此會員對此商品是否Follow的Boolean
   	Boolean isFollow = false;
+  	List<Fo_prodVO> fo_list = (List<Fo_prodVO>)pageContext.getAttribute("fo_list");
   	for (Fo_prodVO fo_prodVO: fo_list){
   		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
   			isFollow = true;
@@ -466,29 +480,30 @@
                                                 <!-- 幻燈片主圖區 -->
                                                 <div class="carousel-inner">
                                                     <div class="item active">
-                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=1" alt="prod_pic1">
+                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1" alt="prod_pic1">
                                                     </div>
                                                     <div class="item">
-                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=2" alt="prod_pic2">
+                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=2" alt="prod_pic2">
                                                     </div>
                                                     <div class="item">
-                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/index/prodImg.do?prod_no=${prodVO.prod_no}&index=3" alt="prod_pic3">
+                                                        <img class="img-responsive w800" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=3" alt="prod_pic3">
                                                     </div>
                                                 </div>
                                                 <!-- 上下頁控制區 -->
                                                 <a class="left carousel-control" href="#mod-cas-pd${p_index.count}" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
                                                 <a class="right carousel-control" href="#mod-cas-pd${p_index.count}" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
                                             </div>
+                                            
                                         </div>
                                     </div>
 
 
                                     <div class="row mgt20">
                                         <div class="col-xs-12 col-sm-11 col-sm-offset-1 pointer" href="#stroe${prodVO.store_no}" data-toggle="modal">
-                                            <h4 class="bold text-info">${stroeSvc.getonestore(prodVO.store_no).store_name}</h4>
+                                            <h4 class="bold text-info">${storeSvc.getonestore(prodVO.store_no).store_name}</h4>
                                             <p>
-                                                地址： ${stroeSvc.getonestore(prodVO.store_no).store_add}<br>
-                                                電話：  ${stroeSvc.getonestore(prodVO.store_no).store_phone}<br>
+                                                地址： ${storeSvc.getonestore(prodVO.store_no).store_add}<br>
+                                                電話：  ${storeSvc.getonestore(prodVO.store_no).store_phone}<br>
                                                 營業時間：   10:00～18:00???
                                             </p>
                                         </div>
@@ -535,7 +550,7 @@
                                         <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
                                     </button>
                                     標價/重量：NT$${prodVO.prod_price/prodVO.prod_wt}/lb<br>
-                                    運費：NT$${prodVO.send_fee}<span class="text-warning bold mgl20">滿$${stroeSvc.getonestore(prodVO.store_no).store_free_ship}免運費</span><br>
+                                    運費：NT$${prodVO.send_fee}<span class="text-warning bold mgl20">滿$${storeSvc.getonestore(prodVO.store_no).store_free_ship}免運費</span><br>
                                     供應數量：${prodVO.prod_sup}
                                 </p>
 
@@ -609,16 +624,16 @@
 
 
 
-									<%
-										List<ReviewVO> reviewlist = reviewSvc.getVOByProd(prod_no);
-										pageContext.setAttribute("reviewlist",reviewlist);
-									%>
+									
 
 
                                     <!-- 標籤面板：內容區 -->
                                     <div class="tab-content">
+                                    
+                                    	<!-- --------------------心得評論---------------- -->
                                         <div role="tabpanel" class="tab-pane active" id="rev_prod${p_index.count}">
-
+                                        
+                                        	<c:set var="reviewlist" value="${reviewSvc.getVOByProd(prodVO.prod_no)}"/>
 
 											<c:if test="${reviewlist.size()==0}">
 												<div class="col-xs-12 col-sm-12 text-center padt10">
@@ -687,6 +702,7 @@
 		                                          	String rev_no = ((ReviewVO)pageContext.getAttribute("reviewVO")).getRev_no();
 		                                        	//此會員對此Review是否Like的Boolean
 		                                          	Boolean isLike = false;
+		                                          	List<Like_revVO> like_rev_list = (List<Like_revVO>)pageContext.getAttribute("like_rev_list");
 		                                          	for (Like_revVO like_revVO: like_rev_list){
 		                                          		if(like_revVO.getRev_no().equals(rev_no)){	                              			
 		                                          			isLike = true;
@@ -708,12 +724,7 @@
                                                                 <span class="glyphicon glyphicon-star ${(starOfRev['4'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
                                                             </div>
 
-                                                             <div class="col-xs-6 col-sm-12 padt10">
-                                                             
-<%--                                                               <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 ${(isFollow)?'bor-info':''}" aria-label="Left Align"> --%>
-<%-- 									                            <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span> --%>
-<%-- 									                            <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span> --%>
-<!-- 									                        </button> -->
+                                                             <div class="col-xs-6 col-sm-12 padt10">                                              
                                                                 <button type="button" class="btn btn-default btn-xs zidx5 ${(isLike)?'bor-like':''}" aria-label="Left Align">
                                                                     <span class="${(isLike)?'tx-like':'tx-gray'}">${like_revSvc.getCountByRev(reviewVO.rev_no)}</span>
                                                                     <span class="glyphicon glyphicon-heart ${(isLike)?'tx-like':'tx-gray'}" aria-hidden="true"></span>
@@ -736,71 +747,44 @@
                                             </c:forEach>
                                             
 
-
-
-
-
-
                                         </div>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                         <!-- --------------------問與答---------------- -->
                                         <div role="tabpanel" class="tab-pane" id="qa_prod${p_index.count}">
+                                        	
+                                        	<c:set var="qalist" value="${qaSvc.getVOByProd(prodVO.prod_no)}"/>
 
-
-
-
-
-                                            <!-- --------------------問與答---------------- -->
-                                             <!-- ////////////////////////////////// -->
+											<c:if test="${qalist.size()==0}">
+												<div class="col-xs-12 col-sm-12 text-center padt10">
+													<h2 class="tx-gray">目前尚無人提問</h2>
+												</div>
+											</c:if>
+											
+                                            <c:forEach var="qaVO" items="${qalist}">
+                                            
                                             <div class="row cus-qa-row zidx0 mgt20">
                                                
                                                 <div class="col-xs-12 col-sm-9 col-sm-offset-1">
-                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
-                                                    <p>内存速度微微素质尴尬，导演住房初步铃声邮政编码他们的天地本地有关部门大厦电影财，作业频率不会专家总经理格式激情辽宁一段他们的首页有限责任公司，眼光进攻能不能优势上有一周西方并不好多多，细节许可制品医院整体内容，民间生活不如状态邮政编码高达正是论坛能否关键地说律师维护经，一脸这段调查资产概念要去人民政府业绩五金美国当天懂，公告调节你们的信心条款文件大小平衡成就求职，尽快出租之间一点东方广大上次博客而是商标货币还会几天他说内。</p>
+                                                    <span class="text-info">Jav****</span><small class="mgl20">${qaVO.qa_date}</small>
+                                                    <p>${qaVO.qa_cont}</p>
                                                 </div>
 
-
+												<c:if test="${qaVO.qa_reply_cont!=null}">
                                                 <div class="col-xs-12 col-sm-9 col-sm-offset-2 well">
-                                                    <span class="text-info">藍色小舖</span><small class="mgl20">(2017-09-06)</small>
-                                                    <p>他们的经销商领导恋爱功夫链接可是青，他也很好外资还没有在这平，而是电子商务你怎么远程确保每，看过收入规则眼泪本网地说经验等人中文版高兴招聘最终印度大。</p>
+                                                    <span class="text-info">${storeSvc.getonestore(prodVO.store_no).store_name}</span><small class="mgl20">${qaVO.qa_reply_date}</small>
+                                                    <p>${qaVO.qa_reply_cont}</p>
                                                 </div>
+                                                </c:if>
 
                                             </div>
 
+                                            </c:forEach>
 
 
-
-
-
-                                             <!-- ////////////////////////////////// -->
-                                            <div class="row cus-qa-row zidx0 mgt20">
-                                               
-                                                <div class="col-xs-12 col-sm-9 col-sm-offset-1">
-                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
-                                                    <p>产业老人我来这次报告长时间有意老师本论坛犯，浙江满意电力生成就要日韩降低，资源互联网之一登录半年业主交流，广大群众否则选手白色，部门福州矛盾居民默认正在大厦则是一看专区收藏究竟走势，种子部队模拟始终美女图像无人有人之中本次直接小游戏目光，观察自己的相当体力才是前来成员课程。</p>
-                                                </div>
-
-
-                                            </div>
-
-
-
-
-
-
-                                             <!-- ////////////////////////////////// -->
-                                            <div class="row cus-qa-row zidx0 mgt20">
-                                               
-                                                <div class="col-xs-12 col-sm-9 col-sm-offset-1">
-                                                    <span class="text-info">Jav****</span><small class="mgl20">(2017-09-04)</small>
-                                                    <p>考核会议制品机关难得站内地图发帖站在下载次数主体，行为可以。</p>
-                                                </div>
-
-
-                                                <div class="col-xs-12 col-sm-9 col-sm-offset-2 well">
-                                                    <span class="text-info">藍色小舖</span><small class="mgl20">(2017-09-06)</small>
-                                                    <p>夏天屏幕人事购买立场那么多选项天然放，前进安装从事此次女性而在天使创造言论只能，杭州仪器分享中文尽管。</p>
-                                                </div>
-
-                                            </div>
 
 
 
@@ -845,13 +829,13 @@
                   <div id="store-cas" class="carousel slide" data-ride="carousel">
                       <!-- 幻燈片主圖區 -->
                       <div class="carousel-inner">
-                          <div class="item">
+                          <div class="item active">
                               <img class="img-responsive" src="res/img/s1.jpg" alt="">
                           </div>
                           <div class="item">
                               <img class="img-responsive" src="res/img/s3.jpg" alt="">
                           </div>
-                          <div class ="item active">
+                          <div class ="item">
                               <img class="img-responsive" src="res/img/s2.jpg" alt="">
                           </div>
                       </div>
@@ -1122,6 +1106,11 @@ $(document).ready(function(){
 jQuery(document).ready(function(){
     jQuery('.scrollbar-macosx').scrollbar();
 });
+
+//
+// $(document).ready(function () {
+// 	 $("a[href='#prod${param.prodNo}']").click();
+// });
 
 </script>
 
