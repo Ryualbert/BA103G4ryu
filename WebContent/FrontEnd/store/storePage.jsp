@@ -10,33 +10,6 @@
 <%@ page import="com.qa.model.*"%>
 
 
-<%-- 
-<!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>BeanLife</title>
-    <link rel="Shortcut Icon" type="image/x-icon" href="<%=request.getContextPath()%>/FrontEnd/res/img/logo/BeanLifeIco2.ico" />
-
-    <!--[if lt IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
-
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
-
-
-  </head>
-  <body> --%>
-
-
 
 <!-- --------------------------------------------------店家---------------------------------------------------------------------- -->
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
@@ -110,8 +83,7 @@
 
             <div class="container-floid padt20">
               <div class="row">
-                <div class="container-floid">
-                  <div class="row">
+        
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
 
                       <!-- ////////////////////////////// -->
@@ -147,71 +119,5 @@
                     </div>
                   </div>
                 </div>
-
-              </div>
-            </div>
-
-
-
           </div>
-<!--         </div> -->
-<!--       </div> -->
-<!--     </div> -->
 
-
-
-
-
-
-<%-- 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
-
-
-<script>
-
-//func bar toogle
-var scrollPos = 0;
-window.onscroll = function() {myFunction()};
-
-function myFunction() {
-  if (document.body.scrollTop < 1) {
-    $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-        return;
-  }
-    if ((document.body.scrollTop-scrollPos) >= 0) {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideUp("300");
-        scrollPos = document.body.scrollTop;
-    } else {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-    }
-}
-
-//odd row change side
-$(document).ready(function(){
-  $('.row.mgb30.mgt20:odd').children('div:first-child').addClass('col-sm-push-6')
-  $('.row.mgb30.mgt20:odd').children('div:last-child').addClass('col-sm-pull-6')
-});
-
-// scrollbar
-jQuery(document).ready(function(){
-    jQuery('.scrollbar-macosx').scrollbar();
-});
-
-//
-$(document).ready(function () {
-	 $("#store1").css("display", "block");
-});
-
-</script>
-
-
-
-  </body>
-</html> --%>

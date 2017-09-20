@@ -75,7 +75,7 @@ public class Pic_Util {
 
 	public static void updateImg(String no, String table, String where, String index, byte[] pic) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521:XE";
+		String url = "jdbc:oracle:thin:@54.92.7.228:1521:XE";
 		String userid = "ba103g4";
 		String passwd = "123456";
 		

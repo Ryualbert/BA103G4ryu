@@ -280,6 +280,7 @@ public class ProdJDBCDAO implements ProdDAO_interface {
 			while (rs.next()){
 				prodVO = new ProdVO();
 				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_no(rs.getString("prod_no"));
 				prodVO.setProd_name(rs.getString("prod_name"));
 				prodVO.setBean_type(rs.getString("bean_type"));
 				prodVO.setBean_grade(rs.getString("bean_grade"));
