@@ -263,6 +263,7 @@
     <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 
+
     <div class="container">
       <div class="row ">
 
@@ -317,7 +318,7 @@
                   <div class="col-xs-12 col-sm-2 vam-div150">
                     <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
                   </div>
-                  <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+                  <a id="shop${prodVO.prod_no}" href='#modal-id' data-toggle="modal" name="${prodVO.prod_no}">
                     <div class="col-xs-12 col-sm-10">
                       <h4 class="inline-b bold">${prodVO.prod_name}</h4><small class="inline-b pull-right">${prodVO.ed_time}</small>
                       <div>
@@ -344,8 +345,8 @@
 <script>
 var $modalX = $("#modalX");
 
-var $btn = $("#${prodVO.prod_no}").click(function(){
-	var prodNo =  $("#${prodVO.prod_no}").attr("id");
+var $btn = $("#shop${prodVO.prod_no}").click(function(){
+	var prodNo =  $("#shop${prodVO.prod_no}").attr("name");
 	var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
 	$.ajax({
 		url : urlstr,

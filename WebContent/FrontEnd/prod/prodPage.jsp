@@ -409,7 +409,7 @@ var $modalX = $("#modalX");
 
 var $btn = $("#storeBtn${p_index.count}").click(function(){
 	var storeNo =  $("#storeBtn${p_index.count}").attr("href");
-	var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
+	var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo +'&memAc=${mem_ac}';
 	$.ajax({
 		url : urlstr,
 		type : 'GET',

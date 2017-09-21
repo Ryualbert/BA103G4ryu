@@ -675,12 +675,12 @@ public class ProdJDBCDAO implements ProdDAO_interface {
 
 	public static void main (String[] args) throws IOException{
 		ProdJDBCDAO dao = new ProdJDBCDAO();		
-		insertTest(dao);
-		updateTest(dao);
-		getQueryResultTest("衣索比亞", "水洗", "中焙", "%gg%");
-		dao.delete("P1000000019");
+//		insertTest(dao);
+//		updateTest(dao);
+//		getQueryResultTest("衣索比亞", "水洗", "中焙", "%gg%");
+//		dao.delete("P1000000019");
 //		getImageTest(dao);
-		getAllTest(dao);
+//		getAllTest(dao);
 		getAllNoImgTest(dao);
 		//只新增照片方法，暫為測試用
 //		for(int i = 1; i<10 ;i++){

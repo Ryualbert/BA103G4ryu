@@ -13,7 +13,13 @@
 
 <!-- --------------------------------------------------店家---------------------------------------------------------------------- -->
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
-<c:set var="storeVO" value="${storeSvc.getonestore(param.storeNo)}" scope="page"/>
+<jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+<jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
+    
+<c:set var="mem_ac" value="${param.memAc}" scope="page"/>
+<c:set var="storeVO" value="${storeSvc.getOneStore(param.storeNo)}" scope="page"/>
+<c:set var="prodSet" value="${storeSvc.getProdsByStore(param.storeNo)}" scope="page"/>
+<c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 <!--     <div class="modal" id="store1"> -->
 <!--       <div class="modal-dialog modal-lg"> -->
@@ -24,7 +30,6 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
-
 
             <div class="container-floid">
               <div class="row">
@@ -86,7 +91,7 @@
         
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
    
-						<c:forEach var="prodVO" items="${prodlist}">
+						<c:forEach var="prodVO" items="${prodSet}">
 						<%
 							String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 							//此會員對此商品是否Follow的Boolean
@@ -113,7 +118,7 @@
 
 	                      <!-- ////////////////////////////// -->
 	                      <div class="col-xs-12 col-sm-3 padt10">
-	                        <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+	                        <a id="sp${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 	                          
 	                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 	                          
@@ -144,8 +149,8 @@
 <script>
 var $modalX = $("#modalX");
 
-var $btn = $("#${prodVO.prod_no}").click(function(){
-	var prodNo =  $("#${prodVO.prod_no}").attr("id");
+var $btn = $("#sp${prodVO.prod_no}").click(function(){
+	var prodNo =  $("#sp${prodVO.prod_no}").attr("name");
 	var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
 	$.ajax({
 		url : urlstr,
