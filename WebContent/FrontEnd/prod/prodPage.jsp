@@ -59,7 +59,6 @@
 <!--         <div class="modal-dialog modal-lg"> -->
 <!--             <div class="modal-content fix-h scrollbar-macosx" id="modalX"> -->
 
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title bold">${prodVO.prod_name}</h4>
@@ -150,7 +149,7 @@
                                         <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
                                         <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
                                     </button>
-                                    標價/重量：NT$${prodVO.prod_price/prodVO.prod_wt}/lb<br>
+                                    標價/重量：NT$<fmt:formatNumber value="${prodVO.prod_price/prodVO.prod_wt}" maxFractionDigits="1"/>/lb<br>
                                     運費：NT$${prodVO.send_fee}<span class="text-warning bold mgl20">滿$${storeSvc.getonestore(prodVO.store_no).store_free_ship}免運費</span><br>
                                     供應數量：${prodVO.prod_sup}
                                 </p>
@@ -402,14 +401,11 @@
 
                     </div>
                 </div>
-<!--             </div> -->
-<!--         </div> -->
-<!--     </div> -->
+
     
     
 <script>
 var $modalX = $("#modalX");
-
 
 var $btn = $("#storeBtn${p_index.count}").click(function(){
 	var storeNo =  $("#storeBtn${p_index.count}").attr("href");
@@ -423,7 +419,6 @@ var $btn = $("#storeBtn${p_index.count}").click(function(){
 			while($modalX.children().length > 0){
 				$modalX.empty();
 			}
-// 			console.log(result);
 			$modalX.html(result);
 		},
 		error : function(xhr) {

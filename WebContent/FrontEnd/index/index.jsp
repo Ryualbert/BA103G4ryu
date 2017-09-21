@@ -26,10 +26,15 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
-
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
+
 
 
   </head>
@@ -174,7 +179,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content fix-h scrollbar-macosx" id="modalX">
 
-				xxxxxxxxxxxxxxxx
+<!-- 				這邊是跳窗塞內容 -->
                 
             </div>
         </div>
@@ -185,12 +190,13 @@
 
 
 
-
-
-
-
-
-
+    <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+    <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+    <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
+   
+    <c:set var="mem_ac" value="mrbrown" scope="page"/>
+    <c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
+    <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 
 
@@ -223,28 +229,13 @@
 								<div class="container-floid">
 									<div class="row">
 
-									<%
-										/////
-										pageContext.setAttribute("mem_ac", "mrbrown");
-									
-									    ProdService prodSvc = new ProdService();
-									    List<ProdVO> prodlist = prodSvc.getAll();
-									    pageContext.setAttribute("prodlist",prodlist);
-									    
-									    Fo_prodService fo_prodSvc = new Fo_prodService();
-									    pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
-									    List<Fo_prodVO> fo_list = fo_prodSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
-									    
-									    ReviewService reviewSvc = new ReviewService();
-									    pageContext.setAttribute("reviewSvc",reviewSvc);
-									%>
 
 									<c:forEach var="prodVO" items="${prodlist}">
 									<%
 										String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 										//此會員對此商品是否Follow的Boolean
 		                              	Boolean isFollow = false;
-		                              	for (Fo_prodVO fo_prodVO: fo_list){
+		                              	for (Fo_prodVO fo_prodVO: (List<Fo_prodVO>)pageContext.getAttribute("fo_list")){
 		                              		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
 		                              			isFollow = true;
 		                              		}
@@ -266,7 +257,7 @@
 
 				                      <!-- ////////////////////////////// -->
 				                      <div class="col-xs-12 col-sm-3 padt10">
-				                        <a href="#">
+				                        <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 				                          
 				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 				                          
@@ -292,6 +283,33 @@
 				                          </div>
 				                        </a>
 				                      </div>
+				                      
+				                      
+<script>
+var $modalX = $("#modalX");
+
+var $btn = $("#${prodVO.prod_no}").click(function(){
+	var prodNo =  $("#${prodVO.prod_no}").attr("id");
+	var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
+	$.ajax({
+		url : urlstr,
+		type : 'GET',
+		dataType: "html",
+		async: false,
+		success : function(result) {
+			while($modalX.children().length > 0){
+				$modalX.empty();
+			}
+			
+			$modalX.html(result);
+		},
+		error : function(xhr) {
+			alert('Ajax request 發生錯誤');
+		}
+	});
+});
+</script>                   
+				                      
 
 				                    </c:forEach>
 
@@ -521,17 +539,6 @@
 		</div>
 
 
-
-
-
-
-
-
-		
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
 
 
   </body>

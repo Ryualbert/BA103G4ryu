@@ -13,7 +13,7 @@ public class ProdService {
 	public ProdVO addProd(String store_no, String prod_name, String bean_type, String bean_grade,
 			String bean_contry, String bean_region, String bean_farm, String bean_farmer, Integer bean_el, String proc,
 			String roast, Integer bean_attr_acid, Integer bean_attr_aroma, Integer bean_attr_body,
-			Integer bean_attr_after, Integer bean_attr_bal, String bean_aroma, Integer prod_price, Integer prod_wt,
+			Integer bean_attr_after, Integer bean_attr_bal, String bean_aroma, Integer prod_price, Double prod_wt,
 			Integer send_fee, Integer prod_sup, String prod_cont, byte[] prod_pic1, byte[] prod_pic2, byte[] prod_pic3,
 			String prod_stat, java.sql.Date ed_time) {
 		
@@ -59,7 +59,7 @@ public class ProdService {
 	public ProdVO updateProd(String prod_no, String store_no, String prod_name, String bean_type, String bean_grade,
 			String bean_contry, String bean_region, String bean_farm, String bean_farmer, Integer bean_el, String proc,
 			String roast, Integer bean_attr_acid, Integer bean_attr_aroma, Integer bean_attr_body,
-			Integer bean_attr_after, Integer bean_attr_bal, String bean_aroma, Integer prod_price, Integer prod_wt,
+			Integer bean_attr_after, Integer bean_attr_bal, String bean_aroma, Integer prod_price, Double prod_wt,
 			Integer send_fee, Integer prod_sup, String prod_cont, byte[] prod_pic1, byte[] prod_pic2, byte[] prod_pic3,
 			String prod_stat, java.sql.Date ed_time) {
 		

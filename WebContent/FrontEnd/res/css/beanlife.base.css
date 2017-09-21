@@ -191,29 +191,24 @@ body{
 	/*color: #7A3D0B ;*/
 	color: #6F5C60;
 }
-body a{
-	/*color: #7A3D0B ;*/
-	color: #6F5C60;
-	cursor: pointer;
-	text-decoration:none;
-}
-body a:hover{
-	/*color: #7A3D0B ;*/
-	color: #6F5C60;
-	cursor: pointer;
-	text-decoration:none;
-}
-body a:link{
-	/*color: #7A3D0B ;*/
-	color: #6F5C60;
-	cursor: pointer;
-	text-decoration:none;
-}
+body a,
+body a:hover,
+body a:link,
 body a:visited{
 	/*color: #7A3D0B ;*/
 	color: #6F5C60;
 	cursor: pointer;
 	text-decoration:none;
+	outline: none;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+    outline: none;
 }
 
 
@@ -271,6 +266,7 @@ body a:visited{
 	border-bottom-style: solid;
 	border-color: rgba(200, 182, 161, 0.54);
 }
+
 /*navbar active*/
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
 	/*color: #6F5C60;*/
@@ -285,6 +281,22 @@ body .navbar-default .navbar-nav>li>a:hover{
 	background-color: #C2DCCE;
 	/*background-color: #888;*/
 }
+
+/*跳窗圖框控制*/
+.modal .carousel-control{
+	opacity: 0;
+}
+.modal .carousel-control:hover{
+	opacity: 0.3;
+}
+/*廣告圖框控制*/
+#ad-cas .carousel-control{
+	opacity: 0;
+}
+#ad-cas .carousel-control:hover{
+	opacity: 0.3;
+}
+
 
 /*功能設定*/
 /*img垂直水平置中*/

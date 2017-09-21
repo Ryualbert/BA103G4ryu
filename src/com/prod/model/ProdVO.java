@@ -23,7 +23,7 @@ public class ProdVO implements Serializable {
 	private Integer bean_attr_bal;
 	private String bean_aroma;
 	private Integer prod_price;
-	private Integer prod_wt;
+	private Double prod_wt;
 	private Integer send_fee;
 	private Integer prod_sup;
 	private String prod_cont;
@@ -147,10 +147,10 @@ public class ProdVO implements Serializable {
 	public void setProd_price(Integer prod_price) {
 		this.prod_price = prod_price;
 	}
-	public Integer getProd_wt() {
+	public Double getProd_wt() {
 		return prod_wt;
 	}
-	public void setProd_wt(Integer prod_wt) {
+	public void setProd_wt(Double prod_wt) {
 		this.prod_wt = prod_wt;
 	}
 	public Integer getSend_fee() {

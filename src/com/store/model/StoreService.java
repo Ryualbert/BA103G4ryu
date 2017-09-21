@@ -86,8 +86,6 @@ public class StoreService {
 	public StoreVO getonestore(String store_no){
 		return dao.findByPrimaryKey(store_no);
 	}
-	
-	
-	
+
 	
 }

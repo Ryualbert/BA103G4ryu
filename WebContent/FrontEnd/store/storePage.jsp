@@ -85,34 +85,90 @@
               <div class="row">
         
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+   
+						<c:forEach var="prodVO" items="${prodlist}">
+						<%
+							String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
+							//此會員對此商品是否Follow的Boolean
+                             	Boolean isFollow = false;
+                             	for (Fo_prodVO fo_prodVO: (List<Fo_prodVO>)pageContext.getAttribute("fo_list")){
+                             		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
+                             			isFollow = true;
+                             		}
+                             	}
+                             	pageContext.setAttribute("isFollow",isFollow);
 
-                      <!-- ////////////////////////////// -->
-                      <div class="col-xs-12 col-sm-3  padt10">
-                        <a href="#">
-                          <img class="img-responsive  mg-auto vam-img  rd10" src="res/img/m3.png">
-                          <h4 class="bold">坦尚尼亞 瑪金加 肯特</h4>
-                          <p class="inline-b bold text-info">＄600/lb</p>
 
-                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right bor-info" aria-label="Left Align">
-                              <span class="text-info">42</span>
-                              <span class="glyphicon glyphicon-bookmark text-info" aria-hidden="true"></span>
-                          </button>
+                             	
+                             	//此商品的分數轉換星星Boolean
+                             	Boolean [] star = new Boolean[5];
+                             	Double score = ((ReviewService)(pageContext.getAttribute("reviewSvc"))).getScoreByProd(prod_no);
+                             	long scoreLong = Math.round(score);
+                             	for (int i = 0 ; i < scoreLong ; i++){
+                             		star[i] = true;
+                             	}
+                             	pageContext.setAttribute("star",star);
+                             	      	
+                           %>
 
-                          <p class="bold">巴西　水洗　深培</p>
+	                      <!-- ////////////////////////////// -->
+	                      <div class="col-xs-12 col-sm-3 padt10">
+	                        <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+	                          
+	                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
+	                          
+	                          <h4 class="bold">${prodVO.prod_name}</h4>
+	                          <p class="inline-b bold text-info">NT$ ${prodVO.prod_price}</p>
+	                         
+							  
+	                          <button type="button" class="btn btn-default btn-xs zidx5 pull-right ${(isFollow)?'bor-info':''}" aria-label="Left Align">
+	                              <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
+	                              <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>	
+	                          </button>
 
-                          <div>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-brn" aria-hidden="true"></span>
-                              <span class="glyphicon glyphicon-star tx-gray" aria-hidden="true"></span>
-                              <span>(51)</span>
-                          </div>
-                        </a>
-                      </div>
+	                          <p class="bold">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}</p>
 
-      
-                   
+	                          <div title="${reviewSvc.getScoreByProd(prodVO.prod_no)}/5.0">
+	                          	  
+	                              <span class="glyphicon glyphicon-star ${(star['0'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+	                              <span class="glyphicon glyphicon-star ${(star['1'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+	                              <span class="glyphicon glyphicon-star ${(star['2'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+	                              <span class="glyphicon glyphicon-star ${(star['3'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+	                              <span class="glyphicon glyphicon-star ${(star['4'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
+	                              <span>(${reviewSvc.getCountByProd(prodVO.prod_no)})</span>
+	                          </div>
+	                        </a>
+	                      </div>
+				                      
+				                      
+<script>
+var $modalX = $("#modalX");
+
+var $btn = $("#${prodVO.prod_no}").click(function(){
+	var prodNo =  $("#${prodVO.prod_no}").attr("id");
+	var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
+	$.ajax({
+		url : urlstr,
+		type : 'GET',
+		dataType: "html",
+		async: false,
+		success : function(result) {
+			while($modalX.children().length > 0){
+				$modalX.empty();
+			}
+			
+			$modalX.html(result);
+		},
+		error : function(xhr) {
+			alert('Ajax request 發生錯誤');
+		}
+	});
+});
+</script>                   
+				                      
+
+				    	</c:forEach>
+
 
 
 

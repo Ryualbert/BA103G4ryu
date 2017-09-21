@@ -31,58 +31,15 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
-
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
     
     
-    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
 
-
-<script>
-
-//func bar toogle
-var scrollPos = 0;
-window.onscroll = function() {myFunction()};
-
-function myFunction() {
-  if (document.body.scrollTop < 1) {
-    $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-        return;
-  }
-    if ((document.body.scrollTop-scrollPos) >= 0) {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideUp("300");
-        scrollPos = document.body.scrollTop;
-    } else {
-      $("#funcbar").stop(true);
-        $("#funcbar").slideDown("300");
-        scrollPos = document.body.scrollTop;
-    }
-}
-
-//odd row change side
-$(document).ready(function(){
-  $('.row.mgb30.mgt20:odd').children('div:first-child').addClass('col-sm-push-6')
-  $('.row.mgb30.mgt20:odd').children('div:last-child').addClass('col-sm-pull-6')
-});
-
-// scrollbar
-jQuery(document).ready(function(){
-    jQuery('.scrollbar-macosx').scrollbar();
-});
-
-//
-// $(document).ready(function () {
-// 	 $("a[href='#prod${param.prodNo}']").click();
-// // });
-</script>
 
 
 
@@ -179,7 +136,7 @@ jQuery(document).ready(function(){
 
 
     <!-- funcbar -->
-    <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn" role="navigation">
+    <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn border0" role="navigation">
       <div class="container padt8">
         <div class="col-xs-12 col-sm-2 col-sm-offset-1">
           <select class="form-control">
@@ -264,7 +221,7 @@ jQuery(document).ready(function(){
 
 
 
-<!--  --------------------------------------------------------------商品跳窗---------------------------------------------------------------->
+<!--  --------------------------------------------------------------跳窗---------------------------------------------------------------->
 
 
 
@@ -305,29 +262,6 @@ jQuery(document).ready(function(){
     <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
     <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 
-    
-	<% //***************************改成useBean的寫法**************
-// 		pageContext.setAttribute("mem_ac", "mrbrown");
-	
-// 		ProdService prodSvc = new ProdService();
-// 		List<ProdVO> prodlist = prodSvc.getAll();
-// 		pageContext.setAttribute("prodlist",prodlist);
-		
-	
-// 		Fo_prodService fo_prodSvc = new Fo_prodService();
-// 		pageContext.setAttribute("fo_prodSvc",fo_prodSvc);
-// 		List<Fo_prodVO> fo_list = fo_prodSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
-	
-// 		ReviewService reviewSvc = new ReviewService();
-// 		pageContext.setAttribute("reviewSvc",reviewSvc);
-		
-// 		StoreService storeSvc = new StoreService();
-// 		pageContext.setAttribute("storeSvc",storeSvc);
-		
-// 		Like_revService like_revSvc = new Like_revService();
-// 		pageContext.setAttribute("like_revSvc",like_revSvc);
-// 		List<Like_revVO> like_rev_list = like_revSvc.getAllByMem((String)pageContext.getAttribute("mem_ac"));
-	%>
 
     <div class="container">
       <div class="row ">

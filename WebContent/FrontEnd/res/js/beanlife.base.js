@@ -30,3 +30,8 @@ $(document).ready(function(){
 jQuery(document).ready(function(){
     jQuery('.scrollbar-macosx').scrollbar();
 });
+
+
+//$(document).ready(function () {
+// $("a[href='#prod${param.prodNo}']").click();
+//// });
