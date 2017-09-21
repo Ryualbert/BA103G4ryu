@@ -297,6 +297,12 @@ body .navbar-default .navbar-nav>li>a:hover{
 	opacity: 0.3;
 }
 
+/* Google Map */
+#map {
+	height: 300px;
+	width: 100%;
+}
+
 
 /*功能設定*/
 /*img垂直水平置中*/

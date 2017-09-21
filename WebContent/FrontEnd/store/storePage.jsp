@@ -79,7 +79,7 @@
                     <small class="pull-right">店家編號 ${storeVO.store_no}</small>
                   </div>
 
-                  <iframe class="h300 mg-auto padt20" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14467.808603196336!2d121.18294626474378!3d24.967742558315585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1b5e6ee66e9fec49!2z6LOH562W5pyD5Lit5aOiIFRpYmFNZSDlnIvpmpvkurrmiY3nmbzlsZXkuK3lv4M!5e0!3m2!1szh-TW!2stw!4v1504632882091"  frameborder="0" style="border:0" allowfullscreen></iframe>
+                  <div id="map"></div>
 
                 </div>
               </div>
@@ -118,8 +118,8 @@
 
 	                      <!-- ////////////////////////////// -->
 	                      <div class="col-xs-12 col-sm-3 padt10">
-	                        <a id="sp${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
-	                          
+<%-- 	                        <a id="sp${prodVO.prod_no}" href='#modal-id' data-toggle="modal"> --%>
+	                        <a id="sp${prodVO.prod_no}" href='${prodVO.prod_no}' data-toggle="modal">
 	                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 	                          
 	                          <h4 class="bold">${prodVO.prod_name}</h4>
@@ -150,25 +150,26 @@
 var $modalX = $("#modalX");
 
 var $btn = $("#sp${prodVO.prod_no}").click(function(){
-	var prodNo =  $("#sp${prodVO.prod_no}").attr("name");
-	var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
-	$.ajax({
-		url : urlstr,
-		type : 'GET',
-		dataType: "html",
-		async: false,
-		success : function(result) {
-			while($modalX.children().length > 0){
-				$modalX.empty();
+		var prodNo =  $("#sp${prodVO.prod_no}").attr("href");
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
+		$.ajax({
+			url : urlstr,
+			type : 'GET',
+			dataType: "html",
+			async: false,
+			success : function(result) {
+				while($modalX.children().length > 0){
+					$modalX.empty();
+				}
+				
+				$modalX.html(result);
+			},
+			error : function(xhr) {
+				alert('Ajax request 發生錯誤');
 			}
-			
-			$modalX.html(result);
-		},
-		error : function(xhr) {
-			alert('Ajax request 發生錯誤');
-		}
+		});
+		$modalX.scrollTop(0);
 	});
-});
 </script>                   
 				                      
 
@@ -182,3 +183,19 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
                 </div>
           </div>
 
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe7Hy0dluCzRjH-1M55UoLXXFER4UbhXY&callback=initMap" async defer></script>
+<script>
+  var map;
+  function initMap() {
+      var store = {lat: ${storeVO.store_add_lat}, lng: ${storeVO.store_add_lon}};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: store
+      });
+      var marker = new google.maps.Marker({
+        position: store,
+        map: map
+      });
+  }
+</script>

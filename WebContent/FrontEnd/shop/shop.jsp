@@ -263,7 +263,6 @@
     <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 
-
     <div class="container">
       <div class="row ">
 
