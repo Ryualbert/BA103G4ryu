@@ -128,4 +128,8 @@ public class ProdService {
 		return dao.getQueryResult(bean_contry, proc, roast, prod_name);
 	}
 	
+	public ProdVO getOneProdNoImg(String prod_no) {
+		return dao.findByPrimaryKeyNoImg(prod_no);
+	}
+	
 }

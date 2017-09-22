@@ -116,6 +116,10 @@ public class StoreService {
 		return getOneStore(store_no);
 	}
 	
+	public StoreVO getOneByMem(String mem_ac){
+		return dao.findByMem(mem_ac);
+	}
+	
 	public List<StoreVO> getVOsByStat(String store_stat){
 		return dao.getAll_stat(store_stat);
 	}

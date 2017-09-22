@@ -1,11 +1,14 @@
 package com.cart_list.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -35,6 +38,8 @@ public class Cart_listDAO implements Cart_listDAO_interface{
 		"DELETE FROM CART_LIST where prod_no = ? and mem_ac =?";
 	private static final String UPDATE = 
 		"UPDATE CART_LIST set prod_amount = ? where prod_no=? and mem_ac=?";
+	private static final String GET_BY_MEM = 
+		"SELECT * FROM CART_LIST where mem_ac=? order by PROD_NO";
 	
 	
 	@Override
@@ -264,6 +269,63 @@ public class Cart_listDAO implements Cart_listDAO_interface{
 			}
 		}
 		return list;
+	}
+	
+	
+	@Override
+	public Set<Cart_listVO> getByMem(String mem_ac) {
+		Set<Cart_listVO> set = new LinkedHashSet<Cart_listVO>();
+		Cart_listVO cart_listVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BY_MEM);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				cart_listVO = new Cart_listVO();
+				cart_listVO.setProd_no(rs.getString("prod_no"));
+				cart_listVO.setMem_ac(rs.getString("mem_ac"));
+				cart_listVO.setProd_amount(rs.getInt("prod_amount"));
+				set.add(cart_listVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
 	}
 
 }

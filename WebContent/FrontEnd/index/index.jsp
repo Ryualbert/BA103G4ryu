@@ -1,11 +1,40 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib  prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.prod.model.*"%>
+<%@ page import="com.store.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
 <%@ page import="com.review.model.*"%>
+<%@ page import="com.like_rev.model.*"%>
+<%@ page import="com.qa.model.*"%>
+<%@ page import="com.cart_list.model.*"%>
 <%@ page import="com.act.model.*"%>
+
+
+<jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+<jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+<jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
+<jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
+<jsp:useBean id="like_revSvc" scope="page" class="com.like_rev.model.Like_revService" />
+<jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
+<jsp:useBean id="cart_listSvc" scope="page" class="com.cart_list.model.Cart_listService" />
+<jsp:useBean id="ActSvc" scope="page" class="com.act.model.ActService" />
+
+<%-- <c:set var="mem_ac" value="amy39" scope="page"/> --%>
+<c:set var="mem_ac" value="mrbrown" scope="page"/>  
+
+<c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
+<c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="cart_listSet" value="${cart_listSvc.getVOsByMem(mem_ac)}" scope="page"/>
+
+<%
+	ActService actSvc = new ActService();
+	List<ActVO> actlist = actSvc.getAll();
+    pageContext.setAttribute("actlist",actlist);    
+%>
 
 
 
@@ -28,12 +57,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
-
-
+    
+    
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
+
 
 
 
@@ -62,17 +92,17 @@
             <div class="dropdown pull-right">
                       <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="glyphicon glyphicon-shopping-cart"></span>
-                        <span class="badge cus-badge">5</span>
+                        <span id="cartSize" class="badge cus-badge">${cart_listSvc.getVOsByMem(mem_ac).size()}</span>
                       </a>
-                      <ul class="dropdown-menu zidx5">
-                    <li><a href="#">咖啡</a></li>
+                      <ul id="cartList" class="dropdown-menu zidx5">
+                      
+                    <c:forEach var="cart_listVO" items="${cart_listSet}">
+                    	<li><a href="#">
+                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}　
+                    		<span>$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
+                    	</a></li>
+                    </c:forEach>
                     <li role="presentation" class="divider"></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
                   </ul>
                     </div>
 
@@ -81,10 +111,12 @@
                         <span class="glyphicon glyphicon-user"></span>
                       </a>
                       <ul class="dropdown-menu zidx5">
-                    <li><a href="#">店家資訊</a></li>
-                    <li><a href="#">商品管理</a></li>
-                    <li><a href="#">訂單管理</a></li>
-                    <li role="presentation" class="divider"></li>
+                    <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
+	                    <li><a href="#">店家資訊</a></li>
+	                    <li><a href="#">商品管理</a></li>
+	                    <li><a href="#">訂單管理</a></li>
+	                    <li role="presentation" class="divider"></li>
+                    </c:if>
                     <li><a href="#">個人資料</a></li>
                     <li><a href="#">訂單查詢</a></li>
                     <li><a href="#">我的收藏</a></li>
@@ -112,7 +144,6 @@
         <!-- 手機隱藏選單區結束 -->
       </div>
     </nav>
-
 
 
 <!-- ------------------------------------------------------------------------------------------------------- -->
@@ -188,15 +219,6 @@
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
-
-
-    <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
-    <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
-    <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
-   
-    <c:set var="mem_ac" value="mrbrown" scope="page"/>
-    <c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
-    <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 
 
@@ -452,11 +474,7 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 
 
 
-							<%
-								ActService actSvc = new ActService();
-								List<ActVO> actlist = actSvc.getAll();
-							    pageContext.setAttribute("actlist",actlist);    
-							%>
+
 
 
 					        <!-- tab333333333333333333333333333333333 -->

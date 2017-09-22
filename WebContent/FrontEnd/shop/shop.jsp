@@ -9,6 +9,26 @@
 <%@ page import="com.review.model.*"%>
 <%@ page import="com.like_rev.model.*"%>
 <%@ page import="com.qa.model.*"%>
+<%@ page import="com.cart_list.model.*"%>
+
+
+<jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+<jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+<jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
+<jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
+<jsp:useBean id="like_revSvc" scope="page" class="com.like_rev.model.Like_revService" />
+<jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
+<jsp:useBean id="cart_listSvc" scope="page" class="com.cart_list.model.Cart_listService" />
+
+<%-- <c:set var="mem_ac" value="amy39" scope="page"/> --%>
+<c:set var="mem_ac" value="mrbrown" scope="page"/>  
+
+<c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
+<c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="cart_listSet" value="${cart_listSvc.getVOsByMem(mem_ac)}" scope="page"/>
+
+
 
 
 
@@ -68,17 +88,17 @@
             <div class="dropdown pull-right">
                       <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="glyphicon glyphicon-shopping-cart"></span>
-                        <span class="badge cus-badge">5</span>
+                        <span id="cartSize" class="badge cus-badge">${cart_listSvc.getVOsByMem(mem_ac).size()}</span>
                       </a>
-                      <ul class="dropdown-menu zidx5">
-                    <li><a href="#">咖啡</a></li>
+                      <ul id="cartList" class="dropdown-menu zidx5">
+                      
+                    <c:forEach var="cart_listVO" items="${cart_listSet}">
+                    	<li><a href="#">
+                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}　
+                    		<span>$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
+                    	</a></li>
+                    </c:forEach>
                     <li role="presentation" class="divider"></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
-                    <li><a href="#">清單</a></li>
                   </ul>
                     </div>
 
@@ -87,10 +107,12 @@
                         <span class="glyphicon glyphicon-user"></span>
                       </a>
                       <ul class="dropdown-menu zidx5">
-                    <li><a href="#">店家資訊</a></li>
-                    <li><a href="#">商品管理</a></li>
-                    <li><a href="#">訂單管理</a></li>
-                    <li role="presentation" class="divider"></li>
+                    <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
+	                    <li><a href="#">店家資訊</a></li>
+	                    <li><a href="#">商品管理</a></li>
+	                    <li><a href="#">訂單管理</a></li>
+	                    <li role="presentation" class="divider"></li>
+                    </c:if>
                     <li><a href="#">個人資料</a></li>
                     <li><a href="#">訂單查詢</a></li>
                     <li><a href="#">我的收藏</a></li>
@@ -250,17 +272,7 @@
 
 
     <!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
-    <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
-    <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
-    <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
-    <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
-    <jsp:useBean id="like_revSvc" scope="page" class="com.like_rev.model.Like_revService" />
-    <jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
-    
-    <c:set var="mem_ac" value="mrbrown" scope="page"/>
-    <c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
-    <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
-    <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
+
 
 
     <div class="container">
@@ -360,7 +372,7 @@ var $btn = $("#shop${prodVO.prod_no}").click(function(){
 			$modalX.html(result);
 		},
 		error : function(xhr) {
-			alert('Ajax request 發生錯誤');
+			alert('連線不穩 請稍候再試');
 		}
 	});
 });

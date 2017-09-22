@@ -41,12 +41,14 @@ public class StoreDAO implements StoreDAO_interface{
 	private static final String GET_ONE_STMT = "SELECT STORE_NO,MEM_AC,TAX_ID_NO,WIN_ID_PIC,STORE_PHONE,STORE_ADD,STORE_ADD_LAT,"
 			+ "STORE_ADD_LON,STORE_NAME,STORE_CONT,STORE_PIC1,STORE_PIC2,STORE_PIC3,STORE_FREE_SHIP,"
 			+ "STORE_STAT,STORE_STAT_CONT,STORE_STAT_CDATE FROM store where STORE_NO = ?";
+	private static final String GET_ONE_BY_MEM = "SELECT * FROM store where mem_ac = ?";
 	private static final String DELETE = "DELETE FROM store where STORE_NO = ?";
 	private static final String UPDATE = "UPDATE store set TAX_ID_NO=?, WIN_ID_PIC=?, STORE_PHONE=? ,STORE_ADD=?,STORE_ADD_LAT=?,STORE_ADD_LON=?,STORE_NAME=?,STORE_CONT=?,STORE_PIC1=?,STORE_PIC2=?,STORE_PIC3=?,STORE_FREE_SHIP=?,STORE_STAT='待審中',STORE_STAT_CDATE=sysdate  where STORE_NO = ? and STORE_STAT like '%審核不通過%'";
 	private static final String UPDATE_STAT ="UPDATE store set STORE_STAT=?,store_stat_cdate=sysdate,STORE_STAT_CONT=? where STORE_NO = ?";
 	private static final String SELECT_STAT = "select * from store where store_stat like ?";
 	private static final String GET_PROD_BY_STORE = "SELECT * FROM PROD WHERE STORE_NO = ? order by prod_no";
-
+	
+	
 	@Override
 	public void insert(StoreVO storeVO) {
 		Connection con = null;
@@ -290,6 +292,68 @@ public class StoreDAO implements StoreDAO_interface{
 				storeVO.setStore_stat_cdate(rs.getDate("store_stat_cdate"));
 			}
 
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return storeVO;
+	}
+
+	@Override
+	public StoreVO findByMem(String mem_ac) {
+		StoreVO storeVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_BY_MEM);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				storeVO = new StoreVO();
+				storeVO.setStore_no(rs.getString("store_no"));
+				storeVO.setMem_ac(rs.getString("mem_ac"));
+				storeVO.setTax_id_no(rs.getString("tax_id_no"));
+				storeVO.setWin_id_pic(rs.getBytes("win_id_pic"));
+				storeVO.setStore_phone(rs.getString("store_phone"));
+				storeVO.setStore_add(rs.getString("store_add"));
+				storeVO.setStore_add_lat(rs.getString("store_add_lat"));
+				storeVO.setStore_add_lon(rs.getString("store_add_lon"));
+				storeVO.setStore_name(rs.getString("store_name"));
+				storeVO.setStore_cont(rs.getString("store_cont"));
+				storeVO.setStore_pic1(rs.getBytes("store_pic1"));
+				storeVO.setStore_pic2(rs.getBytes("store_pic2"));
+				storeVO.setStore_pic3(rs.getBytes("store_pic3"));
+				storeVO.setStore_free_ship(rs.getInt("store_free_ship"));
+				storeVO.setStore_stat(rs.getString("store_stat"));
+				storeVO.setStore_stat_cont(rs.getString("store_stat_cont"));
+				storeVO.setStore_stat_cdate(rs.getDate("store_stat_cdate"));
+			}
+	
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources

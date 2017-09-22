@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Cart_listJDBCDAO implements Cart_listDAO_interface{
 	
@@ -26,6 +28,8 @@ public class Cart_listJDBCDAO implements Cart_listDAO_interface{
 		"DELETE FROM CART_LIST where prod_no = ? and mem_ac =?";
 	private static final String UPDATE = 
 		"UPDATE CART_LIST set prod_amount = ? where prod_no=? and mem_ac=?";
+	private static final String GET_BY_MEM = 
+		"SELECT * FROM CART_LIST where mem_ac=? order by PROD_NO";
 	
 	
 	@Override
@@ -278,39 +282,110 @@ public class Cart_listJDBCDAO implements Cart_listDAO_interface{
 		return list;
 	}
 	
+	
+	@Override
+	public Set<Cart_listVO> getByMem(String mem_ac) {
+		Set<Cart_listVO> set = new LinkedHashSet<Cart_listVO>();
+		Cart_listVO cart_listVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_BY_MEM);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				cart_listVO = new Cart_listVO();
+				cart_listVO.setProd_no(rs.getString("prod_no"));
+				cart_listVO.setMem_ac(rs.getString("mem_ac"));
+				cart_listVO.setProd_amount(rs.getInt("prod_amount"));
+				set.add(cart_listVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
+	
+	
 	public static void main(String[] args) {
 
 		Cart_listJDBCDAO dao = new Cart_listJDBCDAO();
-
-		// 新增
-		Cart_listVO cart_listVO = new Cart_listVO();
-		cart_listVO.setProd_no("P1000000001");
-		cart_listVO.setMem_ac("amy39");
-		cart_listVO.setProd_amount(6);
-		dao.insert(cart_listVO);
-
-		// 修改
-		Cart_listVO cart_listVO2 = new Cart_listVO();
-		cart_listVO2.setProd_no("P1000000001");
-		cart_listVO2.setMem_ac("amy39");
-		cart_listVO2.setProd_amount(10);
-		dao.update(cart_listVO2);
-
+//
+//		// 新增
+//		Cart_listVO cart_listVO = new Cart_listVO();
+//		cart_listVO.setProd_no("P1000000001");
+//		cart_listVO.setMem_ac("amy39");
+//		cart_listVO.setProd_amount(6);
+//		dao.insert(cart_listVO);
+//
+//		// 修改
+//		Cart_listVO cart_listVO2 = new Cart_listVO();
+//		cart_listVO2.setProd_no("P1000000001");
+//		cart_listVO2.setMem_ac("amy39");
+//		cart_listVO2.setProd_amount(10);
+//		dao.update(cart_listVO2);
+//
+//		
+//
+//		// 查詢
+//		Cart_listVO cart_listVO3 = dao.findByPrimaryKey("P1000000001", "amy39");
+//		System.out.print(cart_listVO3.getProd_no() + ",");
+//		System.out.print(cart_listVO3.getMem_ac() + ",");
+//		System.out.println(cart_listVO3.getProd_amount() + ",");
+//		System.out.println("---------------------");
+//		
+//		// 刪除
+//		dao.delete("P1000000001", "amy39");
+//
+//		// 查詢
+//		List<Cart_listVO> list = dao.getAll();
+//		for (Cart_listVO acart_listVO : list) {
+//			System.out.print(acart_listVO.getProd_no() + ",");
+//			System.out.print(acart_listVO.getMem_ac() + ",");
+//			System.out.println(acart_listVO.getProd_amount() + ",");
+//			System.out.println();
+//		}
 		
-
 		// 查詢
-		Cart_listVO cart_listVO3 = dao.findByPrimaryKey("P1000000001", "amy39");
-		System.out.print(cart_listVO3.getProd_no() + ",");
-		System.out.print(cart_listVO3.getMem_ac() + ",");
-		System.out.println(cart_listVO3.getProd_amount() + ",");
-		System.out.println("---------------------");
-		
-		// 刪除
-		dao.delete("P1000000001", "amy39");
-
-		// 查詢
-		List<Cart_listVO> list = dao.getAll();
-		for (Cart_listVO acart_listVO : list) {
+		Set<Cart_listVO> set = dao.getByMem("amy39");
+		for (Cart_listVO acart_listVO : set) {
 			System.out.print(acart_listVO.getProd_no() + ",");
 			System.out.print(acart_listVO.getMem_ac() + ",");
 			System.out.println(acart_listVO.getProd_amount() + ",");

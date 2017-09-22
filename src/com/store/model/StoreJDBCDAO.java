@@ -23,6 +23,7 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT STORE_NO,MEM_AC,TAX_ID_NO,WIN_ID_PIC,STORE_PHONE,STORE_ADD,STORE_ADD_LAT,"
 			+ "STORE_ADD_LON,STORE_NAME,STORE_CONT,STORE_PIC1,STORE_PIC2,STORE_PIC3,STORE_FREE_SHIP,"
 			+ "STORE_STAT,STORE_STAT_CONT,STORE_STAT_CDATE FROM store where STORE_NO = ?";
+	private static final String GET_ONE_BY_MEM = "SELECT * FROM store where mem_ac = ?";
 	private static final String DELETE = "DELETE FROM store where STORE_NO = ?";
 	private static final String UPDATE = "UPDATE store set TAX_ID_NO=?, WIN_ID_PIC=?, STORE_PHONE=? ,STORE_ADD=?,STORE_ADD_LAT=?,STORE_ADD_LON=?,STORE_NAME=?,STORE_CONT=?,STORE_PIC1=?,STORE_PIC2=?,STORE_PIC3=?,STORE_FREE_SHIP=?,STORE_STAT='待審中',STORE_STAT_CDATE=sysdate  where STORE_NO = ? and STORE_STAT like '%審核不通過%'";
 	private static final String UPDATE_STAT ="UPDATE store set STORE_STAT=?,store_stat_cdate=sysdate,STORE_STAT_CONT=? where STORE_NO = ?";
@@ -407,6 +408,74 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 		return storeVO;
 	}
 
+	
+	@Override
+	public StoreVO findByMem(String mem_ac) {
+		StoreVO storeVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_BY_MEM);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				storeVO = new StoreVO();
+				storeVO.setStore_no(rs.getString("store_no"));
+				storeVO.setMem_ac(rs.getString("mem_ac"));
+				storeVO.setTax_id_no(rs.getString("tax_id_no"));
+				storeVO.setWin_id_pic(rs.getBytes("win_id_pic"));
+				storeVO.setStore_phone(rs.getString("store_phone"));
+				storeVO.setStore_add(rs.getString("store_add"));
+				storeVO.setStore_add_lat(rs.getString("store_add_lat"));
+				storeVO.setStore_add_lon(rs.getString("store_add_lon"));
+				storeVO.setStore_name(rs.getString("store_name"));
+				storeVO.setStore_cont(rs.getString("store_cont"));
+				storeVO.setStore_pic1(rs.getBytes("store_pic1"));
+				storeVO.setStore_pic2(rs.getBytes("store_pic2"));
+				storeVO.setStore_pic3(rs.getBytes("store_pic3"));
+				storeVO.setStore_free_ship(rs.getInt("store_free_ship"));
+				storeVO.setStore_stat(rs.getString("store_stat"));
+				storeVO.setStore_stat_cont(rs.getString("store_stat_cont"));
+				storeVO.setStore_stat_cdate(rs.getDate("store_stat_cdate"));
+			}
+
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return storeVO;
+	}
+	
+	
 	@Override
 	public List<StoreVO> getAll() {
 		List<StoreVO> list = new ArrayList<StoreVO>();
@@ -672,6 +741,28 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 	//		System.out.println(storeVO4.getStore_stat_cont());
 	//		System.out.println(storeVO4.getStore_stat_cdate());
 	//		System.out.println("---------------------");
+			
+			
+	// 查詢
+			StoreVO storeVO4 = dao.findByMem("mamabeak");
+			System.out.println(storeVO4.getStore_no() + ",");
+			System.out.println(storeVO4.getMem_ac() + ",");
+			System.out.println(storeVO4.getTax_id_no() + ",");
+			System.out.println(storeVO4.getWin_id_pic() + ",");
+			System.out.println(storeVO4.getStore_phone() + ",");
+			System.out.println(storeVO4.getStore_add() + ",");
+			System.out.println(storeVO4.getStore_add_lat() + ",");
+			System.out.println(storeVO4.getStore_add_lon());
+			System.out.println(storeVO4.getStore_name() + ",");
+			System.out.println(storeVO4.getStore_cont());
+			System.out.println(storeVO4.getStore_pic1() + ",");
+			System.out.println(storeVO4.getStore_pic2() + ",");
+			System.out.println(storeVO4.getStore_pic3() + ",");
+			System.out.println(storeVO4.getStore_free_ship() + ",");
+			System.out.println(storeVO4.getStore_stat() + ",");
+			System.out.println(storeVO4.getStore_stat_cont());
+			System.out.println(storeVO4.getStore_stat_cdate());
+			System.out.println("---------------------");
 	
 			// 查詢
 	//		List<StoreVO> list = dao.getAll();
@@ -720,38 +811,38 @@ public class StoreJDBCDAO implements StoreDAO_interface {
 	//		}
 			
 			//查詢ProdByStore
-			Set<ProdVO> set = dao.getProdsByStore_no("S1000000002");
-			for (ProdVO prodVO : set) {
-				System.out.print(prodVO.getProd_no() + ", ");
-				System.out.print(prodVO.getStore_no() + ", ");
-				System.out.print(prodVO.getProd_name() + ", ");
-				System.out.print(prodVO.getBean_type() + ", ");
-				System.out.print(prodVO.getBean_grade() + ", ");
-				System.out.print(prodVO.getBean_contry() + ", ");
-				System.out.print(prodVO.getBean_region() + ", ");
-				System.out.print(prodVO.getBean_farm() + ", ");
-				System.out.print(prodVO.getBean_farmer() + ", ");
-				System.out.print(prodVO.getBean_el() + ", ");
-				System.out.print(prodVO.getProc() + ", ");
-				System.out.print(prodVO.getRoast() + ", ");
-				System.out.print(prodVO.getBean_attr_acid() + ", ");
-				System.out.print(prodVO.getBean_attr_aroma() + ", ");
-				System.out.print(prodVO.getBean_attr_body() + ", ");
-				System.out.print(prodVO.getBean_attr_after() + ", ");
-				System.out.print(prodVO.getBean_attr_bal() + ", ");
-				System.out.print(prodVO.getBean_aroma() + ", ");
-				System.out.print(prodVO.getProd_price() + ", ");
-				System.out.print(prodVO.getProd_wt() + ", ");
-				System.out.print(prodVO.getSend_fee() + ", ");
-				System.out.print(prodVO.getProd_sup() + ", ");
-				System.out.print(prodVO.getProd_cont() + ", ");
-				System.out.print(prodVO.getProd_pic1() + ", ");
-				System.out.print(prodVO.getProd_pic2() + ", ");
-				System.out.print(prodVO.getProd_pic3() + ", ");
-				System.out.print(prodVO.getProd_stat() + ", ");
-				System.out.print(prodVO.getEd_time() + ", ");
-				System.out.println();
-			}
+//			Set<ProdVO> set = dao.getProdsByStore_no("S1000000002");
+//			for (ProdVO prodVO : set) {
+//				System.out.print(prodVO.getProd_no() + ", ");
+//				System.out.print(prodVO.getStore_no() + ", ");
+//				System.out.print(prodVO.getProd_name() + ", ");
+//				System.out.print(prodVO.getBean_type() + ", ");
+//				System.out.print(prodVO.getBean_grade() + ", ");
+//				System.out.print(prodVO.getBean_contry() + ", ");
+//				System.out.print(prodVO.getBean_region() + ", ");
+//				System.out.print(prodVO.getBean_farm() + ", ");
+//				System.out.print(prodVO.getBean_farmer() + ", ");
+//				System.out.print(prodVO.getBean_el() + ", ");
+//				System.out.print(prodVO.getProc() + ", ");
+//				System.out.print(prodVO.getRoast() + ", ");
+//				System.out.print(prodVO.getBean_attr_acid() + ", ");
+//				System.out.print(prodVO.getBean_attr_aroma() + ", ");
+//				System.out.print(prodVO.getBean_attr_body() + ", ");
+//				System.out.print(prodVO.getBean_attr_after() + ", ");
+//				System.out.print(prodVO.getBean_attr_bal() + ", ");
+//				System.out.print(prodVO.getBean_aroma() + ", ");
+//				System.out.print(prodVO.getProd_price() + ", ");
+//				System.out.print(prodVO.getProd_wt() + ", ");
+//				System.out.print(prodVO.getSend_fee() + ", ");
+//				System.out.print(prodVO.getProd_sup() + ", ");
+//				System.out.print(prodVO.getProd_cont() + ", ");
+//				System.out.print(prodVO.getProd_pic1() + ", ");
+//				System.out.print(prodVO.getProd_pic2() + ", ");
+//				System.out.print(prodVO.getProd_pic3() + ", ");
+//				System.out.print(prodVO.getProd_stat() + ", ");
+//				System.out.print(prodVO.getEd_time() + ", ");
+//				System.out.println();
+//			}
 			
 		}
 	

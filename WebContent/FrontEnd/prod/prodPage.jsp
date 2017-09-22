@@ -157,13 +157,13 @@
                                 <div class="container-floid">
                                     <div class="row">
                                         <div class="col-xs-7 col-sm-6">
-                                            <span class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
-                                            <input class="btn w45" type="text" name="" value="0">
-                                            <span class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
+                                            <span id="sub" class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
+                                            <input class="btn w50" type="number" min="0" max="999" name="amont" value="0">
+                                            <span id="add" class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
 
                                         </div>
                                         <div class="col-xs-5 col-sm-6">
-                                            <div class="btn btn-default btn-info">加入購物車</div>
+                                            <div id="intoCart" class="btn btn-default btn-info">加入購物車</div>
 
                                         </div>
                                     </div>
@@ -172,6 +172,64 @@
 
                             </div>
                         </div>
+
+<script type="text/javascript">
+    $("#add").on("click", function(){
+    	var $amont = Number($("[name='amont']").val());
+        if($amont==NaN||$amont<0){
+            $amont = 1;
+        } else {
+            $amont++;
+        }
+        $("[name='amont']").val($amont);
+    });
+    $("#sub").on("click", function(){
+        var $amont = Number($("[name='amont']").val());
+        if($amont==NaN||$amont<=0){
+            $amont = 0;
+        } else {
+            $amont--;
+        }
+        $("[name='amont']").val($amont);
+    });
+
+
+    var $btnIntoCart = $("#intoCart").click(function(){
+        var $action = "insert";
+        var $prod_no = "${prodVO.prod_no}"
+        var $amont = Number($("[name='amont']").val());
+        var $mem_ac = "${mem_ac}";
+        $.ajax({
+            url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+            type : 'post',
+            contentType: "application/json",
+            data: JSON.stringify({action:$action, prod_no: $prod_no,mem_ac: $mem_ac, amont:$amont}),
+            dataType: "JSON",
+            async: false,
+            success : function(jdata) {  	
+            	if(jdata.err!=null){
+            		alert(jdata.err);
+            	} else {
+                    $('#cartSize').text(jdata.length);
+                    $('#cartList').empty();
+                   	for(var i = 0; i<jdata.length; i++){
+                   		$('#cartList').append('<li><a href="#">'+
+                        		jdata[i].prod_name+'　<span>$'+jdata[i].prod_price+
+                        		'ｘ'+jdata[i].amont+'</span></a></li>');
+                   	}
+                   	
+                   	$("[name='amont']").val(0);
+                	alert('成功加入購物車');
+            	}	
+            },
+            error : function(xhr) {
+                alert('加入購物車失敗');
+            }
+        });
+    });
+</script>
+                        
+                        
 
 
 
@@ -274,7 +332,7 @@
                                                             </div>
                                                             <div class="col-xs-3 col-sm-3 text-center">
                                                                 <img class="img-responsive mg-auto inline-b w45" src="<%=request.getContextPath()%>/FrontEnd/res\img\icon\drgree.png">
-                                                                <small class="text-info">${use_way[2]}C</small>
+                                                                <small class="text-info">${use_way[2]}°C</small>
                                                             </div>
                                                             <div class="col-xs-3 col-sm-3 text-center">
                                                                 <img class="img-responsive mg-auto inline-b w45" src="<%=request.getContextPath()%>/FrontEnd/res\img\icon\timer.png">
