@@ -11,44 +11,50 @@
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
 
-<%-- <c:set var="mem_ac" value="amy39" scope="page"/> --%>
-<c:set var="mem_ac" value="mrbrown" scope="page"/>  
+<c:set var="mem_ac" value="amy39" scope="page"/>
+<%-- <c:set var="mem_ac" value="mrbrown" scope="page"/>   --%>
 
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 
-<c:forEach var="cart_listVO" items="${cart_listSvc.getVOsByMem(mem_ac)}">
-	<c:forEach var="storeVO" items="${storeSvc.(prodSvc.getOneProd(cart_listVO.prod_no).store_no)}">
-	</c:forEach>
-</c:forEach>
-
+<%
+	Set<StoreVO> storeSet= new LinkedHashSet<StoreVO>();
+	String mem_ac = (String) pageContext.getAttribute("mem_ac");
+	Set<Cart_listVO> cart_listSet = cart_listSvc.getVOsByMem(mem_ac);
+	for(Cart_listVO cart_listVO : cart_listSet){
+		String store_no = prodSvc.getOneProd((cart_listVO.getProd_no())).getStore_no();
+		storeSet.add(storeSvc.getOneStore(store_no));
+	}
+	pageContext.setAttribute("storeSet",storeSet);
+%>
 
 
 <div class="container cart-tab-block content">
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-sm-offset-2">
 			<h3 class="bold">購物車</h3>
+			
 			<div role="tabpanel">
 			    <!-- 標籤面板：標籤區 -->
 			    <ul class="nav nav-tabs " role="tablist">
-			    	
-			        <li role="presentation" class="active text-center bold">
-			            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">媽媽嘴咖啡</a>
-			        </li>
-			        
+			    	<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
+				        <li role="presentation" class="${(s.index==0)? 'active':''} text-center bold">
+				            <a href="#tab${storeVO.store_no}" aria-controls="tab${storeVO.store_no}" role="tab" data-toggle="tab">${storeVO.store_name}</a>
+				        </li>
+			        </c:forEach>
 			    </ul>
 			
 			    <!-- 標籤面板：內容區 -->
 			    <div class="tab-content cus-tab-content">
 
 
-
-			    	<!-- tab1111111111111111111111111111111 -->
-			        <div role="tabpanel" class="tab-pane active" id="tab1">
+					<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
+			    	<!-- ///////////////////////////////////////////-->
+			        <div role="tabpanel" class="tab-pane ${(s.index==0)? 'active':''}" id="tab${storeVO.store_no}">
 						<div class="container-floid">
 							<div class="row">
 
-								<form method="post" action="xxxxxxxxx">
+								<form method="post" action="/cart_list/cart_list.do">
 								<table class="table table-hover table-striped table-rwd">
 
 									
@@ -63,23 +69,26 @@
 										</tr>
 									</thead>
 
-
+									<c:forEach var="cart_listVO" items="${cart_listSvc.getVOsByMem(mem_ac)}">
+									
+									<c:if test="${prodSvc.getOneProd(cart_listVO.prod_no).store_no==storeVO.store_no}">
+									<c:set var="prodVO" value="${prodSvc.getOneProd(cart_listVO.prod_no)}"/>
+		
 									<!-- ////////////////////////////// -->
 									<tbody>
 										<tr>
-											
 											<td  data-th="商品">
 												<div class="container-floid">
 									                <div class="row cus-prod-row zidx0">
 									                  <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-0 vam-div60">
-									                    <img class="img-responsive mg-auto vam-img rd5 " src="res/img/m3.png">
+									                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 									                  </div>
 									                  
 									                    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0">
 									                    	<a href='#prod1' data-toggle="modal">
-									                      <p class="inline-b bold">坦尚尼亞 瑪金加 肯特</p>
+									                      <p class="inline-b bold">${prodVO.prod_name}</p>
 									                      <div>
-									                        <p class="inline-b bold text-info">巴西　水洗　深培　2lb/包</p>
+									                        <p class="inline-b bold text-info">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${prodVO.prod_wt}lb/包</p>
 									                      </div>
 									                    	 </a>
 									                    </div>
@@ -89,14 +98,14 @@
 
 											</td>
 											<td data-th="單價">
-												NT$600
+												NT$${prodVO.prod_price}
 											</td>
 											<td data-th="數量">
 												<div class="container-floid inline-b w90">
 													<div class="row">
 														<div class="col-xs-12 col-sm-12">
 			                                            <span class="glyphicon glyphicon-minus btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
-			                                            <input class="btn btn-xs w30" type="text" name="" value="10">
+			                                            <input class="btn btn-xs w30" type="text" name="" value="${cart_listVO.prod_amount}">
 			                                            <span class="glyphicon glyphicon-plus  btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
 
 														</div>
@@ -105,7 +114,7 @@
 
 											</td>
 											<td data-th="總計">
-												NT$1800
+												NT$${prodVO.prod_price*cart_listVO.prod_amount}
 											</td>
 											<td data-th="操作">
 												刪除
@@ -113,6 +122,8 @@
 										</tr>
 
 									</tbody>
+									</c:if>
+									</c:forEach>
 
 
 								</table>
@@ -134,7 +145,7 @@
 						</div>
 
 			        </div>
-
+					</c:forEach>
 
 
 
@@ -151,8 +162,7 @@
 			    </div>
 			</div>
 		</div>
-	</div>
-</div>
+
 
 
 <jsp:include page="/FrontEnd/include/footer.jsp"/>
