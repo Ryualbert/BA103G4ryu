@@ -57,6 +57,9 @@ div .bold{
 .inline-b{
 	display: inline-block;
 }
+.rd5{
+	border-radius: 5px;
+}
 .rd10{
 	border-radius: 10px;
 }
@@ -104,11 +107,23 @@ div .bold{
 .mgr20{
 	margin-right: 20px;
 }
+.pad0{
+	padding: 0px;
+}
 .padr0{
 	padding-right: 0px;
 }
+.padr5{
+	padding-right: 5px;
+}
 .padt0{
 	padding-top: 0px;
+}
+.padt3{
+	padding-top: 3px;
+}
+.padl5{
+	padding-left: 5px;
 }
 .padt5{
 	padding-top: 5px;
@@ -158,11 +173,17 @@ div .bold{
 .w100{
 	width: 100px;
 }
+.w90{
+	width: 90px;
+}
 .w300{
 	width: 300px;
 }
 .w800{
 	width: 800px;
+}
+.w20p{
+	width: 20%;
 }
 .w33p{
 	width: 33.3333333333333%;
@@ -237,20 +258,19 @@ body a:visited{
 	margin-top: 30px;
 	margin-bottom: 50px;
 }
+.cart-tab-block{
+	margin-top: 87px;
+	margin-bottom: 50px;
+}
 .cus-tab-content{
 	margin-top: 20px;
 }
 
-.footer{
-	padding-top: 10px;
-	padding-bottom: 5px;
-	background-color: #7A3D0B;
-}
 .cus-prod-row{
 	padding-top: 10px;
 	padding-bottom: 10px;
-	border-bottom-style: solid;
-	border-color: rgba(200, 182, 161, 0.54);
+/*	border-bottom-style: solid;
+	border-color: rgba(200, 182, 161, 0.54);*/
 }
 .cus-art-row{
 	padding-top: 10px;
@@ -269,6 +289,27 @@ body a:visited{
 	border-color: rgba(200, 182, 161, 0.54);
 }
 
+
+/*footer fix*/
+
+.footer{
+	padding-top: 10px;
+	padding-bottom: 5px;
+	background-color: #7A3D0B;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1;
+}
+
+
 /* 去除Number樣式 */
 input[type=number] {  
     -moz-appearance:textfield;  
@@ -277,8 +318,7 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {  
     -webkit-appearance: none;  
     margin: 0;  
-}  
-
+}
 
 
 /*navbar active*/
@@ -323,6 +363,11 @@ body .navbar-default .navbar-nav>li>a:hover{
 .vam-div150{
 	line-height:150px;
 	text-align:center;
+}
+.vam-div60{
+	line-height:60px;
+	text-align:center;
+	vertical-align:middle;
 }
 .vam-img{
 	vertical-align: middle;
@@ -397,4 +442,44 @@ div.footer{
 }
 div.footer a{
 	color: white;
+}
+
+
+/*table RWD*/
+/*額外做顏色，沒有什麼意義*/
+tr.tr-only-hide {color: #D20B2A;}
+
+@media (max-width: 736px) {
+  .table-rwd{min-width: 100%;}
+  /*針對tr去做隱藏*/
+  tr.tr-only-hide {display: none !important;}
+  /*讓tr變成區塊主要讓他有個區塊*/
+  .table-rwd tr{
+    display: block;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+  }
+  .table-rwd td {
+    text-align: left;
+    font-size: 15px;
+    overflow: hidden;
+    width: 100%;
+    display: block;
+	}
+	.table-rwd td:before {
+    /*最重要的就是這串*/
+    content: attr(data-th) " : ";
+    /*最重要的就是這串*/
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+	  margin-right: 10px;
+    color: #D20B2A;
+  }
+  /*當RWD縮小的時候.table-bordered 會有兩條線，所以針對.table-bordered去做修正*/
+  .table-rwd.table-bordered td,.table-rwd.table-bordered th,.table-rwd.table-bordered{border:0;}
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	vertical-align: middle;
 }

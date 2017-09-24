@@ -72,7 +72,6 @@ public class Cart_listServlet extends HttpServlet {
 		
 		if(action.equals("insert")){
 			
-//			List<String> errorMsgs = new LinkedList<String>();
 			Map<String,String> errorMsgs = new HashMap<String,String>();
 			try{
 				int amontInt = 0;
@@ -119,15 +118,14 @@ public class Cart_listServlet extends HttpServlet {
 							prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_price(), cart_listVO.getProd_amount());
 					cartList.add(nc);
 				}
-				System.out.println(cartList);
+//				System.out.println(cartList);
 				
 				outStr = gson.toJson(cartList);
-				System.out.println(outStr);
+//				System.out.println(outStr);
 				out.println(outStr);
 	
 			} catch (Exception e) {//其他錯誤
-//				System.out.println(e.getMessage());
-//				errorMsgs.put(e.getMessage());
+//				errorMsgs.put("err", e.getMessage());
 				errorMsgs.put("err","加入購物車失敗");
 				outStr = gson.toJson(errorMsgs);
 				out.print(outStr);

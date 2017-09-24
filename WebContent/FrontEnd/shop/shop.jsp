@@ -94,8 +94,8 @@
                       
                     <c:forEach var="cart_listVO" items="${cart_listSet}">
                     	<li><a href="#">
-                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}　
-                    		<span>$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
+                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}
+                    		<span class="pull-right">$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
                     	</a></li>
                     </c:forEach>
                     <li role="presentation" class="divider"></li>
@@ -142,6 +142,24 @@
     </nav>
 
 <!-- --------------------------------------NAV尾NAV尾NAV尾NAV尾NAV尾----------FUNC BAR開頭--------------------------------------------- -->
+
+<!--  --------------------------------------------------------------跳窗---------------------------------------------------------------->
+
+
+
+
+
+    <div class="modal" id="modal-id">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content fix-h scrollbar-macosx" id="modalX">
+
+<!-- 				這邊是跳窗塞內容 -->
+                
+            </div>
+        </div>
+    </div>
+    
+<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
 
@@ -243,23 +261,7 @@
 
 
 
-<!--  --------------------------------------------------------------跳窗---------------------------------------------------------------->
 
-
-
-
-
-    <div class="modal" id="modal-id">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content fix-h scrollbar-macosx" id="modalX">
-
-<!-- 				這邊是跳窗塞內容 -->
-                
-            </div>
-        </div>
-    </div>
-    
-<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
 

@@ -158,7 +158,7 @@
                                     <div class="row">
                                         <div class="col-xs-7 col-sm-6">
                                             <span id="sub" class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
-                                            <input class="btn w50" type="number" min="0" max="999" name="amont" value="0">
+                                            <input class="btn w50" type="number" min="0" max="999" maxlength="3" name="amont" value="0">
                                             <span id="add" class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
 
                                         </div>
