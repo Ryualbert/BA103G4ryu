@@ -161,6 +161,9 @@ div .bold{
 .w30{
 	width:30px;
 }
+.w35{
+	width:35px;
+}
 .w45{
 	width: 45px;
 }
@@ -269,8 +272,8 @@ body a:visited{
 .cus-prod-row{
 	padding-top: 10px;
 	padding-bottom: 10px;
-/*	border-bottom-style: solid;
-	border-color: rgba(200, 182, 161, 0.54);*/
+	border-bottom-style: solid;
+	border-color: rgba(200, 182, 161, 0.54);
 }
 .cus-art-row{
 	padding-top: 10px;

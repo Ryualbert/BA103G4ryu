@@ -16,7 +16,7 @@
 <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
 <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
     
-<c:set var="mem_ac" value="${param.memAc}" scope="page"/>
+<c:set var="mem_ac" value="${session.mem_ac}" scope="page"/>
 <c:set var="storeVO" value="${storeSvc.getOneStore(param.storeNo)}" scope="page"/>
 <c:set var="prodSet" value="${storeSvc.getProdsByStore(param.storeNo)}" scope="page"/>
 <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
@@ -151,7 +151,7 @@ var $modalX = $("#modalX");
 
 var $btn = $("#sp${prodVO.prod_no}").click(function(){
 		var prodNo =  $("#sp${prodVO.prod_no}").attr("href");
-		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo+'&memAc=${mem_ac}';
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
 		$.ajax({
 			url : urlstr,
 			type : 'GET',
@@ -197,5 +197,5 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
         position: store,
         map: map
       });
-  }
+  };
 </script>

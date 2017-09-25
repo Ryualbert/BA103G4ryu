@@ -80,7 +80,7 @@ public class Cart_listServlet extends HttpServlet {
 				} catch (NumberFormatException e){
 					errorMsgs.put("err","請輸入數字");
 					outStr = gson.toJson(errorMsgs);
-					System.out.println(outStr);
+//					System.out.println(outStr);
 					out.print(outStr);
 					return;//程式中斷
 				}
@@ -112,7 +112,7 @@ public class Cart_listServlet extends HttpServlet {
 				List<NameCart> cartList = new ArrayList<NameCart>();
 				//找回更新後的購物車
 				Set<Cart_listVO> cartSet = cart_listSvc.getVOsByMem(mem_ac);
-				System.out.println(cartSet);
+//				System.out.println(cartSet);
 				for(Cart_listVO cart_listVO : cartSet){
 					NameCart nc = new NameCart((prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_name()).substring(0, 9)+"...",
 							prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_price(), cart_listVO.getProd_amount());

@@ -21,8 +21,8 @@
 <jsp:useBean id="like_revSvc" scope="page" class="com.like_rev.model.Like_revService" />
 <jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
 
+<c:set var="mem_ac" value="${session.mem_ac}" scope="page"/>
 <c:set var="prodVO" value="${prodSvc.getOneProd(param.prodNo)}" scope="page"/>
-<c:set var="mem_ac" value="${param.memAc}" scope="page"/>
 <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 
@@ -173,6 +173,7 @@
                             </div>
                         </div>
 
+
 <script type="text/javascript">
     $("#add").on("click", function(){
     	var $amont = Number($("[name='amont']").val());
@@ -193,7 +194,7 @@
         $("[name='amont']").val($amont);
     });
 
-
+    var isAdd = false;
     var $btnIntoCart = $("#intoCart").click(function(){
         var $action = "insert";
         var $prod_no = "${prodVO.prod_no}"
@@ -217,9 +218,11 @@
                         		jdata[i].prod_name+'　<span>$'+jdata[i].prod_price+
                         		'ｘ'+jdata[i].amont+'</span></a></li>');
                    	}
-                   	
+                   	$('#cartList').append('<li role="presentation" class="divider"></li>'+
+                   			'<a href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp"><div  class="btn btn-info pull-right">前往購物車</div></a>');
                    	$("[name='amont']").val(0);
                 	alert('成功加入購物車');
+                	isAdd=true;
             	}	
             },
             error : function(xhr) {
@@ -467,7 +470,7 @@ var $modalX = $("#modalX");
 
 var $btn = $("#pp${prodVO.store_no}").click(function(){
 		var storeNo =  $("#pp${prodVO.store_no}").attr("href");
-		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo +'&memAc=${mem_ac}';
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
 		$.ajax({
 			url : urlstr,
 			type : 'GET',

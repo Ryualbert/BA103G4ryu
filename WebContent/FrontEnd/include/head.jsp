@@ -13,8 +13,7 @@
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="cart_listSvc" scope="page" class="com.cart_list.model.Cart_listService" />
 
-<%-- <c:set var="mem_ac" value="amy39" scope="page"/> --%> 
-<c:set var="mem_ac" value="mrbrown" scope="page"/>  
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 
 <c:set var="cart_listSet" value="${cart_listSvc.getVOsByMem(mem_ac)}" scope="page"/>
 
@@ -81,14 +80,16 @@
                         <span id="cartSize" class="badge cus-badge">${cart_listSvc.getVOsByMem(mem_ac).size()}</span>
                       </a>
                       <ul id="cartList" class="dropdown-menu zidx5">
-                      
-                    <c:forEach var="cart_listVO" items="${cart_listSet}">
-                    	<li><a href="#">
-                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}
-                    		<span class="pull-right">$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
-                    	</a></li>
-                    </c:forEach>
+	                    
+	                    <c:forEach var="cart_listVO" items="${cart_listSet}">
+	                    	<li><a href="#">
+	                    		${prodSvc.getOneProd(cart_listVO.prod_no).prod_name}
+	                    		<span class="pull-right">$${prodSvc.getOneProd(cart_listVO.prod_no).prod_price}ｘ${cart_listVO.prod_amount}</span>
+	                    	</a></li>
+	                    </c:forEach>
+	                   
                     <li role="presentation" class="divider"></li>
+                    <a href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp"><div  class="btn btn-info pull-right">前往購物車</div></a>
                   </ul>
                     </div>
 
