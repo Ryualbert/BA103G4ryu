@@ -72,7 +72,7 @@
 									<c:set var="prodVO" value="${prodSvc.getOneProd(cart_listVO.prod_no)}"/>
 		
 									<!-- ////////////////////////////// -->
-									<tbody>
+									<tbody id="tbody${prodVO.prod_no}">
 										<tr>
 											<td  data-th="商品">
 												<div class="container-floid">
@@ -116,7 +116,7 @@
 												NT$<span class="subtotal${storeVO.store_no}"></span>
 											</td>
 											<td data-th="操作">
-												刪除
+												<span id="del${prodVO.prod_no}">刪除</span>
 											</td>
 										</tr>
 
@@ -126,6 +126,7 @@
 
 
 <script> //prod
+//add sub button
 $("#add${cart_listVO.prod_no}").on("click", function(){
 	var $amont = Number($("#amount${prodVO.prod_no}").val());
     if($amont==NaN||$amont<0){
@@ -146,6 +147,8 @@ $("#sub${cart_listVO.prod_no}").on("click", function(){
     $("#amount${prodVO.prod_no}").val($amont);
     calTotal${storeVO.store_no}();
 });
+
+//Number check
 $("#amount${prodVO.prod_no}").blur(function(){
 	if(isNaN(Number($("#amount${prodVO.prod_no}").val()))){
 		$("#amount${prodVO.prod_no}").val(1);
@@ -153,8 +156,7 @@ $("#amount${prodVO.prod_no}").blur(function(){
 	calTotal${storeVO.store_no}();
 });
 		
-		
-		
+//Prod View
 var $modalX = $("#modalX");
 var $btn = $("#${prodVO.prod_no}").click(function(){
 		var prodNo =  $("#${prodVO.prod_no}").attr("id");
@@ -177,6 +179,34 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 		});
 		
 	});
+	
+//delete
+ var $btnDel = $("#del${prodVO.prod_no}").click(function(){
+        var $action = "delete";
+        var $prod_no = "${prodVO.prod_no}"
+        var $mem_ac = "${mem_ac}";
+        $.ajax({
+            url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+            type : 'post',
+            contentType: "application/json",
+            data: JSON.stringify({action:$action, prod_no: $prod_no, mem_ac: $mem_ac}),
+//             dataType: "JSON",
+			dataType: "text",
+            async: false,
+            success : function(jdata) {  	
+            	if(jdata.err!=null){
+            		alert(jdata.err);
+            	} else {
+                    $('#tbody${prodVO.prod_no}').remove();
+                    calTotal${storeVO.store_no}();
+            	}	
+            },
+            error : function(xhr) {
+            	console.log(xhr);
+                alert('刪除購物車商品失敗');
+            }
+        });
+    });
 </script> 
 									</c:if>
 									</c:forEach>

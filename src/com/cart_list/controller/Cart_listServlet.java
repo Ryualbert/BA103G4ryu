@@ -44,7 +44,6 @@ public class Cart_listServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
 		req.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();
 		BufferedReader br = req.getReader();
@@ -54,13 +53,11 @@ public class Cart_listServlet extends HttpServlet {
 			jsonIn.append(line);
 		}
 		br.close();
-//		System.out.println(jsonIn);
+		System.out.println("Jin"+jsonIn);
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
 		String prod_no = jsonObject.get("prod_no").getAsString();
 		String mem_ac = jsonObject.get("mem_ac").getAsString();
-		
-		String amont = jsonObject.get("amont").getAsString();
 		
 		cart_listSvc = new Cart_listService();
 		prodSvc = new ProdService();
@@ -71,7 +68,7 @@ public class Cart_listServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		
 		if(action.equals("insert")){
-			
+			String amont = jsonObject.get("amont").getAsString();
 			Map<String,String> errorMsgs = new HashMap<String,String>();
 			try{
 				int amontInt = 0;
@@ -132,6 +129,22 @@ public class Cart_listServlet extends HttpServlet {
 				return;//程式中斷
 				
 			}
+		}
+		
+		if(action.equals("delete")){
+			Map<String,String> errorMsgs = new HashMap<String,String>();
+			try{
+				cart_listSvc.deleteCart_list(prod_no, mem_ac);
+				out.println("{'state':'sucess'}");
+			} catch (Exception e) {//其他錯誤
+				errorMsgs.put("err", e.getMessage());
+//				errorMsgs.put("err","刪除購物車商品失敗");
+				outStr = gson.toJson(errorMsgs);
+				out.print(outStr);
+				return;//程式中斷
+				
+			}
+				
 		}
 	}
 }

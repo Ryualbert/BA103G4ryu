@@ -104,7 +104,6 @@
                                             <p>
                                                 地址： ${storeSvc.getonestore(prodVO.store_no).store_add}<br>
                                                 電話：  ${storeSvc.getonestore(prodVO.store_no).store_phone}<br>
-                                                營業時間：   10:00～18:00???
                                             </p>
                                         </div>
                                     </div>
