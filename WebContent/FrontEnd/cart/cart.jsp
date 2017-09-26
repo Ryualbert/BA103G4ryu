@@ -43,8 +43,6 @@
 			
 			    <!-- 標籤面板：內容區 -->
 			    <div class="tab-content cus-tab-content">
-			    
-
 
 					<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
 			    	<!-- ///////////////////////////////////////////-->

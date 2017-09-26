@@ -131,6 +131,10 @@ public class StoreService {
 	public Set<ProdVO> getProdsByStore(String store_no){
 		return dao.getProdsByStore_no(store_no);
 	}
+	//小寫方法
+	public Set<ProdVO> getProdsByStore_no(String store_no){
+		return getProdsByStore(store_no);
+	}
 
 	
 }
