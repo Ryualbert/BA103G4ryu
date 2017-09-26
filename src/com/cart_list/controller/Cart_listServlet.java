@@ -47,7 +47,7 @@ public class Cart_listServlet extends HttpServlet {
 			jsonIn.append(line);
 		}
 		br.close();
-		System.out.println("Jin"+jsonIn);
+//		System.out.println("Jin"+jsonIn);
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
 		String prod_no = jsonObject.get("prod_no").getAsString();
@@ -153,7 +153,7 @@ public class Cart_listServlet extends HttpServlet {
 				List<NameCart> cartList = new ArrayList<NameCart>();
 				outStr = gson.toJson("true");
 				out.println(outStr);
-				System.out.println(outStr+"52+");
+//				System.out.println(outStr+"52+");
 	
 			} catch (Exception e) {//其他錯誤
 				errorMsgs.put("err", e.getMessage());
@@ -171,7 +171,7 @@ public class Cart_listServlet extends HttpServlet {
 				cart_listSvc.deleteCart_list(prod_no, mem_ac);
 				outStr = gson.toJson("true");
 				out.println(outStr);
-				System.out.println("del"+outStr);
+//				System.out.println("del"+outStr);
 			} catch (Exception e) {//其他錯誤
 				errorMsgs.put("err", e.getMessage());
 //				errorMsgs.put("err","刪除購物車商品失敗");

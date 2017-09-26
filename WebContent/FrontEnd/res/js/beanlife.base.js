@@ -31,7 +31,7 @@ jQuery(document).ready(function(){
     jQuery('.scrollbar-macosx').scrollbar();
 });
 
-
+var isAdd = false;
 
 //$(document).ready(function () {
 // $("a[href='#prod${param.prodNo}']").click();

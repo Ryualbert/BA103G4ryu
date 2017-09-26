@@ -205,7 +205,7 @@
     	}
     });
 
-    var isAdd = false;
+    
     var $btnIntoCart = $("#intoCart").click(function(){
         var $action = "insert";
         var $prod_no = "${prodVO.prod_no}"

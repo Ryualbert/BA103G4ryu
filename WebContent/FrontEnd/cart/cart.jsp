@@ -47,9 +47,8 @@
 					<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
 			    	<!-- ///////////////////////////////////////////-->
 			        <div role="tabpanel" class="tab-pane ${(s.index==0)? 'active':''} panetab" id="tab${storeVO.store_no}">
-						<div class="container-floid">
-							<div class="row">
-								<form method="post" action="/cart_list/cart_list.do">
+
+								<form name= "form${storeVO.store_no}" method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 								<table class="table table-hover table-striped table-rwd">
 
 									
@@ -63,10 +62,11 @@
 											<th class="w50">操作</th>
 										</tr>
 									</thead>
-
-									<c:forEach var="cart_listVO" items="${cart_listSvc.getVOsByMem(mem_ac)}">
 									
+									<c:set var="count" value="0"/>
+									<c:forEach var="cart_listVO" items="${cart_listSvc.getVOsByMem(mem_ac)}">
 									<c:if test="${prodSvc.getOneProd(cart_listVO.prod_no).store_no==storeVO.store_no}">
+									<c:set var="count" value="${count+1}"/>
 									<c:set var="prodVO" value="${prodSvc.getOneProd(cart_listVO.prod_no)}"/>
 		
 									<!-- ////////////////////////////// -->
@@ -101,7 +101,8 @@
 													<div class="row">									
 														<div class="col-xs-12 col-sm-12">
 			                                            <span id="sub${cart_listVO.prod_no}" class="glyphicon glyphicon-minus btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
-			                                            <input id="amount${prodVO.prod_no}" class="amount${storeVO.store_no} btn btn-xs w35" type="text" maxlength="2" value="${cart_listVO.prod_amount}">
+			                                            <input type="hidden" name="prod_no${count}" value="${prodVO.prod_no}">
+			                                            <input id="amount${prodVO.prod_no}" class="amount${storeVO.store_no} btn btn-xs w35" type="text" maxlength="2" name="amount${count}" value="${cart_listVO.prod_amount}">
 			                                            <span id="add${cart_listVO.prod_no}" class="glyphicon glyphicon-plus  btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
 
 														</div>
@@ -133,7 +134,6 @@ $("#add${cart_listVO.prod_no}").on("click", function(){
         $amount++;
     }
     updateCart($amount,'${prodVO.prod_no}');
-//     $("#amount${prodVO.prod_no}").val($amount);
     calTotal${storeVO.store_no}();
 });
 $("#sub${cart_listVO.prod_no}").on("click", function(){
@@ -144,7 +144,6 @@ $("#sub${cart_listVO.prod_no}").on("click", function(){
         $amount--;
     }
     updateCart($amount,'${prodVO.prod_no}');
-//     $("#amount${prodVO.prod_no}").val($amount);
     calTotal${storeVO.store_no}();
 });
 
@@ -153,11 +152,9 @@ $("#amount${prodVO.prod_no}").blur(function(){
 	var $amount = Number($("#amount${prodVO.prod_no}").val());
 	if(isNaN($amount)||$amount<=0){
 		$amount = 1;
-// 		$("#amount${prodVO.prod_no}").val(1);
 	} else if ($amount>${prodVO.prod_sup}){
 		
 		$amount = ${prodVO.prod_sup};
-// 		$("#amount${prodVO.prod_no}").val(${prodVO.prod_sup});
 	}
 	updateCart($amount,'${prodVO.prod_no}');
 	calTotal${storeVO.store_no}();
@@ -261,7 +258,8 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
             }
         });
     });
-</script> 
+</script>
+									
 									</c:if>
 									</c:forEach>
 
@@ -273,7 +271,11 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 									<div class="row">
 										<div class="col-xs-12 col-sm-12">
 											<span class="pull-left padt5 padl5">共<span id="totalAmount${storeVO.store_no}"></span>件商品</span>
-											<input type="submit" name="" value="訂購" class="btn pull-right btn-info mgr20">
+											<input type="hidden" name="store_no" value="${storeVO.store_no}">
+											<input type="hidden" name="mem_ac" value="${mem_ac}">
+											<input type="hidden" name="count" value="${count}">
+											<input type="hidden" name="action" value="newOrd">
+											<input type="submit" value="訂購" class="btn pull-right btn-info mgr20">
 											<span class="pull-right mgr20">總金額共 <h4 class="inline-b text-danger">$<span id="totalCost${storeVO.store_no}"></span></h4></span>
 											<span class="pull-right mgr20">運費：$<span id="sendFee${storeVO.store_no}" sendFee="${send_fee}"></span><br><small>滿$<span id="freeShip${storeVO.store_no}" freeShip="${storeVO.store_free_ship}">${storeVO.store_free_ship}</span>免運費</small></span>
 											<c:remove var="send_fee" />
@@ -281,9 +283,8 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 									</div>
 								</div>
 
-								</from>
-							</div>
-						</div>
+								</form>
+
 
 			        </div>
 			        
@@ -318,6 +319,7 @@ function calTotal${storeVO.store_no} (){
 	$('#totalAmount${storeVO.store_no}').text($totalAmount);
 	$('#totalCost${storeVO.store_no}').text(($totalAmount==0)? 0 : $totalCost+Number($sendFee));
 }
+//Calculate
 $(document).ready(function(){
 	calTotal${storeVO.store_no}();
 });

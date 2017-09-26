@@ -328,8 +328,6 @@ public class ReviewServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 				
-
-				
 		}
 	}
 

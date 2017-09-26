@@ -5,27 +5,22 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.store.model.*"%>
-<%@ page import="com.cart_list.model.*"%>
+<%@ page import="com.ord.model.*"%>
+<%@ page import="com.ord_list.model.*"%>
 
-<jsp:useBean id="cart_listSvc" scope="page" class="com.cart_list.model.Cart_listService" />
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+<jsp:useBean id="ordSvc" scope="page" class="com.ord.model.OrdService" />
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 <c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
+<c:set var="ordVO" value="${ordSvc.getOrdByOrdno(param.ord_no)}" scope="page"/>
+<c:set var="ord_listVOs" value="${ordSvc.getOrd_listByOrd(param.ord_no)}" scope="page"/>
 
-<%
-	Set<StoreVO> storeSet= new LinkedHashSet<StoreVO>();
-	String mem_ac = (String) pageContext.getAttribute("mem_ac");
-	Set<Cart_listVO> cart_listSet = cart_listSvc.getVOsByMem(mem_ac);
-	for(Cart_listVO cart_listVO : cart_listSet){
-		String store_no = prodSvc.getOneProd((cart_listVO.getProd_no())).getStore_no();
-		storeSet.add(storeSvc.getOneStore(store_no));
-	}
-	pageContext.setAttribute("storeSet",storeSet);
-%>
 
-<!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
+
+
+
 		<div class="container cart-tab-block content">
 			<div class="row">
 				<div class="col-xs-12 col-sm-8 col-sm-offset-2">
@@ -41,50 +36,83 @@
 								<th class="w50">數量</th>
 							</tr>
 						</thead>
-
-
+						
+						<c:set var="totalAmount" value="0"/>
+						<c:forEach var="ord_listVO" items="${ord_listVOs}">
+						<c:set var="prodVO" value="${prodSvc.getOneProd(ord_listVO.prod_no)}"/>
+						<c:set var="storeVO" value="${storeSvc.getOneStore(prodVO.store_no)}" scope="page"/>
 						<!-- ////////////////////////////// -->
 						<tbody>
 							<tr>
-								
 								<td  data-th="商品">
 									<div class="container-floid">
-						                <div class="row cus-prod-row zidx0">
+						                <div class="row zidx0">
+						                
+						                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 						                  <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-0 vam-div60">
-						                    <img class="img-responsive mg-auto vam-img rd5 " src="res/img/m3.png">
+						                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 						                  </div>
 						                  
 						                    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0">
-						                    	<a href='#prod1' data-toggle="modal">
-						                      <p class="inline-b bold">坦尚尼亞 瑪金加 肯特</p>
+						                      <p class="inline-b bold">${prodVO.prod_name}</p>
 						                      <div>
-						                        <p class="inline-b bold text-info">巴西　水洗　深培　2lb/包</p>
+						                        <p class="inline-b bold text-info">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${prodVO.prod_wt}lb/包</p>
 						                      </div>
-						                    	 </a>
 						                    </div>
-						                  
+						                 </a>
+						                 
 						                </div>
 						            </div>
 
 								</td>
 								<td data-th="單價">
-									NT$600
+									NT$${prodVO.prod_price}
 								</td>
 								<td data-th="數量">
-									5
-
+									${ord_listVO.amont}
 								</td>
 							</tr>
 						</tbody>
+						<c:set var="totalAmount" value="${totalAmount+ord_listVO.amont}"/>
+
+
+<script> 
+//Prod View
+var $modalX = $("#modalX");
+var $btn = $("#${prodVO.prod_no}").click(function(){
+		var prodNo =  $("#${prodVO.prod_no}").attr("id");
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
+		$.ajax({
+			url : urlstr,
+			type : 'GET',
+			dataType: "html",
+			async: false,
+			success : function(result) {
+				while($modalX.children().length > 0){
+					$modalX.empty();
+				}
+				
+				$modalX.html(result);
+			},
+			error : function(xhr) {
+				alert('Ajax request 發生錯誤');
+			}
+		});
+		
+	});
+</script> 						
+						
+						</c:forEach>
+						
 					</table>
 
 
 					<div class="container-floid">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12">
-								<span class="pull-left padt5 ">共1111件商品</span>
-								<span class="pull-right mgr20 ">總金額共 <h4 class="inline-b text-danger">$10000</h4></span>
-								<span class="pull-right mgr20 ">運費：$100 <br><small>滿$1000免運費</small></span>
+								<span class="pull-left padt5 ">共${totalAmount}件商品</span>
+								<span class="pull-right mgr20 ">總金額共 <h4 class="inline-b text-danger">$${ordVO.total_pay}</h4></span>
+								<span class="pull-right mgr20 ">運費：$${ordVO.send_fee} <br><small>滿$${storeVO.store_free_ship}免運費</small></span>
 							</div>
 						</div>
 					</div>
@@ -111,7 +139,7 @@
 											<div class="input-group-addon">
 												收件人姓名
 											</div>
-											<input type="text" name="name" id="" class="form-control">
+											<input type="text" name="mem_name" id="" class="form-control">
 										</div>
 
 
@@ -119,14 +147,14 @@
 											<div class="input-group-addon">
 												收件人地址
 											</div>
-											<input type="text" name="address" id="" class="form-control">
+											<input type="text" name="mem_add" id="" class="form-control">
 										</div>
 
 										<div class="input-group">
 											<div class="input-group-addon">
 												收件人手機
 											</div>
-											<input type="text" name="phone" id="" class="form-control">
+											<input type="text" name="mem_phone" id="" class="form-control">
 										</div>
 
 									
@@ -186,6 +214,34 @@
 					        </div>
 					    </div>
 
+
+<script>
+// bank/credit
+$(document).ready(function(){
+	$('.payWay').blur(function(){
+		if($(this).attr('id')=='bankAc'){
+			//bank
+			if($('#bankAc').val()!=''){
+				$('.card').attr('readonly', true);
+			} else {
+				$('.card').attr('readonly', false);
+			}
+			return;
+
+		} else {
+			//credit
+			var $card = $($('input.card'));
+			for(var i = 0; i<$card.length; i++){
+				if($($card[i]).val()!=''){
+					$('.atm').attr('readonly', true);
+					return;
+				}
+				$('.atm').attr('readonly', false);
+			}
+		}
+	});
+});
+</script>
 
 
 <jsp:include page="/FrontEnd/include/footer.jsp"/>
