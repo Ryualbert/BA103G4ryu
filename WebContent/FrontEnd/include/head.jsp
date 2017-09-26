@@ -22,8 +22,6 @@
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="">
   <head>
@@ -89,7 +87,7 @@
 	                    </c:forEach>
 	                   
                     <li role="presentation" class="divider"></li>
-                    <a href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp"><div  class="btn btn-info pull-right">前往購物車</div></a>
+                    <a href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp"><div  class="btn btn-info btn-sm pull-right mgr20">前往購物車</div></a>
                   </ul>
                     </div>
 

@@ -157,7 +157,7 @@
                                     <div class="row">
                                         <div class="col-xs-7 col-sm-6">
                                             <span id="sub" class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
-                                            <input class="btn w50" type="number" min="0" max="999" maxlength="3" name="amont" value="0">
+                                            <input class="btn w50" type="text" maxlength="3" name="amount" value="1">
                                             <span id="add" class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
 
                                         </div>
@@ -174,36 +174,48 @@
 
 
 <script type="text/javascript">
+	//add sub button
     $("#add").on("click", function(){
-    	var $amont = Number($("[name='amont']").val());
-        if($amont==NaN||$amont<0){
-            $amont = 1;
+    	var $amount = Number($("[name='amount']").val());
+        if($amount==NaN||$amount>=${prodVO.prod_sup}){
+        	$amount = ${prodVO.prod_sup};
         } else {
-            $amont++;
+            $amount++;
         }
-        $("[name='amont']").val($amont);
+        $("[name='amount']").val($amount);
     });
     $("#sub").on("click", function(){
-        var $amont = Number($("[name='amont']").val());
-        if($amont==NaN||$amont<=0){
-            $amont = 0;
+        var $amount = Number($("[name='amount']").val());
+        if($amount==NaN||$amount<=1){
+            $amount = 1;
         } else {
-            $amont--;
+            $amount--;
         }
-        $("[name='amont']").val($amont);
+        $("[name='amount']").val($amount);
+    });
+    //Number check
+    $("[name='amount']").blur(function(){
+    	var $amount = Number($("[name='amount']").val());
+    	if(isNaN($amount)||$amount<=0){
+    		$amount = 1;
+    		$("[name='amount']").val(1);
+    	} else if ($amount>${prodVO.prod_sup}){	
+    		$amount = ${prodVO.prod_sup};
+    		$("[name='amount']").val(${prodVO.prod_sup});
+    	}
     });
 
     var isAdd = false;
     var $btnIntoCart = $("#intoCart").click(function(){
         var $action = "insert";
         var $prod_no = "${prodVO.prod_no}"
-        var $amont = Number($("[name='amont']").val());
+        var $amount = Number($("[name='amount']").val());
         var $mem_ac = "${mem_ac}";
         $.ajax({
             url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
             type : 'post',
             contentType: "application/json",
-            data: JSON.stringify({action:$action, prod_no: $prod_no,mem_ac: $mem_ac, amont:$amont}),
+            data: JSON.stringify({action:$action, prod_no: $prod_no,mem_ac: $mem_ac, amount:$amount}),
             dataType: "JSON",
             async: false,
             success : function(jdata) {  	
@@ -215,17 +227,17 @@
                    	for(var i = 0; i<jdata.length; i++){
                    		$('#cartList').append('<li><a href="#">'+
                         		jdata[i].prod_name+'　<span>$'+jdata[i].prod_price+
-                        		'ｘ'+jdata[i].amont+'</span></a></li>');
+                        		'ｘ'+jdata[i].amount+'</span></a></li>');
                    	}
                    	$('#cartList').append('<li role="presentation" class="divider"></li>'+
                    			'<a href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp"><div  class="btn btn-info pull-right">前往購物車</div></a>');
-                   	$("[name='amont']").val(0);
-                	alert('成功加入購物車');
+                   	$("[name='amount']").val(1);
+                   	console.log('成功加入購物車');
                 	isAdd=true;
             	}	
             },
             error : function(xhr) {
-                alert('加入購物車失敗');
+            	console.log('加入購物車失敗');
             }
         });
     });

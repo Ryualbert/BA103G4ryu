@@ -207,8 +207,9 @@ div .bold{
 .pointer{
 	cursor: pointer;
 }
-
-
+.dis-none{
+	display:none;
+}
 
 
 /*全域設定*/

@@ -23,7 +23,7 @@
     </div>
 
 
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.footer.js"></script>
 
 
 

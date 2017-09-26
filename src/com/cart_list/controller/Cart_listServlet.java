@@ -22,12 +22,6 @@ import com.google.gson.JsonObject;
 import com.prod.model.ProdService;
 import com.prod.model.ProdVO;
 
-
-
-
-/**
- * Servlet implementation class Cart_listServlet
- */
 @WebServlet("/cart_list/cart_list.do")
 public class Cart_listServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -68,12 +62,12 @@ public class Cart_listServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		
 		if(action.equals("insert")){
-			String amont = jsonObject.get("amont").getAsString();
+			String amount = jsonObject.get("amount").getAsString();
 			Map<String,String> errorMsgs = new HashMap<String,String>();
 			try{
-				int amontInt = 0;
+				int amountInt = 0;
 				try {
-					amontInt = Integer.parseInt(amont);
+					amountInt = Integer.parseInt(amount);
 				} catch (NumberFormatException e){
 					errorMsgs.put("err","請輸入數字");
 					outStr = gson.toJson(errorMsgs);
@@ -82,7 +76,7 @@ public class Cart_listServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
-				if(amontInt<=0||amontInt>prodVO.getProd_sup()){
+				if(amountInt<=0||amountInt>prodVO.getProd_sup()){
 					errorMsgs.put("err","存入購物車數量為0或超過庫存");
 					outStr = gson.toJson(errorMsgs);
 					out.print(outStr);
@@ -92,16 +86,16 @@ public class Cart_listServlet extends HttpServlet {
 				//開始新增或update
 				Cart_listVO oldCart_listVO = null;
 				if((oldCart_listVO=cart_listSvc.getCart_list(prod_no, mem_ac))==null){
-					cart_listSvc.addCart_list(prod_no, mem_ac, amontInt);
+					cart_listSvc.addCart_list(prod_no, mem_ac, amountInt);
 				} else {
-					amontInt += oldCart_listVO.getProd_amount();
-					if(amontInt>prodVO.getProd_sup()){
+					amountInt += oldCart_listVO.getProd_amount();
+					if(amountInt>prodVO.getProd_sup()){
 						errorMsgs.put("err","存入購物車數量超過庫存");
 						outStr = gson.toJson(errorMsgs);
 						out.print(outStr);
 						return;//程式中斷
 					}
-					cart_listSvc.updateCart_list(prod_no, mem_ac, amontInt);
+					cart_listSvc.updateCart_list(prod_no, mem_ac, amountInt);
 				}
 				
 			
@@ -111,7 +105,7 @@ public class Cart_listServlet extends HttpServlet {
 				Set<Cart_listVO> cartSet = cart_listSvc.getVOsByMem(mem_ac);
 //				System.out.println(cartSet);
 				for(Cart_listVO cart_listVO : cartSet){
-					NameCart nc = new NameCart((prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_name()).substring(0, 9)+"...",
+					NameCart nc = new NameCart((prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_name()),
 							prodSvc.getOneProd(cart_listVO.getProd_no()).getProd_price(), cart_listVO.getProd_amount());
 					cartList.add(nc);
 				}
@@ -122,8 +116,48 @@ public class Cart_listServlet extends HttpServlet {
 				out.println(outStr);
 	
 			} catch (Exception e) {//其他錯誤
-//				errorMsgs.put("err", e.getMessage());
-				errorMsgs.put("err","加入購物車失敗");
+				errorMsgs.put("err", e.getMessage());
+//				errorMsgs.put("err","加入購物車失敗");
+				outStr = gson.toJson(errorMsgs);
+				out.print(outStr);
+				return;//程式中斷
+				
+			}
+		}
+		
+		if(action.equals("update")){
+			String amount = jsonObject.get("amount").getAsString();
+			Map<String,String> errorMsgs = new HashMap<String,String>();
+			try{
+				int amountInt = 0;
+				try {
+					amountInt = Integer.parseInt(amount);
+				} catch (NumberFormatException e){
+					errorMsgs.put("err","請輸入數字");
+					outStr = gson.toJson(errorMsgs);
+//					System.out.println(outStr);
+					out.print(outStr);
+					return;//程式中斷
+				}
+				
+				if(amountInt<=0||amountInt>prodVO.getProd_sup()){
+					errorMsgs.put("err","存入購物車數量為0或超過庫存");
+					outStr = gson.toJson(errorMsgs);
+					out.print(outStr);
+					return;//程式中斷
+				}
+				
+				//開始新增或update
+				cart_listSvc.updateCart_list(prod_no, mem_ac, amountInt);
+
+				List<NameCart> cartList = new ArrayList<NameCart>();
+				outStr = gson.toJson("true");
+				out.println(outStr);
+				System.out.println(outStr+"52+");
+	
+			} catch (Exception e) {//其他錯誤
+				errorMsgs.put("err", e.getMessage());
+//				errorMsgs.put("err","加入購物車失敗");
 				outStr = gson.toJson(errorMsgs);
 				out.print(outStr);
 				return;//程式中斷
@@ -135,7 +169,9 @@ public class Cart_listServlet extends HttpServlet {
 			Map<String,String> errorMsgs = new HashMap<String,String>();
 			try{
 				cart_listSvc.deleteCart_list(prod_no, mem_ac);
-				out.println("{'state':'sucess'}");
+				outStr = gson.toJson("true");
+				out.println(outStr);
+				System.out.println("del"+outStr);
 			} catch (Exception e) {//其他錯誤
 				errorMsgs.put("err", e.getMessage());
 //				errorMsgs.put("err","刪除購物車商品失敗");
@@ -152,10 +188,10 @@ public class Cart_listServlet extends HttpServlet {
 class NameCart{
 	String prod_name;
 	Integer prod_price;
-	Integer amont;
-	NameCart(String prod_name, Integer prod_price, Integer amont){
+	Integer amount;
+	NameCart(String prod_name, Integer prod_price, Integer amount){
 		this.prod_name = prod_name;
 		this. prod_price =  prod_price;
-		this.amont = amont;
+		this.amount = amount;
 	}
 }

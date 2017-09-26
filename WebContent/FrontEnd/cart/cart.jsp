@@ -30,12 +30,12 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-sm-offset-2">
 			<h3 class="bold">購物車</h3>
-			
+				
 			<div role="tabpanel">
 			    <!-- 標籤面板：標籤區 -->
 			    <ul class="nav nav-tabs " role="tablist">
 			    	<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
-				        <li role="presentation" class="${(s.index==0)? 'active':''} text-center bold">
+				        <li role="presentation" id="navtab${storeVO.store_no}" class="${(s.index==0)? 'active':''} navtab text-center bold">
 				            <a href="#tab${storeVO.store_no}" aria-controls="tab${storeVO.store_no}" role="tab" data-toggle="tab">${storeVO.store_name}</a>
 				        </li>
 			        </c:forEach>
@@ -43,14 +43,14 @@
 			
 			    <!-- 標籤面板：內容區 -->
 			    <div class="tab-content cus-tab-content">
+			    
 
 
 					<c:forEach var="storeVO" items="${storeSet}" varStatus="s">
 			    	<!-- ///////////////////////////////////////////-->
-			        <div role="tabpanel" class="tab-pane ${(s.index==0)? 'active':''}" id="tab${storeVO.store_no}">
+			        <div role="tabpanel" class="tab-pane ${(s.index==0)? 'active':''} panetab" id="tab${storeVO.store_no}">
 						<div class="container-floid">
 							<div class="row">
-
 								<form method="post" action="/cart_list/cart_list.do">
 								<table class="table table-hover table-striped table-rwd">
 
@@ -116,7 +116,7 @@
 												NT$<span class="subtotal${storeVO.store_no}"></span>
 											</td>
 											<td data-th="操作">
-												<span id="del${prodVO.prod_no}">刪除</span>
+												<a><span id="del${prodVO.prod_no}">刪除</span></a>
 											</td>
 										</tr>
 
@@ -128,33 +128,71 @@
 <script> //prod
 //add sub button
 $("#add${cart_listVO.prod_no}").on("click", function(){
-	var $amont = Number($("#amount${prodVO.prod_no}").val());
-    if($amont==NaN||$amont<0){
-        $amont = 1;
+	var $amount = Number($("#amount${prodVO.prod_no}").val());
+    if($amount==NaN||$amount>=${prodVO.prod_sup}){
+        $amount = ${prodVO.prod_sup};
     } else {
-        $amont++;
+        $amount++;
     }
-    $("#amount${prodVO.prod_no}").val($amont);
+    updateCart($amount,'${prodVO.prod_no}');
+//     $("#amount${prodVO.prod_no}").val($amount);
     calTotal${storeVO.store_no}();
 });
 $("#sub${cart_listVO.prod_no}").on("click", function(){
-    var $amont = Number($("#amount${prodVO.prod_no}").val());
-    if($amont==NaN||$amont<=0){
-        $amont = 0;
+    var $amount = Number($("#amount${prodVO.prod_no}").val());
+    if($amount==NaN||$amount<=1){
+        $amount = 1;
     } else {
-        $amont--;
+        $amount--;
     }
-    $("#amount${prodVO.prod_no}").val($amont);
+    updateCart($amount,'${prodVO.prod_no}');
+//     $("#amount${prodVO.prod_no}").val($amount);
     calTotal${storeVO.store_no}();
 });
 
 //Number check
 $("#amount${prodVO.prod_no}").blur(function(){
-	if(isNaN(Number($("#amount${prodVO.prod_no}").val()))){
-		$("#amount${prodVO.prod_no}").val(1);
+	var $amount = Number($("#amount${prodVO.prod_no}").val());
+	if(isNaN($amount)||$amount<=0){
+		$amount = 1;
+// 		$("#amount${prodVO.prod_no}").val(1);
+	} else if ($amount>${prodVO.prod_sup}){
+		
+		$amount = ${prodVO.prod_sup};
+// 		$("#amount${prodVO.prod_no}").val(${prodVO.prod_sup});
 	}
+	updateCart($amount,'${prodVO.prod_no}');
 	calTotal${storeVO.store_no}();
 });
+
+//update
+function updateCart(amount,prod_no){
+    var $action = "update";
+    var $mem_ac = "${mem_ac}";
+    var $prod_no = prod_no;
+    var $amount = amount;
+    $.ajax({
+        url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+        type : 'post',
+        contentType: "application/json",
+        data: JSON.stringify({action:$action, prod_no: $prod_no, mem_ac: $mem_ac, amount:$amount}),
+        dataType: "JSON",
+        async: false,
+        success : function(jdata) {  	
+        	if(jdata.err!=null){
+        		console.log(jdata.err);
+        	} else {
+        		$("#amount"+$prod_no).val($amount);
+        	}	
+        },
+        error : function(xhr) {
+        	console.log(xhr);
+            console.log('Update購物車數量失敗');
+        }
+    });
+}
+
+
 		
 //Prod View
 var $modalX = $("#modalX");
@@ -183,27 +221,45 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 //delete
  var $btnDel = $("#del${prodVO.prod_no}").click(function(){
         var $action = "delete";
-        var $prod_no = "${prodVO.prod_no}"
+        var $prod_no = "${prodVO.prod_no}";
         var $mem_ac = "${mem_ac}";
         $.ajax({
             url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
             type : 'post',
             contentType: "application/json",
             data: JSON.stringify({action:$action, prod_no: $prod_no, mem_ac: $mem_ac}),
-//             dataType: "JSON",
-			dataType: "text",
+            dataType: "JSON",
             async: false,
             success : function(jdata) {  	
             	if(jdata.err!=null){
-            		alert(jdata.err);
+            		console.log(jdata.err);
             	} else {
-                    $('#tbody${prodVO.prod_no}').remove();
-                    calTotal${storeVO.store_no}();
+                    //this shop is empty
+            		if($('#tbody${prodVO.prod_no}').is('tbody:only-of-type')){
+            			$('#tab${storeVO.store_no}').remove();
+            			$('#navtab${storeVO.store_no}').remove();
+            			
+            			console.log($('.panetab:first-of-type'));
+            			$('.navtab:first-of-type').addClass("active");
+            			$('.panetab:first-of-type').addClass("active");
+            			
+            			
+            			//this cart is empty
+            			console.log($('.navtab').length);
+                		if($('.navtab').length==0){
+                			$('#emptyCart').removeClass("dis-none");
+                		}
+            		//this shop is not empty
+            		}else{
+            			$('#tbody${prodVO.prod_no}').remove();
+                        calTotal${storeVO.store_no}();
+            		}
+            		
             	}	
             },
             error : function(xhr) {
             	console.log(xhr);
-                alert('刪除購物車商品失敗');
+                console.log('刪除購物車商品失敗');
             }
         });
     });
@@ -271,9 +327,9 @@ $(document).ready(function(){
 
 					</c:forEach>
 
-
-
-
+				    	<div id="emptyCart" class="col-xs-12 col-sm-12 text-center padt10 ${(storeSet.size()==0)? '':'dis-none'}">
+							<h2 class="tx-gray">購物車是空的</h2>
+						</div>
 
 
 
@@ -288,16 +344,10 @@ $(document).ready(function(){
 		</div>
 		
 <script> //page
-$('#modal-id').on('hide.bs.modal', function (e) {
-	$modalX.scrollTop(0);
-	return;
-});
-
 $('#modal-id').on('hidden.bs.modal', function (e) {
 	if(isAdd){
 		location.reload();
 	}
-	$modalX.scrollTop(0);
 	return;
 });
 </script>
