@@ -104,6 +104,9 @@ div .bold{
 .mgl40{
 	margin-left: 40px;
 }
+.mgr10{
+	margin-right: 10px;
+}
 .mgr20{
 	margin-right: 20px;
 }
@@ -187,6 +190,9 @@ div .bold{
 }
 .w20p{
 	width: 20%;
+}
+.w25p{
+	width: 25%;
 }
 .w33p{
 	width: 33.3333333333333%;

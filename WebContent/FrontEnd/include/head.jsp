@@ -97,17 +97,13 @@
                       </a>
                       <ul class="dropdown-menu zidx5">
                     <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
-	                    <li><a href="#">店家資訊</a></li>
-	                    <li><a href="#">商品管理</a></li>
+	                    <li><a href="#">店家中心</a></li>
 	                    <li><a href="#">訂單管理</a></li>
 	                    <li role="presentation" class="divider"></li>
                     </c:if>
-                    <li><a href="#">個人資料</a></li>
-                    <li><a href="#">訂單查詢</a></li>
-                    <li><a href="#">我的收藏</a></li>
-                    <li><a href="#">個人文章</a></li>
-                    <li><a href="#">個人活動</a></li>
-                    <li><a href="#">積分兌換</a></li>
+                    <li><a href="#">會員中心</a></li>
+                    <li><a href="#">購買清單</a></li>
+                    <li><a href="#">我的活動</a></li>
                   </ul>
                     </div>
                 </div>

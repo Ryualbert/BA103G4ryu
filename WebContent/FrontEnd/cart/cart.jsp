@@ -270,14 +270,16 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 								<div class="container-floid">
 									<div class="row">
 										<div class="col-xs-12 col-sm-12">
-											<span class="pull-left padt5 padl5">共<span id="totalAmount${storeVO.store_no}"></span>件商品</span>
+											
 											<input type="hidden" name="store_no" value="${storeVO.store_no}">
 											<input type="hidden" name="mem_ac" value="${mem_ac}">
 											<input type="hidden" name="count" value="${count}">
 											<input type="hidden" name="action" value="newOrd">
-											<input type="submit" value="訂購" class="btn pull-right btn-info mgr20">
-											<span class="pull-right mgr20">總金額共 <h4 class="inline-b text-danger">$<span id="totalCost${storeVO.store_no}"></span></h4></span>
-											<span class="pull-right mgr20">運費：$<span id="sendFee${storeVO.store_no}" sendFee="${send_fee}"></span><br><small>滿$<span id="freeShip${storeVO.store_no}" freeShip="${storeVO.store_free_ship}">${storeVO.store_free_ship}</span>免運費</small></span>
+											<span class="pull-left padt5 padl5">共<span id="totalAmount${storeVO.store_no}"></span>件商品</span>
+											<input type="submit" value="訂購" class="btn pull-right btn-info mgr10">
+											<span class="pull-right mgr10">總金額共 <h4 class="inline-b text-danger">$<span id="totalCost${storeVO.store_no}"></span></h4></span>
+											<span class="pull-right mgr10">運費：$<span id="sendFee${storeVO.store_no}" sendFee="${send_fee}"></span><br><small>滿$<span id="freeShip${storeVO.store_no}" freeShip="${storeVO.store_free_ship}">${storeVO.store_free_ship}</span>免運費</small></span>
+											
 											<c:remove var="send_fee" />
 										</div>
 									</div>

@@ -1,5 +1,6 @@
 package com.ord.model;
 
+import java.util.List;
 import java.util.Set;
 
 import com.ord_list.model.Ord_listVO;
@@ -25,6 +26,10 @@ private OrdDAO_interface dao;
 	
 	public String newAnOrder(OrdVO ordVO, Set<Ord_listVO> ord_listVOs){
 		return dao.insertWithOrd_list(ordVO, ord_listVOs);
+	}
+	
+	public List<OrdVO> getOrdByMem_ac(String mem_ac){
+		return dao.getOrdByMem_ac(mem_ac);
 	}
 	
 }
