@@ -14,8 +14,35 @@
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 <c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
-<c:set var="ordVO" value="${ordSvc.getOrdByOrdno(param.ord_no)}" scope="page"/>
-<c:set var="ord_listVOs" value="${ordSvc.getOrd_listByOrd(param.ord_no)}" scope="page"/>
+<c:set var="ordVOs" value="${ordSvc.getOrdByMem_ac(mem_ac)}" scope="page"/>
+
+<jsp:useBean id="ordVOs1" scope="page" class="java.util.LinkedHashSet"/>
+<jsp:useBean id="ordVOs2" scope="page" class="java.util.LinkedHashSet"/>
+<jsp:useBean id="ordVOs3" scope="page" class="java.util.LinkedHashSet"/>
+<jsp:useBean id="ordVOs0" scope="page" class="java.util.LinkedHashSet"/>
+
+
+<c:forEach var="ordVO" items="${ordVOs}">
+	<c:if test="${ordVO.ord_stat=='待付款'}">
+		<c:set var="ordVOs1" value="${ordVOs1.add(ordVO)}"/>
+		${ordVOs1}22
+	</c:if>
+	<c:if test="${ordVO.ord_stat=='已付款'||'已確認付款'}">
+		<c:set var="ordVOs2" value="${ordVOs2.add(ordVO)}"/>
+		${ordVOs2}33
+		<div>${ordVOs0}11</div>
+	</c:if>
+	<c:if test="${ordVO.ord_stat=='已出貨'}">
+		<c:set var="ordVOs3" value="${ordVOs3.add(ordVO)}"/>
+		${ordVOs3}44
+		<div>${ordVOs0}11</div>
+	</c:if>
+	<c:if test="${ordVO.ord_stat=='已取消'}">
+		<c:set var="ordVOs0" value="${ordVOs0.add(ordVO)}"/>
+		<div>${ordVOs0}11</div>
+	</c:if>
+</c:forEach>
+
 
 
 
@@ -24,7 +51,7 @@
 		<div class="container cart-tab-block content">
 			<div class="row">
 				<div class="col-xs-12 col-sm-8 col-sm-offset-2">
-					<h3 class="bold">購買清單</h3>
+					<h3 class="bold">購買清單${ordVOs2}</h3>
 
 						<div role="tabpanel">
 						    <!-- 標籤面板：標籤區 -->
@@ -52,7 +79,7 @@
 				
 										<thead>
 											<tr class="tr-only-hide">
-												<th>商品</th>
+												<th>商品${ordVOs.get(0).ord_stat}</th>
 												<th class="w50">單價</th>
 												<th class="w50">數量</th>
 											</tr>
