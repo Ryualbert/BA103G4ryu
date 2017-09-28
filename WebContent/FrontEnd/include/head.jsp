@@ -102,7 +102,7 @@
 	                    <li role="presentation" class="divider"></li>
                     </c:if>
                     <li><a href="#">會員中心</a></li>
-                    <li><a href="#">購買清單</a></li>
+                    <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp">購買清單</a></li>
                     <li><a href="#">我的活動</a></li>
                   </ul>
                     </div>

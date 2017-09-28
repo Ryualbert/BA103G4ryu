@@ -74,30 +74,33 @@
 						    <div class="tab-content">
 						    
 						    <c:forEach items="${ordVOsList}" varStatus="count">
+						   
 						        <div role="tabpanel" class="tab-pane ${(count.count==1)?'active':''}" id="tab${count.count}">
  									<!--//////////////////////////////////////// -->
  									<c:forEach var="ordVO" items="${ordVOsList.get(count.index)}">
-									
+									<c:set var="storeVO" value="${storeSvc.getOneStore(prodSvc.getOneProd(ordSvc.getOrd_listByOrd(ordVO.ord_no).toArray()[0].prod_no).store_no)}" scope="page"/>
 									
 									<div class="container-floid padt10 mgt20 padlr10">
 										<div class="row">
 											<div class="col-xs-4 col-sm-6 bold pull-left">
-												媽媽嘴
+												<h4><a class="${storeVO.store_no}" name="${storeVO.store_no}" href='#modal-id' data-toggle="modal">
+													${storeVO.store_name}
+												</a></h4>
 											</div>
 											<div class="col-xs-8 col-sm-6 pull-right text-right">
-												<small>2017-19-11</small><br>
-												<small>訂單編號：O1000000001</small>
+												<small>${ordVO.ord_date}</small><br>
+												<small>訂單編號：${ordVO.ord_no}</small>
 											</div>
 										</div>
 									</div>
-									<div class="container-floid padlr10">
+									<div class="container-floid ">
 									<table class="table table-hover table-striped table-rwd">
 
 
 										<c:set var="totalAmount" value="0"/>
 										<c:forEach var="ord_listVO" items="${ordSvc.getOrd_listByOrd(ordVO.ord_no)}">
 											<c:set var="prodVO" value="${prodSvc.getOneProd(ord_listVO.prod_no)}"/>
-											<c:set var="storeVO" value="${storeSvc.getOneStore(prodVO.store_no)}" scope="page"/>
+											
 										<!-- ////////////////////////////// -->
 										<tbody>
 											<tr>
@@ -106,11 +109,11 @@
 										                <div class="row zidx0">
 										                
 										                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
-										                  <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-0 vam-div60">
+										                  <div class="col-xs-3 col-xs-offset-0 col-sm-2 col-sm-offset-0 vam-div60">
 										                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 										                  </div>
 										                  
-										                    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-0">
+										                    <div class="col-xs-9 col-xs-offset-0 col-sm-8 col-sm-offset-0">
 										                      <p class="inline-b bold">${prodVO.prod_name}</p>
 										                      <div>
 										                        <p class="inline-b bold text-info">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${prodVO.prod_wt}lb/包</p>
@@ -175,6 +178,31 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 											</div>
 										</div>
 									</div>
+									
+<script>
+var $modalX = $("#modalX");
+
+var $btn = $(".${storeVO.store_no}").click(function(){
+		var storeNo =  $(".${storeVO.store_no}").attr("name");
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
+		$.ajax({
+			url : urlstr,
+			type : 'GET',
+			dataType: "html",
+			async: false,
+			success : function(result) {
+				while($modalX.children().length > 0){
+					$modalX.empty();
+				}
+				$modalX.html(result);
+			},
+			error : function(xhr) {
+				alert('Ajax request 發生錯誤');
+			}
+		});
+	});
+</script>									
+
 									</c:forEach><%-- ordVO --%>
 		
 								</div>
