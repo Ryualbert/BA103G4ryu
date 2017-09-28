@@ -110,7 +110,7 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 					<div class="container-floid">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12">
-								<span class="pull-left padt5 ">共${totalAmount}件商品</span>
+								<span class="pull-left padt5 padl5 ">共${totalAmount}件商品</span>
 								<span class="pull-right mgr20 ">總金額共 <h4 class="inline-b text-danger">$${ordVO.total_pay}</h4></span>
 								<span class="pull-right mgr20 ">運費：$${ordVO.send_fee} <br><small>滿$${storeVO.store_free_ship}免運費</small></span>
 							</div>
