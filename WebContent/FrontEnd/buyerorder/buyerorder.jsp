@@ -43,6 +43,91 @@
 <c:set var="notShow" value="${ordVOsList.add(ordVOs3)}"/>
 <c:set var="notShow" value="${ordVOsList.add(ordVOs4)}"/>
 
+<!--  --------------------------------------------------------------結帳跳窗---------------------------------------------------------------->
+
+
+    <div class="modal fade" id="modal-pay">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content scrollbar-macosx" id="modalP">
+
+				<div class="col-xs-12 col-sm-5 col-sm-push-7">
+					<h4 class="bold text-info">匯款資訊</h4>
+					<div class="well">
+						
+						匯款銀行：彰化銀行 蘆洲分行<br>
+						戶名：陳建儒<br>
+						銀行代碼：009 <br>
+						銀行帳號：9832-51-326845-00
+					</div>
+
+				</div>
+				
+				<h4 class="bold text-info">信用卡付款</h4>
+				<div class="input-group">
+					<div class="input-group-addon">
+						卡號
+					</div>
+					<div class="form-control padt3 card">
+						<input type="text" maxlength="4" name="crdNo1" id="crdNo1" class="w20p payWay card"> -
+						<input type="text" maxlength="4" name="crdNo2" id="crdNo2" class="w20p payWay card"> -
+						<input type="text" maxlength="4" name="crdNo3" id="crdNo3" class="w20p payWay card"> -
+						<input type="text" maxlength="4" name="crdNo4" id="crdNo4" class="w20p payWay card">
+					</div>
+				</div>
+				<div class="input-group">
+					<div class="input-group-addon">
+						有效期限
+					</div>
+					<input type="month" name="crdVal" id="crdVal" class="form-control payWay card">
+				</div>
+				<div class="input-group">
+					<div class="input-group-addon">
+						檢核碼
+					</div>
+					<input type="text" maxlength="3" name="crdChk" id="crdChk" class="form-control payWay card">
+				</div>
+
+
+				<h4 class="bold text-info">銀行轉帳</h4>
+				<div class="input-group mgt10">
+					<div class="input-group-addon">
+						匯款帳戶末5碼
+					</div>
+					<input type="text" maxlength="5" name="bankAc" id="bankAc" class="form-control payWay atm">
+				</div>
+                
+            </div>
+        </div>
+    </div>
+    
+<script>
+// bank/credit
+$(document).ready(function(){
+	$('.payWay').blur(function(){
+		if($(this).attr('id')=='bankAc'){
+			//bank
+			if($('#bankAc').val()!=''){
+				$('.card').attr('readonly', true);
+			} else {
+				$('.card').attr('readonly', false);
+			}
+			return;
+
+		} else {
+			//credit
+			var $card = $($('input.card'));
+			for(var i = 0; i<$card.length; i++){
+				if($($card[i]).val()!=''){
+					$('.atm').attr('readonly', true);
+					return;
+				}
+				$('.atm').attr('readonly', false);
+			}
+		}
+	});
+});
+</script>    
+<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
 
@@ -80,7 +165,7 @@
  									<c:forEach var="ordVO" items="${ordVOsList.get(count.index)}">
 									<c:set var="storeVO" value="${storeSvc.getOneStore(prodSvc.getOneProd(ordSvc.getOrd_listByOrd(ordVO.ord_no).toArray()[0].prod_no).store_no)}" scope="page"/>
 									
-									<div class="container-floid padt10 mgt20 padlr10">
+									<div class="container-floid padt10 mgt20">
 										<div class="row">
 											<div class="col-xs-4 col-sm-6 bold pull-left">
 												<h4><a class="${storeVO.store_no}" name="${storeVO.store_no}" href='#modal-id' data-toggle="modal">
@@ -108,12 +193,12 @@
 													<div class="container-floid">
 										                <div class="row zidx0">
 										                
-										                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
-										                  <div class="col-xs-3 col-xs-offset-0 col-sm-2 col-sm-offset-0 vam-div60">
+										                <a class="${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+										                  <div class="col-xs-3 col-sm-2 vam-div60">
 										                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 										                  </div>
 										                  
-										                    <div class="col-xs-9 col-xs-offset-0 col-sm-8 col-sm-offset-0">
+										                    <div class="col-xs-9 col-sm-8">
 										                      <p class="inline-b bold">${prodVO.prod_name}</p>
 										                      <div>
 										                        <p class="inline-b bold text-info">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${prodVO.prod_wt}lb/包</p>
@@ -142,8 +227,8 @@
 <script> 
 //Prod View
 var $modalX = $("#modalX");
-var $btn = $("#${prodVO.prod_no}").click(function(){
-		var prodNo =  $("#${prodVO.prod_no}").attr("id");
+var $btn = $(".${prodVO.prod_no}").click(function(){
+		var prodNo =  $(".${prodVO.prod_no}").attr("name");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
 		$.ajax({
 			url : urlstr,
@@ -173,8 +258,9 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 										<div class="row">
 											<div class="col-xs-12 col-sm-12">
 												<span class="pull-left padt5 ">共${totalAmount}件商品</span>
-												<span class="pull-right mgr20 ">訂單金額 <h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4></span>
-												<span class="pull-right mgr20 ">運費：$${ordVO.send_fee} <br><small>滿$${storeVO.store_free_ship}免運費</small></span>
+												<span class="pull-right mgr20 ">運費：$${ordVO.send_fee}</span> <br>
+												<span class="pull-right mgr20 ">訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4></span>
+											
 											</div>
 										</div>
 									</div>

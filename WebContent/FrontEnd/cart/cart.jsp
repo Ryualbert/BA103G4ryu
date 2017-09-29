@@ -77,11 +77,11 @@
 									                <div class="row zidx0">
 									                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 									                  
-									                  <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-0 vam-div60">
+									                  <div class="col-xs-3 col-sm-2 vam-div60">
 									                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 									                  </div>
 									                  
-									                    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-0">                  
+									                    <div class="col-xs-9 col-sm-10">                  
 									                      <p class="inline-b bold">${prodVO.prod_name}</p>
 									                      <div>
 									                        <p class="inline-b bold text-info">${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${prodVO.prod_wt}lb/包</p>
@@ -274,13 +274,21 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 											<input type="hidden" name="store_no" value="${storeVO.store_no}">
 											<input type="hidden" name="mem_ac" value="${mem_ac}">
 											<input type="hidden" name="count" value="${count}">
-											<input type="hidden" name="action" value="newOrd">
+											<input type="hidden" name="action" value="toOrd">
 											<span class="pull-left padt5 padl5">共<span id="totalAmount${storeVO.store_no}"></span>件商品</span>
-											<input type="submit" value="訂購" class="btn pull-right btn-info mgr10">
+											
+											
+											<span class="pull-right mgr10">
+												<small>滿$<span id="freeShip${storeVO.store_no}" freeShip="${storeVO.store_free_ship}">${storeVO.store_free_ship}</span>免運費　</small>
+												運費：$<span id="sendFee${storeVO.store_no}" sendFee="${send_fee}"></span>
+											</span><br>
 											<span class="pull-right mgr10">總金額共 <h4 class="inline-b text-danger">$<span id="totalCost${storeVO.store_no}"></span></h4></span>
-											<span class="pull-right mgr10">運費：$<span id="sendFee${storeVO.store_no}" sendFee="${send_fee}"></span><br><small>滿$<span id="freeShip${storeVO.store_no}" freeShip="${storeVO.store_free_ship}">${storeVO.store_free_ship}</span>免運費</small></span>
+											
 											
 											<c:remove var="send_fee" />
+										</div>
+										<div class="col-xs-12 col-sm-12">
+											<input type="submit" value="去買單" class="btn pull-right btn-primary mgr10">
 										</div>
 									</div>
 								</div>
@@ -312,10 +320,14 @@ function calTotal${storeVO.store_no} (){
 	}
 	
 	if($totalCost>=$freeShip){
+		$('#sendFee${storeVO.store_no}').text($('#sendFee${storeVO.store_no}').attr('sendFee'));
 		$sendFee = 0;
-		$('#sendFee${storeVO.store_no}').text($sendFee);
+// 		$('#sendFee${storeVO.store_no}').text($sendFee);
+		$('#sendFee${storeVO.store_no}').addClass('tx-line');
+		console.log('dddd');
 	} else {
 		$('#sendFee${storeVO.store_no}').text($('#sendFee${storeVO.store_no}').attr('sendFee'));
+		$('#sendFee${storeVO.store_no}').removeClass('tx-line');
 	}
 	
 	$('#totalAmount${storeVO.store_no}').text($totalAmount);

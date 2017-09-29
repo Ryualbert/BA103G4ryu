@@ -27,6 +27,9 @@ button.bor-info{
 button.bor-like{
 	border-color:#F57A7A;
 }
+.tx-line{
+	text-decoration:line-through;
+}
 .tx-like{
 	color:#F57A7A;
 }

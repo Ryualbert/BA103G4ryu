@@ -134,7 +134,7 @@
 
 
 
-    <div class="modal" id="modal-id">
+    <div class="modal fade" id="modal-id">
         <div class="modal-dialog modal-lg">
             <div class="modal-content fix-h scrollbar-macosx" id="modalX">
 
