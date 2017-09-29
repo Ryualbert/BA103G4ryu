@@ -44,65 +44,96 @@
 <c:set var="notShow" value="${ordVOsList.add(ordVOs4)}"/>
 
 <!--  --------------------------------------------------------------結帳跳窗---------------------------------------------------------------->
-
-
-    <div class="modal fade" id="modal-pay">
-        <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modal-pay">
+        <div class="modal-dialog modal-md">
             <div class="modal-content scrollbar-macosx" id="modalP">
 
-				<div class="col-xs-12 col-sm-5 col-sm-push-7">
-					<h4 class="bold text-info">匯款資訊</h4>
-					<div class="well">
-						
-						匯款銀行：彰化銀行 蘆洲分行<br>
-						戶名：陳建儒<br>
-						銀行代碼：009 <br>
-						銀行帳號：9832-51-326845-00
-					</div>
+            	<div class="container-folid">
+            		<div class="row">
+            			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 
-				</div>
-				
-				<h4 class="bold text-info">信用卡付款</h4>
-				<div class="input-group">
-					<div class="input-group-addon">
-						卡號
-					</div>
-					<div class="form-control padt3 card">
-						<input type="text" maxlength="4" name="crdNo1" id="crdNo1" class="w20p payWay card"> -
-						<input type="text" maxlength="4" name="crdNo2" id="crdNo2" class="w20p payWay card"> -
-						<input type="text" maxlength="4" name="crdNo3" id="crdNo3" class="w20p payWay card"> -
-						<input type="text" maxlength="4" name="crdNo4" id="crdNo4" class="w20p payWay card">
-					</div>
-				</div>
-				<div class="input-group">
-					<div class="input-group-addon">
-						有效期限
-					</div>
-					<input type="month" name="crdVal" id="crdVal" class="form-control payWay card">
-				</div>
-				<div class="input-group">
-					<div class="input-group-addon">
-						檢核碼
-					</div>
-					<input type="text" maxlength="3" name="crdChk" id="crdChk" class="form-control payWay card">
-				</div>
+            				<div class="container-floid">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12">
+										<div class="pull-left">
+											<span>2017-09-30</span><br>
+											<span>訂單編號：O10000000001</span>
+										</div>
+										<div class="pull-right">
+											<span >共${totalAmount}件商品</span><br>
+											<span >訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4></span>
+											
+
+										</div>
+									
+									</div>
+								</div>
+							</div>
+
+							<div>
+								<h4 class="bold text-info">匯款資訊</h4>
+								<div class="well">
+									
+									匯款銀行：彰化銀行 蘆洲分行<br>
+									戶名：陳建儒<br>
+									銀行代碼：009 <br>
+									銀行帳號：9832-51-326845-00
+								</div>
+
+								<h4 class="bold text-info">銀行轉帳</h4>
+								<div class="input-group mgt10">
+									<div class="input-group-addon">
+										匯款帳戶末5碼
+									</div>
+									<input type="text" maxlength="5" name="bankAc" id="bankAc" class="form-control payWay atm">
+								</div>
 
 
-				<h4 class="bold text-info">銀行轉帳</h4>
-				<div class="input-group mgt10">
-					<div class="input-group-addon">
-						匯款帳戶末5碼
-					</div>
-					<input type="text" maxlength="5" name="bankAc" id="bankAc" class="form-control payWay atm">
-				</div>
+								<h4 class="bold text-info">信用卡付款</h4>
+								<div class="input-group">
+									<div class="input-group-addon">
+										卡號
+									</div>
+									<div class="form-control padt3 card">
+										<input type="text" maxlength="4" name="crdNo1" id="crdNo1" class="w20p payWay card"> -
+										<input type="text" maxlength="4" name="crdNo2" id="crdNo2" class="w20p payWay card"> -
+										<input type="text" maxlength="4" name="crdNo3" id="crdNo3" class="w20p payWay card"> -
+										<input type="text" maxlength="4" name="crdNo4" id="crdNo4" class="w20p payWay card">
+									</div>
+								</div>
+								<div class="input-group">
+									<div class="input-group-addon">
+										有效期限
+									</div>
+									<input type="month" name="crdVal" id="crdVal" class="form-control payWay card">
+								</div>
+								<div class="input-group">
+									<div class="input-group-addon">
+										檢核碼
+									</div>
+									<input type="text" maxlength="3" name="crdChk" id="crdChk" class="form-control payWay card">
+								</div>
+								
+								<input type="submit" class="form-control pull-right btn btn-primary">
+
+
+								
+
+							</div>
+
+            			</div>
+            		</div>
+            	</div>
+		
                 
             </div>
         </div>
     </div>
-    
+
 <script>
 // bank/credit
 $(document).ready(function(){
+	$('#modal-pay').modal('show');
 	$('.payWay').blur(function(){
 		if($(this).attr('id')=='bankAc'){
 			//bank
@@ -126,7 +157,7 @@ $(document).ready(function(){
 		}
 	});
 });
-</script>    
+</script> 
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
