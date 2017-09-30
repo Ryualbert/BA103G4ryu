@@ -171,7 +171,8 @@ public class OrdServlet extends HttpServlet {
 				
 				//insert
 				OrdService ordSvc = new OrdService();
-				String ord_no = ordSvc.newAnOrder(ordVO, ord_listSet);
+//				String ord_no = ordSvc.newAnOrder(ordVO, ord_listSet);
+				ordSvc.newAnOrder(mem_ac,send_fee,total_pay,ord_name,ord_add,ord_phone,prod_noAry,amountAry);
 				
 				//success
 				//delCart
@@ -197,12 +198,67 @@ public class OrdServlet extends HttpServlet {
 			
 		}
 		
+		
+		if ("payOrd".equals(action)) {
+			Map<String,String> errorMsgs = new HashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				String mem_ac = req.getParameter("mem_ac");
+				String ord_no = req.getParameter("ord_no");
+				String bankAc =  req.getParameter("bankAc");
+				String [] crdNo = new String[4];
+				for(int i =0 ; i<crdNo.length; i++){
+					crdNo[i]=req.getParameter("crdNo"+(i+1));
+				}
+				
+				OrdService ordSvc = new OrdService();
+				OrdVO ordVO = ordSvc.getOrdByOrdno(ord_no);
+				if(!mem_ac.equals(ordVO.getMem_ac())){
+					errorMsgs.put("err", "非下訂單帳號");
+				}
+				
+				StringBuilder pay_info = new StringBuilder();
+				if(bankAc != null || !bankAc.trim().equals("")){
+					pay_info.append("B");
+					pay_info.append(bankAc);
+				} else {
+					for(int i =0 ; i<crdNo.length; i++){
+						pay_info.append("C");
+						pay_info.append(crdNo[i]);
+					}
+				}
+				
+				if(errorMsgs.size()!=0){
+//					System.out.println(errorMsgs);
+					req.setAttribute("errorMsgs", errorMsgs);
+					req.setAttribute("status", "1");
+					String url = "/FrontEnd/FrontEnd/buyerorder/buyerorder.jsp";
+					RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+					failureView.forward(req, res);
+					return;
+				}
 
-		
-		
-		
+				ordVO = ordSvc.updatePayInfo(ord_no, pay_info.toString());
+				req.setAttribute("status", "2");
+				//forward
+				System.out.println("OK");
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, res);
+				
+			} catch  (Exception e) {
 
-		
+				errorMsgs.put("err","付款失敗:"+e.getMessage());
+//				req.setAttribute("errorMsgs", errorMsgs);
+				req.setAttribute("status", "1");
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp";
+				RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				failureView.forward(req, res);
+				return;
+			}
+			
+		}
 		
 	}
 

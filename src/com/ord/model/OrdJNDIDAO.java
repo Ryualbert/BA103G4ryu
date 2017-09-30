@@ -365,16 +365,16 @@ public class OrdJNDIDAO implements OrdDAO_interface {
 			pstmt.setString(1, ordVO.getMem_ac());
 			pstmt.setInt(2, ordVO.getSend_fee());
 			pstmt.setInt(3, ordVO.getTotal_pay());
-			pstmt.setString(4, null);
-			pstmt.setString(5, null);
-			pstmt.setString(6, null);
-			pstmt.setString(7, null);
-			pstmt.setString(8, "未付款");
-			pstmt.setTimestamp(9, new Timestamp(System.currentTimeMillis()));
-			pstmt.setTimestamp(10, null);
-			pstmt.setTimestamp(11, null);
-			pstmt.setTimestamp(12, null);
-			pstmt.setString(13, null);
+			pstmt.setString(4, ordVO.getOrd_name());
+			pstmt.setString(5, ordVO.getOrd_phone());
+			pstmt.setString(6, ordVO.getOrd_add());
+			pstmt.setString(7, ordVO.getPay_info());
+			pstmt.setString(8, ordVO.getOrd_stat());
+			pstmt.setTimestamp(9, (ordVO.getOrd_date()!=null)? new Timestamp(ordVO.getOrd_date().getTime()):null);
+			pstmt.setTimestamp(10, (ordVO.getPay_date()!=null)?new Timestamp(ordVO.getPay_date().getTime()):null);
+			pstmt.setTimestamp(11, (ordVO.getPay_chk_date()!=null)?new Timestamp(ordVO.getPay_chk_date().getTime()):null);
+			pstmt.setTimestamp(12, (ordVO.getSend_date()!=null)?new Timestamp(ordVO.getSend_date().getTime()):null);
+			pstmt.setString(13, ordVO.getSend_id());
 			pstmt.executeUpdate();
 			
 			//掘取對應的自增主鍵值
@@ -463,10 +463,10 @@ public class OrdJNDIDAO implements OrdDAO_interface {
 				ordVO.setOrd_add(rs.getString("ORD_ADD"));
 				ordVO.setPay_info(rs.getString("PAY_INFO"));
 				ordVO.setOrd_stat(rs.getString("ORD_STAT"));
-				ordVO.setOrd_date(rs.getDate("ORD_DATE"));
-				ordVO.setPay_date(rs.getDate("PAY_DATE"));
-				ordVO.setPay_chk_date(rs.getDate("PAY_CHK_DATE"));
-				ordVO.setSend_date(rs.getDate("SEND_DATE"));
+				ordVO.setOrd_date((rs.getTimestamp("ORD_DATE")!=null)?new Date(rs.getTimestamp("ORD_DATE").getTime()):null);
+				ordVO.setPay_date((rs.getTimestamp("PAY_DATE")!=null)?new Date(rs.getTimestamp("PAY_DATE").getTime()):null);
+				ordVO.setPay_chk_date((rs.getTimestamp("PAY_CHK_DATE")!=null)?new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()):null);
+				ordVO.setSend_date((rs.getTimestamp("SEND_DATE")!=null)?new Date(rs.getTimestamp("SEND_DATE").getTime()):null);		
 				ordVO.setSend_id(rs.getString("SEND_ID"));
 				list.add(ordVO);
 			}

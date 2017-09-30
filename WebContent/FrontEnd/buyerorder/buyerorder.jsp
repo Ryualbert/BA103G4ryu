@@ -43,12 +43,18 @@
 <c:set var="notShow" value="${ordVOsList.add(ordVOs3)}"/>
 <c:set var="notShow" value="${ordVOsList.add(ordVOs4)}"/>
 
-<!--  --------------------------------------------------------------結帳跳窗---------------------------------------------------------------->
+
+ <!--  --------------------------------------------------------------結帳跳窗---------------------------------------------------------------->
 <div class="modal fade" id="modal-pay">
         <div class="modal-dialog modal-md">
-            <div class="modal-content scrollbar-macosx" id="modalP">
+            <div class="modal-content" id="modalP">
 
-            	<div class="container-folid">
+    			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">刷卡轉帳</h4>
+				</div>
+
+            	<div class="container-folid pad15">
             		<div class="row">
             			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 
@@ -56,12 +62,11 @@
 								<div class="row">
 									<div class="col-xs-12 col-sm-12">
 										<div class="pull-left">
-											<span>2017-09-30</span><br>
-											<span>訂單編號：O10000000001</span>
+											訂單編號：<span id="ordNo">O10000000001</span><br>
+											<small><span id="ordDate">2017-09-30</span></small>
 										</div>
 										<div class="pull-right">
-											<span >共${totalAmount}件商品</span><br>
-											<span >訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4></span>
+											<span >全部金額：<h4 class="inline-b bold text-danger">$<span id="ordPay">500</span></h4></span>
 											
 
 										</div>
@@ -69,10 +74,10 @@
 									</div>
 								</div>
 							</div>
-
+							<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 							<div>
 								<h4 class="bold text-info">匯款資訊</h4>
-								<div class="well">
+								<div class="well" id="payInfo">
 									
 									匯款銀行：彰化銀行 蘆洲分行<br>
 									戶名：陳建儒<br>
@@ -85,7 +90,7 @@
 									<div class="input-group-addon">
 										匯款帳戶末5碼
 									</div>
-									<input type="text" maxlength="5" name="bankAc" id="bankAc" class="form-control payWay atm">
+									<input type="text" maxlength="5" name="bankAc" id="bankAc" class="form-control payWay atm textNumOnly">
 								</div>
 
 
@@ -95,10 +100,10 @@
 										卡號
 									</div>
 									<div class="form-control padt3 card">
-										<input type="text" maxlength="4" name="crdNo1" id="crdNo1" class="w20p payWay card"> -
-										<input type="text" maxlength="4" name="crdNo2" id="crdNo2" class="w20p payWay card"> -
-										<input type="text" maxlength="4" name="crdNo3" id="crdNo3" class="w20p payWay card"> -
-										<input type="text" maxlength="4" name="crdNo4" id="crdNo4" class="w20p payWay card">
+										<input type="text" maxlength="4" name="crdNo1" id="crdNo1" class="w20p payWay card textNumOnly"> -
+										<input type="text" maxlength="4" name="crdNo2" id="crdNo2" class="w20p payWay card textNumOnly"> -
+										<input type="text" maxlength="4" name="crdNo3" id="crdNo3" class="w20p payWay card textNumOnly"> -
+										<input type="text" maxlength="4" name="crdNo4" id="crdNo4" class="w20p payWay card textNumOnly">
 									</div>
 								</div>
 								<div class="input-group">
@@ -111,15 +116,16 @@
 									<div class="input-group-addon">
 										檢核碼
 									</div>
-									<input type="text" maxlength="3" name="crdChk" id="crdChk" class="form-control payWay card">
+									<input type="text" maxlength="3" name="crdChk" id="crdChk" class="form-control payWay card textNumOnly">
 								</div>
-								
-								<input type="submit" class="form-control pull-right btn btn-primary">
-
-
-								
-
+								<div class="pull-right">
+									<input type="hidden" name="action" value="payOrd">
+									<input type="hidden" name="ord_no" value="">
+									<input type="hidden" name="mem_ac" value="${mem_ac}">
+									<input type="submit" value="確認付款" class="form-control pull-right btn btn-primary btn-ms mgt10">
+								</div>
 							</div>
+							</form>
 
             			</div>
             		</div>
@@ -130,34 +136,9 @@
         </div>
     </div>
 
-<script>
-// bank/credit
-$(document).ready(function(){
-	$('#modal-pay').modal('show');
-	$('.payWay').blur(function(){
-		if($(this).attr('id')=='bankAc'){
-			//bank
-			if($('#bankAc').val()!=''){
-				$('.card').attr('readonly', true);
-			} else {
-				$('.card').attr('readonly', false);
-			}
-			return;
 
-		} else {
-			//credit
-			var $card = $($('input.card'));
-			for(var i = 0; i<$card.length; i++){
-				if($($card[i]).val()!=''){
-					$('.atm').attr('readonly', true);
-					return;
-				}
-				$('.atm').attr('readonly', false);
-			}
-		}
-	});
-});
-</script> 
+
+
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
@@ -236,8 +217,10 @@ $(document).ready(function(){
 										                      </div>
 										                    </div>
 										                 </a>
-										                 	<div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-0">
-										                 		<span class="btn btn-xs btn-info  pull-right">給評</span>
+										                 	<div class="col-xs-10 col-xs-offset-1 col-sm-1 col-sm-offset-0">
+										                 		<c:if test="${ordVO.ord_stat=='已出貨'}">
+										                 		<span class="btn btn-xs btn-warning inline-b pull-right">給評</span>
+										                 		</c:if>
 										                 	</div>
 										                 
 										                </div>
@@ -286,19 +269,72 @@ var $btn = $(".${prodVO.prod_no}").click(function(){
 									</table>
 									</div>
 									<div class="container-floid cus-order-row">
+										<a role="button" data-toggle="collapse" href="#sendInfo${ordVO.ord_no}" aria-expanded="false" aria-controls="#sendInfo${ordVO.ord_no}">
 										<div class="row">
 											<div class="col-xs-12 col-sm-12">
 												<span class="pull-left padt5 ">共${totalAmount}件商品</span>
-												<span class="pull-right mgr20 ">運費：$${ordVO.send_fee}</span> <br>
-												<span class="pull-right mgr20 ">訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4></span>
+												<span class="pull-right mgr10">運費：$${ordVO.send_fee}</span> <br>
+												
+												<span class="pull-right mgr10">
+													<c:if test="${ordVO.ord_stat=='已確認付款'}">
+													<span class="btn btn-xs btn-info inline-b">已確認付款</span>
+													</c:if>
+													訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4>
+												</span>
 											
 											</div>
+											<c:if test="${ordVO.ord_stat=='未付款'}">
+											<div class="col-xs-12 col-sm-12">
+												<span id="pay${ordVO.ord_no}"class="btn btn-ms btn-primary pull-right inline-b mgr10">付款</span>
+												<span id="cancel" class="btn btn-ms btn-danger pull-right inline-b mgr10">取消訂單</span>
+											</div>
+											</c:if>
+										</div>
+										</a>
+										<div class="collapse" id="sendInfo${ordVO.ord_no}">
+											收件人：${ordVO.ord_name}<br>
+											地址：${ordVO.ord_add}<br>
+											手機：${ordVO.ord_phone}
 										</div>
 									</div>
 									
 <script>
-var $modalX = $("#modalX");
 
+//show PayInfo
+var $btnDel = $("#pay${ordVO.ord_no}").click(function(){
+       var $action = "getPayInfo";
+       var $ord_no = "${ordVO.ord_no}";
+       var $store_no = "${storeVO.store_no}";
+       var $mem_ac = "${mem_ac}";
+       $.ajax({
+           url : "<%=request.getContextPath()%>/ord/ordAjax.do",
+           type : 'post',
+           contentType: "application/json",
+           data: JSON.stringify({action:$action, ord_no: $ord_no,store_no:$store_no, mem_ac: $mem_ac}),
+           dataType: "JSON",
+           async: false,
+           success : function(jdata) {  	
+           	if(jdata.err!=null){
+           		console.log(jdata.err);
+           	} else {
+           		$('#ordDate').text(jdata.ord_date);
+                $('#ordNo').text(jdata.ord_no);
+                $('#ordPay').text(jdata.total_pay);
+                $('#payInfo').text(jdata.store_atm_info);
+                $(':hidden [name="ord_no"]').val(jdata.ord_no);
+           	}	
+           },
+           error : function(xhr) {
+           	console.log(xhr);
+            console.log('查詢訂單Info失敗');
+           }
+       });
+		$('#modal-pay').modal('show');
+		return false;
+   });
+   
+//show Store
+var $modalX = $("#modalX");
 var $btn = $(".${storeVO.store_no}").click(function(){
 		var storeNo =  $(".${storeVO.store_no}").attr("name");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;

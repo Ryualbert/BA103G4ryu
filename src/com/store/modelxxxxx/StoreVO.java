@@ -1,4 +1,4 @@
-package com.store.model;
+package com.store.modelxxxxx;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -19,8 +19,6 @@ public class StoreVO implements Serializable {
 	private byte[] store_pic2;
 	private byte[] store_pic3;
 	private Integer store_free_ship;
-	private String store_atm_info;
-	
 	private String store_stat;
 	private String store_stat_cont;
 	private Date store_stat_cdate;
@@ -128,12 +126,6 @@ public class StoreVO implements Serializable {
 	public void setStore_stat_cdate(Date store_stat_cdate) {
 		this.store_stat_cdate = store_stat_cdate;
 	}
-	public String getStore_atm_info() {
-		return store_atm_info;
-	}
-	public void setStore_atm_info(String store_atm_info) {
-		this.store_atm_info = store_atm_info;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -142,7 +134,6 @@ public class StoreVO implements Serializable {
 		result = prime * result + ((store_add == null) ? 0 : store_add.hashCode());
 		result = prime * result + ((store_add_lat == null) ? 0 : store_add_lat.hashCode());
 		result = prime * result + ((store_add_lon == null) ? 0 : store_add_lon.hashCode());
-		result = prime * result + ((store_atm_info == null) ? 0 : store_atm_info.hashCode());
 		result = prime * result + ((store_cont == null) ? 0 : store_cont.hashCode());
 		result = prime * result + ((store_free_ship == null) ? 0 : store_free_ship.hashCode());
 		result = prime * result + ((store_name == null) ? 0 : store_name.hashCode());
@@ -186,11 +177,6 @@ public class StoreVO implements Serializable {
 			if (other.store_add_lon != null)
 				return false;
 		} else if (!store_add_lon.equals(other.store_add_lon))
-			return false;
-		if (store_atm_info == null) {
-			if (other.store_atm_info != null)
-				return false;
-		} else if (!store_atm_info.equals(other.store_atm_info))
 			return false;
 		if (store_cont == null) {
 			if (other.store_cont != null)

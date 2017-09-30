@@ -174,6 +174,10 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 					    </div>
 
 <script>
-	$(function () { $("[data-toggle='tooltip']").tooltip('show'); });
+	$(function () {
+		if(${errorMsgs.size()}!=0){
+			$("[data-toggle='tooltip']").tooltip('show'); 
+		}
+	});
 </script>
 <jsp:include page="/FrontEnd/include/footer.jsp"/>

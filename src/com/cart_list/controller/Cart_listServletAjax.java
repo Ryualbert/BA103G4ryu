@@ -22,8 +22,8 @@ import com.google.gson.JsonObject;
 import com.prod.model.ProdService;
 import com.prod.model.ProdVO;
 
-@WebServlet("/cart_list/cart_list.do")
-public class Cart_listServlet extends HttpServlet {
+@WebServlet("/cart_list/cart_listAjax.do")
+public class Cart_listServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private final static String CONTENT_TYPE = "application/json; charset=utf-8";

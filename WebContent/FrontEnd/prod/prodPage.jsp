@@ -177,7 +177,7 @@
 	//add sub button
     $("#add").on("click", function(){
     	var $amount = Number($("[name='amount']").val());
-        if($amount==NaN||$amount>=${prodVO.prod_sup}){
+        if(isNaN($amount)||$amount>=${prodVO.prod_sup}){
         	$amount = ${prodVO.prod_sup};
         } else {
             $amount++;
@@ -186,7 +186,7 @@
     });
     $("#sub").on("click", function(){
         var $amount = Number($("[name='amount']").val());
-        if($amount==NaN||$amount<=1){
+        if(isNaN($amount)||$amount<=1){
             $amount = 1;
         } else {
             $amount--;
@@ -212,7 +212,7 @@
         var $amount = Number($("[name='amount']").val());
         var $mem_ac = "${mem_ac}";
         $.ajax({
-            url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+            url : "<%=request.getContextPath()%>/cart_list/cart_listAjax.do",
             type : 'post',
             contentType: "application/json",
             data: JSON.stringify({action:$action, prod_no: $prod_no,mem_ac: $mem_ac, amount:$amount}),

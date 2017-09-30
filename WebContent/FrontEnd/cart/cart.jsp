@@ -167,7 +167,7 @@ function updateCart(amount,prod_no){
     var $prod_no = prod_no;
     var $amount = amount;
     $.ajax({
-        url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+        url : "<%=request.getContextPath()%>/cart_list/cart_listAjax.do",
         type : 'post',
         contentType: "application/json",
         data: JSON.stringify({action:$action, prod_no: $prod_no, mem_ac: $mem_ac, amount:$amount}),
@@ -219,7 +219,7 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
         var $prod_no = "${prodVO.prod_no}";
         var $mem_ac = "${mem_ac}";
         $.ajax({
-            url : "<%=request.getContextPath()%>/cart_list/cart_list.do",
+            url : "<%=request.getContextPath()%>/cart_list/cart_listAjax.do",
             type : 'post',
             contentType: "application/json",
             data: JSON.stringify({action:$action, prod_no: $prod_no, mem_ac: $mem_ac}),

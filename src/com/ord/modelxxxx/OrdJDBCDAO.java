@@ -1,4 +1,4 @@
-package com.ord.model;
+package com.ord.modelxxxx;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -32,7 +32,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT ORD_NO,MEM_AC,SEND_FEE,TOTAL_PAY,ORD_NAME,ORD_PHONE,ORD_ADD,"
 			+ "PAY_INFO,ORD_STAT,ORD_DATE,PAY_DATE,PAY_CHK_DATE,SEND_DATE,SEND_ID FROM ord where ORD_NO = ?";
 	private static final String DELETE = "DELETE FROM ord where ORD_NO = ?";
-	private static final String UPDATE = "UPDATE ord set ORD_NAME=?, ORD_PHONE=?, ORD_ADD=? ,PAY_INFO=? ,ORD_STAT=? ,PAY_DATE=? ,PAY_CHK_DATE=?,SEND_DATE=?,SEND_ID=? where ORD_NO = ?";
+	private static final String UPDATE_STAT = "UPDATE ord set ORD_STAT=?, PAY_CHK_DATE=?, SEND_DATE=? ,SEND_ID=? where ORD_NO = ?";
 	private static final String GET_ALL_ORDER_LIST = "select * from ord_list where ORD_NO=?";
 	private static final String GET_ALL_ORD_BY_MEM = "SELECT * FROM ORD WHERE MEM_AC=? order by ord_no desc";
 
@@ -94,19 +94,13 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(UPDATE);
+			pstmt = con.prepareStatement(UPDATE_STAT);
 			
-			pstmt.setString(1, ordVO.getOrd_name());
-			pstmt.setString(2, ordVO.getOrd_phone());
-			pstmt.setString(3, ordVO.getOrd_add());
-			pstmt.setString(4, ordVO.getPay_info());
-			pstmt.setString(5, ordVO.getOrd_stat());
-			pstmt.setTimestamp(6, (ordVO.getPay_date()!=null)?new Timestamp(ordVO.getPay_date().getTime()):null);
-			
-			pstmt.setTimestamp(7, (ordVO.getPay_chk_date()!=null)?new Timestamp(ordVO.getPay_chk_date().getTime()):null);
-			pstmt.setTimestamp(8, (ordVO.getSend_date()!=null)?new Timestamp(ordVO.getSend_date().getTime()):null);
-			pstmt.setString(9, ordVO.getSend_id());
-			pstmt.setString(10, ordVO.getOrd_no ());
+			pstmt.setString(1, ordVO.getOrd_stat());
+			pstmt.setTimestamp(2, (ordVO.getPay_chk_date()!=null)?new Timestamp(ordVO.getPay_chk_date().getTime()):null);
+			pstmt.setTimestamp(3, (ordVO.getSend_date()!=null)?new Timestamp(ordVO.getSend_date().getTime()):null);
+			pstmt.setString(4, ordVO.getSend_id());
+			pstmt.setString(5, ordVO.getOrd_no ());
 			pstmt.executeUpdate();
 			
 		} catch (ClassNotFoundException e) {
@@ -385,31 +379,17 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 			pstmt.setString(1, ordVO.getMem_ac());
 			pstmt.setInt(2, ordVO.getSend_fee());
 			pstmt.setInt(3, ordVO.getTotal_pay());
-			pstmt.setString(4, ordVO.getOrd_name());
-			pstmt.setString(5, ordVO.getOrd_phone());
-			pstmt.setString(6, ordVO.getOrd_add());
-			pstmt.setString(7, ordVO.getPay_info());
-			pstmt.setString(8, ordVO.getOrd_stat());
-			pstmt.setTimestamp(9, (ordVO.getOrd_date()!=null)? new Timestamp(ordVO.getOrd_date().getTime()):null);
-			pstmt.setTimestamp(10, (ordVO.getPay_date()!=null)?new Timestamp(ordVO.getPay_date().getTime()):null);
-			pstmt.setTimestamp(11, (ordVO.getPay_chk_date()!=null)?new Timestamp(ordVO.getPay_chk_date().getTime()):null);
-			pstmt.setTimestamp(12, (ordVO.getSend_date()!=null)?new Timestamp(ordVO.getSend_date().getTime()):null);
-			pstmt.setString(13, ordVO.getSend_id());
+			pstmt.setString(4, null);
+			pstmt.setString(5, null);
+			pstmt.setString(6, null);
+			pstmt.setString(7, null);
+			pstmt.setString(8, "未付款");
+			pstmt.setTimestamp(9, new Timestamp(System.currentTimeMillis()));
+			pstmt.setTimestamp(10, null);
+			pstmt.setTimestamp(11, null);
+			pstmt.setTimestamp(12, null);
+			pstmt.setString(13, null);
 			pstmt.executeUpdate();
-			
-			/*				pstmt.setString(1, ordVO.getMem_ac());
-			pstmt.setInt(2, ordVO.getSend_fee());
-			pstmt.setInt(3, ordVO.getTotal_pay());
-			pstmt.setString(4, ordVO.getOrd_name());
-			pstmt.setString(5, ordVO.getOrd_phone());
-			pstmt.setString(6, ordVO.getOrd_add());
-			pstmt.setString(7, ordVO.getPay_info());
-			pstmt.setString(8, ordVO.getOrd_stat());
-			pstmt.setTimestamp(9, (ordVO.getOrd_date()!=null)? new Timestamp(ordVO.getOrd_date().getTime()):null);
-			pstmt.setTimestamp(10, (ordVO.getPay_date()!=null)?new Timestamp(ordVO.getPay_date().getTime()):null);
-			pstmt.setTimestamp(11, (ordVO.getPay_chk_date()!=null)?new Timestamp(ordVO.getPay_chk_date().getTime()):null);
-			pstmt.setTimestamp(12, (ordVO.getSend_date()!=null)?new Timestamp(ordVO.getSend_date().getTime()):null);
-			pstmt.setString(13, ordVO.getSend_id());;*/
 			
 			//掘取對應的自增主鍵值
 
@@ -502,10 +482,10 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				ordVO.setOrd_add(rs.getString("ORD_ADD"));
 				ordVO.setPay_info(rs.getString("PAY_INFO"));
 				ordVO.setOrd_stat(rs.getString("ORD_STAT"));
-				ordVO.setOrd_date((rs.getTimestamp("ORD_DATE")!=null)?new Date(rs.getTimestamp("ORD_DATE").getTime()):null);
-				ordVO.setPay_date((rs.getTimestamp("PAY_DATE")!=null)?new Date(rs.getTimestamp("PAY_DATE").getTime()):null);
-				ordVO.setPay_chk_date((rs.getTimestamp("PAY_CHK_DATE")!=null)?new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()):null);
-				ordVO.setSend_date((rs.getTimestamp("SEND_DATE")!=null)?new Date(rs.getTimestamp("SEND_DATE").getTime()):null);				
+				ordVO.setOrd_date(rs.getDate("ORD_DATE"));
+				ordVO.setPay_date(rs.getDate("PAY_DATE"));
+				ordVO.setPay_chk_date(rs.getDate("PAY_CHK_DATE"));
+				ordVO.setSend_date(rs.getDate("SEND_DATE"));
 				ordVO.setSend_id(rs.getString("SEND_ID"));
 				list.add(ordVO);
 			}
@@ -574,22 +554,15 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 
 		// 修改
 //		OrdVO ordVO2 = new OrdVO();
-//		ordVO2.setOrd_name("王八蛋");
-//		ordVO2.setOrd_phone("0212454545");
-//		ordVO2.setOrd_add("修改地址");
-//		ordVO2.setPay_info("修改匯款資訊");
-//		
 //		ordVO2.setOrd_stat("已出貨");
 //		java.util.Date S_DATE = new java.util.Date();
-//		java.sql.Date PAY_DATE= new java.sql.Date(S_DATE.getTime());
 //		java.sql.Date PAY_CHK_DATE = new java.sql.Date(S_DATE.getTime());
 //		
 //		java.sql.Date SEND_DATE = new java.sql.Date(S_DATE.getTime());
-//		ordVO2.setPay_date(PAY_DATE);
 //		ordVO2.setPay_chk_date(PAY_CHK_DATE);
 //		ordVO2.setSend_date(SEND_DATE);
 //		ordVO2.setSend_id("75757576");
-//		ordVO2.setOrd_no("O1000000004");
+//		ordVO2.setOrd_no("O1000000002");
 //		dao.update(ordVO2);
 		
 		//刪除
