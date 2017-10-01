@@ -95,7 +95,7 @@
 
 
 		<!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
-		<div class="container cus-tab-block">
+		<div class="container cus-tab-block content">
 			<div class="row">
 				<div class="col-xs-12 col-sm-8 col-sm-offset-2">
 					<div role="tabpanel">

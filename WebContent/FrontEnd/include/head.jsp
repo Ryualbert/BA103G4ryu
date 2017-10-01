@@ -32,21 +32,22 @@
     <link rel="Shortcut Icon" type="image/x-icon" href="<%=request.getContextPath()%>/FrontEnd/res/img/logo/BeanLifeIco2.ico" />
 
     <!--[if lt IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="<%=request.getContextPath()%>/FrontEnd/res/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/beanlife.base.css">
     
     
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath()%>/FrontEnd/res/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/plugin/jquery.scrollbar.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/FrontEnd/res/js/beanlife.base.js"></script>
-
+	
+	<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+	<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 
 
@@ -54,7 +55,7 @@
   <body>
 
     <!-- NavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbar -->
-    <nav class="navbar navbar-default navbar-fixed-top bg-light-brn border0 cus-nav" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top bg-light-brn border0 cus-nav content" role="navigation">
       <div class="container">
         <div>
           <button type="button" class="navbar-toggle pull-left cus-ham" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -73,7 +74,7 @@
           
           <div class="pull-right padt5">
             <div class="dropdown pull-right">
-                      <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#">
+                      <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="<%=request.getContextPath()%>/FrontEnd/cart/cart.jsp">
                         <span class="glyphicon glyphicon-shopping-cart"></span>
                         <span id="cartSize" class="badge cus-badge">${cart_listSvc.getVOsByMem(mem_ac).size()}</span>
                       </a>
@@ -97,13 +98,13 @@
                       </a>
                       <ul class="dropdown-menu zidx5">
                     <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
-	                    <li><a href="#">店家中心</a></li>
-	                    <li><a href="#">訂單管理</a></li>
+	                    <li><a href="">店家中心</a></li>
+	                    <li><a href="">訂單管理</a></li>
 	                    <li role="presentation" class="divider"></li>
                     </c:if>
-                    <li><a href="#">會員中心</a></li>
-                    <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp">購買清單</a></li>
-                    <li><a href="#">我的活動</a></li>
+                    <li><a href="">會員中心</a></li>
+                    <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp?status=1">購買清單</a></li>
+                    <li><a href="">我的活動</a></li>
                   </ul>
                     </div>
                 </div>

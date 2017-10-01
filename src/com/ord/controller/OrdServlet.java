@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.cart_list.model.Cart_listService;
 import com.ord.model.OrdService;
@@ -81,6 +82,7 @@ public class OrdServlet extends HttpServlet {
 				//Success
 				req.setAttribute("ordVO", ordVO);
 				req.setAttribute("ord_listVOs", ord_listSet);
+				
 				String url = "/FrontEnd/order/order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
@@ -182,7 +184,8 @@ public class OrdServlet extends HttpServlet {
 				}
 
 				//forward
-				String url = "/FrontEnd/buyerorder/buyerorder.jsp";
+				String stat = "?status=1";
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 				
@@ -214,36 +217,43 @@ public class OrdServlet extends HttpServlet {
 				
 				OrdService ordSvc = new OrdService();
 				OrdVO ordVO = ordSvc.getOrdByOrdno(ord_no);
+				
 				if(!mem_ac.equals(ordVO.getMem_ac())){
 					errorMsgs.put("err", "非下訂單帳號");
 				}
-				
-				StringBuilder pay_info = new StringBuilder();
-				if(bankAc != null || !bankAc.trim().equals("")){
+
+				StringBuffer pay_info = new StringBuffer();
+				if(bankAc != null && !(bankAc.trim().length()==0)){
 					pay_info.append("B");
 					pay_info.append(bankAc);
+					if(pay_info.toString().length()!=6){
+						errorMsgs.put("err", "付款錯誤");
+					}
 				} else {
+					pay_info.append("C");
 					for(int i =0 ; i<crdNo.length; i++){
-						pay_info.append("C");
 						pay_info.append(crdNo[i]);
+					}
+					if(pay_info.toString().length()!=17){
+						errorMsgs.put("err", "付款錯誤");
 					}
 				}
 				
 				if(errorMsgs.size()!=0){
 //					System.out.println(errorMsgs);
 					req.setAttribute("errorMsgs", errorMsgs);
-					req.setAttribute("status", "1");
-					String url = "/FrontEnd/FrontEnd/buyerorder/buyerorder.jsp";
+					String stat = "?status=1";
+					String url = "/FrontEnd/FrontEnd/buyerorder/buyerorder.jsp"+stat;
 					RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 					failureView.forward(req, res);
 					return;
 				}
 
 				ordVO = ordSvc.updatePayInfo(ord_no, pay_info.toString());
-				req.setAttribute("status", "2");
+				String stat = "?status=2";
 				//forward
 				System.out.println("OK");
-				String url = "/FrontEnd/buyerorder/buyerorder.jsp";
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 				
@@ -251,14 +261,65 @@ public class OrdServlet extends HttpServlet {
 
 				errorMsgs.put("err","付款失敗:"+e.getMessage());
 //				req.setAttribute("errorMsgs", errorMsgs);
-				req.setAttribute("status", "1");
-				String url = "/FrontEnd/buyerorder/buyerorder.jsp";
+				String stat = "?status=1";
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
 				RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				failureView.forward(req, res);
 				return;
 			}
 			
 		}
+		
+		
+		if ("delOrd".equals(action)) {
+			Map<String,String> errorMsgs = new HashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				HttpSession session = req.getSession();
+				String mem_ac = (String) session.getAttribute("mem_ac");
+				String ord_no = req.getParameter("ord_no");
+				String bankAc =  req.getParameter("bankAc");
+				String [] crdNo = new String[4];
+				
+				OrdService ordSvc = new OrdService();
+				OrdVO ordVO = ordSvc.getOrdByOrdno(ord_no);
+				
+				if(!mem_ac.equals(ordVO.getMem_ac())){
+					errorMsgs.put("err", "非下訂單帳號");
+				}
+				
+				if(errorMsgs.size()!=0){
+//					System.out.println(errorMsgs);
+					req.setAttribute("errorMsgs", errorMsgs);
+					String stat = "?status=1";
+					String url = "/FrontEnd/FrontEnd/buyerorder/buyerorder.jsp"+stat;
+					RequestDispatcher failureView = req.getRequestDispatcher(url); 
+					failureView.forward(req, res);
+					return;
+				}
+
+				ordVO = ordSvc.updateCancel(ord_no);
+				String stat = "?status=4";
+				//forward
+//				System.out.println("OK");
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+				
+			} catch  (Exception e) {
+
+				errorMsgs.put("err","取消訂單失敗:"+e.getMessage());
+//				req.setAttribute("errorMsgs", errorMsgs);
+				String stat = "?status=1";
+				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
+				RequestDispatcher failureView = req.getRequestDispatcher(url); 
+				failureView.forward(req, res);
+				return;
+			}
+			
+		}
+
 		
 	}
 

@@ -53,7 +53,8 @@ $(document).ready(function(){
 	});
 });
 //pay from check
-$(':submit').click(function(){
+$('#modal-pay :submit').click(function(){
+	console.log('333');
 	var isNG=false;
 	if(!$('.card').attr('readonly')&&!$('.atm').attr('readonly')){
 		var $point = $('#bankAc');

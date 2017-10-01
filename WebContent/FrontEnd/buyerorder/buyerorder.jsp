@@ -27,7 +27,7 @@
 	<c:if test="${ordVO.ord_stat=='未付款'}">
 		<c:set var="notShow" value="${ordVOs1.add(ordVO)}"/>
 	</c:if>
-	<c:if test="${ordVO.ord_stat=='已付款'||'已確認付款'}">
+	<c:if test="${ordVO.ord_stat=='已付款'||ordVO.ord_stat=='已確認付款'}">
 		<c:set var="notShow" value="${ordVOs2.add(ordVO)}"/>
 
 	</c:if>
@@ -140,6 +140,61 @@
 
 
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
+<!--  --------------------------------------------------------------取消跳窗---------------------------------------------------------------->
+<div class="modal fade" id="modal-del">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content" id="modalD">
+
+
+            	<div class="container-folid pad15">
+            		<div class="row">
+            			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+
+            				<div class="container-floid">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 well">
+										<div class="pull-left">
+											訂單編號：<span id="ordNoD">O10000000001</span><br>
+											<small><span id="ordDateD">2017-09-30</span></small>
+										</div>
+										<div class="pull-right">
+											<span >全部金額：<h4 class="inline-b bold text-danger">$<span id="ordPayD">500</span></h4></span>
+
+										</div>
+										
+									</div>
+									<div class="col-xs-12 col-sm-12">
+										<h3>確定取消此筆訂單？</h3>
+									</div>
+								</div>
+							</div>
+							
+							<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
+							<div>
+								<div class="pull-right">
+									<input type="hidden" name="action" value="delOrd">
+									<input type="hidden" name="ord_no" value="">
+									<button type="button" class="btn btn-ms btn-default mgt10 inline-b" data-dismiss="modal" aria-hidden="true">取消</button>
+									<input type="submit" value="確定" class=" btn btn-ms btn-default mgt10 inline-b">
+								</div>
+							</div>
+							
+							
+							</form>
+
+            			</div>
+            		</div>
+            	</div>
+		
+                
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
 
 
@@ -153,16 +208,16 @@
 						<div role="tabpanel">
 						    <!-- 標籤面板：標籤區 -->
 						    <ul class="nav nav-tabs" role="tablist">
-						        <li role="presentation" class="active w25p bold text-center">
+						        <li role="presentation" class="w25p bold text-center ${(param.status==1)?'active':''}">
 						            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">待付款</a>
 						        </li>
-						        <li role="presentation"  class="w25p bold text-center">
+						        <li role="presentation"  class="w25p bold text-center ${(param.status==2)?'active':''}">
 						            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">待出貨</a>
 						        </li>
-						        <li role="presentation" class="w25p bold text-center">
+						        <li role="presentation" class="w25p bold text-center ${(param.status==3)?'active':''}">
 						            <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">已出貨</a>
 						        </li>
-						        <li role="presentation" class="w25p bold text-center">
+						        <li role="presentation" class="w25p bold text-center ${(param.status==4)?'active':''}">
 						            <a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">已取消</a>
 						        </li>
 						    </ul>
@@ -172,7 +227,7 @@
 						    
 						    <c:forEach items="${ordVOsList}" varStatus="count">
 						   
-						        <div role="tabpanel" class="tab-pane ${(count.count==1)?'active':''}" id="tab${count.count}">
+						        <div role="tabpanel" class="tab-pane ${(count.count==param.status)?'active':''}" id="tab${count.count}">
  									<!--//////////////////////////////////////// -->
  									<c:forEach var="ordVO" items="${ordVOsList.get(count.index)}">
 									<c:set var="storeVO" value="${storeSvc.getOneStore(prodSvc.getOneProd(ordSvc.getOrd_listByOrd(ordVO.ord_no).toArray()[0].prod_no).store_no)}" scope="page"/>
@@ -241,7 +296,7 @@
 <script> 
 //Prod View
 var $modalX = $("#modalX");
-var $btn = $(".${prodVO.prod_no}").click(function(){
+var $btnPordX = $(".${prodVO.prod_no}").click(function(){
 		var prodNo =  $(".${prodVO.prod_no}").attr("name");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
 		$.ajax({
@@ -277,7 +332,7 @@ var $btn = $(".${prodVO.prod_no}").click(function(){
 												
 												<span class="pull-right mgr10">
 													<c:if test="${ordVO.ord_stat=='已確認付款'}">
-													<span class="btn btn-xs btn-info inline-b">已確認付款</span>
+													<span class="btn btn-xs btn-success inline-b">已確認付款</span>
 													</c:if>
 													訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4>
 												</span>
@@ -286,22 +341,32 @@ var $btn = $(".${prodVO.prod_no}").click(function(){
 											<c:if test="${ordVO.ord_stat=='未付款'}">
 											<div class="col-xs-12 col-sm-12">
 												<span id="pay${ordVO.ord_no}"class="btn btn-ms btn-primary pull-right inline-b mgr10">付款</span>
-												<span id="cancel" class="btn btn-ms btn-danger pull-right inline-b mgr10">取消訂單</span>
+												<span id="del${ordVO.ord_no}" class="btn btn-ms btn-danger pull-right inline-b mgr10">取消訂單</span>
 											</div>
 											</c:if>
 										</div>
 										</a>
 										<div class="collapse" id="sendInfo${ordVO.ord_no}">
-											收件人：${ordVO.ord_name}<br>
-											地址：${ordVO.ord_add}<br>
-											手機：${ordVO.ord_phone}
+											<div class="inline-b  mgr40">
+												收件人：${ordVO.ord_name}<br>
+												地址：${ordVO.ord_add}<br>
+												手機：${ordVO.ord_phone}
+											</div>
+											<div class="inline-b mgr40">
+												付款時間：${ordVO.pay_date}<br>
+												確認付款：${ordVO.pay_chk_date}<br>
+											</div>
+											<div class="inline-b">
+												出貨時間：${ordVO.send_date}<br>
+												物流編號：${ordVO.send_id}
+											</div>
 										</div>
 									</div>
 									
 <script>
 
 //show PayInfo
-var $btnDel = $("#pay${ordVO.ord_no}").click(function(){
+var $btnPayInfo = $("#pay${ordVO.ord_no}").click(function(){
        var $action = "getPayInfo";
        var $ord_no = "${ordVO.ord_no}";
        var $store_no = "${storeVO.store_no}";
@@ -321,7 +386,7 @@ var $btnDel = $("#pay${ordVO.ord_no}").click(function(){
                 $('#ordNo').text(jdata.ord_no);
                 $('#ordPay').text(jdata.total_pay);
                 $('#payInfo').text(jdata.store_atm_info);
-                $(':hidden [name="ord_no"]').val(jdata.ord_no);
+                $('#modal-pay :hidden [name="ord_no"]').val(jdata.ord_no);
            	}	
            },
            error : function(xhr) {
@@ -333,9 +398,25 @@ var $btnDel = $("#pay${ordVO.ord_no}").click(function(){
 		return false;
    });
    
+//show Del
+var $btnDel = $("#del${ordVO.ord_no}").click(function(){
+       var $ord_no = "${ordVO.ord_no}";
+       var $total_pay = "${ordVO.total_pay}";
+       var $ord_date = "${ordVO.ord_date}";
+       
+       $('#ordNoD').text($ord_no);
+       $('#ordDateD').text($ord_date);
+       $('#ordPayD').text($total_pay);
+       $('#modal-del :hidden [name="ord_no"]').val($ord_no);
+       
+		$('#modal-del').modal('show');
+		return false;
+   });
+   
+   
 //show Store
 var $modalX = $("#modalX");
-var $btn = $(".${storeVO.store_no}").click(function(){
+var $btnStoreX = $(".${storeVO.store_no}").click(function(){
 		var storeNo =  $(".${storeVO.store_no}").attr("name");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
 		$.ajax({

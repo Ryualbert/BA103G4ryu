@@ -25,7 +25,7 @@ public class OrdService {
 		return dao.getOrd_listByOrd(ord_no);
 	}
 
-	//新增訂單
+	//新增訂單 要取消的方法 不符合MVC架構
 	public String newAnOrder(OrdVO ordVO, Set<Ord_listVO> ord_listVOs) {
 		return dao.insertWithOrd_list(ordVO, ord_listVOs);
 	}
@@ -76,13 +76,21 @@ public class OrdService {
 	}
 	
 	// 修改訂單狀態 未付款-改已付款
-		public OrdVO updatePayInfo(String ord_no, String pay_info) {
-			OrdVO ordVO = dao.findByPrimaryKey(ord_no);
-			ordVO.setOrd_stat("已付款");
-			ordVO.setPay_date(new Date(System.currentTimeMillis()));
-			ordVO.setPay_info(pay_info);
-			dao.update(ordVO);
-			return ordVO;
-		}
+	public OrdVO updatePayInfo(String ord_no, String pay_info) {
+		OrdVO ordVO = dao.findByPrimaryKey(ord_no);
+		ordVO.setOrd_stat("已付款");
+		ordVO.setPay_date(new Date(System.currentTimeMillis()));
+		ordVO.setPay_info(pay_info);
+		dao.update(ordVO);
+		return ordVO;
+	}
+	
+	// 修改訂單狀態 未付款-改已取消
+	public OrdVO updateCancel(String ord_no) {
+		OrdVO ordVO = dao.findByPrimaryKey(ord_no);
+		ordVO.setOrd_stat("已取消");
+		dao.update(ordVO);
+		return ordVO;
+	}
 
 }
