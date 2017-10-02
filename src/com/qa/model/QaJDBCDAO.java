@@ -31,7 +31,7 @@ public class QaJDBCDAO implements QaDAO_interface {
 	private static final String UPDATE = 
 		"UPDATE QA set prod_no=?, mem_ac=?, qa_cont=?, qa_date=?, qa_reply_cont=?, qa_reply_date=? where qa_no =?";
 	private static final String GET_VO_BY_PROD = 
-		"SELECT qa_no, prod_no, mem_ac, qa_cont, to_char(qa_date,'yyyy-mm-dd') qa_date, qa_reply_cont, to_char(qa_reply_date,'yyyy-mm-dd') qa_reply_date  FROM QA where prod_no = ?";
+			"SELECT * FROM QA where prod_no = ? order by qa_no desc";
 		
 	
 	@Override

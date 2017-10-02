@@ -418,8 +418,8 @@ var $btnRev = $("#rev${ordVO.ord_no}${prodVO.prod_no}").click(function(){
 												<span class="pull-right mgr10">運費：$${ordVO.send_fee}</span> <br>
 												
 												<span class="pull-right mgr10">
-													<c:if test="${ordVO.ord_stat=='已確認付款'}">
-													<span class="btn btn-xs btn-success inline-b">已確認付款</span>
+													<c:if test="${ordVO.ord_stat.equals('已確認付款')}">
+														<span class="btn btn-xs btn-success inline-b">已確認付款</span>
 													</c:if>
 													訂單金額：<h4 class="inline-b bold text-danger">$${ordVO.total_pay}</h4>
 												</span>
@@ -502,7 +502,7 @@ var $btnPayInfo = $("#pay${ordVO.ord_no}").click(function(){
            		$('#ordDate').text(jdata.ord_date);
                 $('#ordNo').text(jdata.ord_no);
                 $('#ordPay').text(jdata.total_pay);
-                $('#payInfo').text(jdata.store_atm_info);
+                $('#payInfo').html(jdata.store_atm_info.replace(/\r\n|\n/g, "<br>"));
                 $('#modal-pay :hidden [name="ord_no"]').val(jdata.ord_no);
            	}	
            },

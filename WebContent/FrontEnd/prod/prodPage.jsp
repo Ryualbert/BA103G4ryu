@@ -23,6 +23,7 @@
 
 <c:set var="mem_ac" value="${session.mem_ac}" scope="page"/>
 <c:set var="prodVO" value="${prodSvc.getOneProd(param.prodNo)}" scope="page"/>
+<c:set var="storeVO" value="${storeSvc.getOneStore(prodVO.store_no)}"/>
 <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 
@@ -284,10 +285,10 @@
                                 <div role="tabpanel">
                                     <!-- 標籤面板：標籤區 -->
                                     <ul class="nav nav-tabs " role="tablist">
-                                        <li role="presentation" class="active w50p text-center">
+                                        <li role="presentation" class="${(param.status==2)?'':'active'} w50p text-center">
                                             <a href="#rev_prod${p_index.count}" aria-controls="rev_prod${p_index.count}" role="tab" data-toggle="tab" class="bold">心得評論</a>
                                         </li>
-                                        <li role="presentation" class="w50p text-center">
+                                        <li role="presentation" class="${(param.status==2)?'active':''} w50p text-center">
                                             <a href="#qa_prod${p_index.count}" aria-controls="qa_prod${p_index.count}" role="tab" data-toggle="tab" class="bold">問與答</a>
                                         </li>
                                     </ul>
@@ -304,7 +305,7 @@
                                     <div class="tab-content">
                                     
                                     	<!-- --------------------心得評論---------------- -->
-                                        <div role="tabpanel" class="tab-pane active" id="rev_prod${p_index.count}">
+                                        <div role="tabpanel" class="tab-pane ${(param.status==2)?'':'active'}" id="rev_prod${p_index.count}">
                                         
                                         	<c:set var="reviewlist" value="${reviewSvc.getVOByProd(prodVO.prod_no)}"/>
 
@@ -427,7 +428,7 @@
                                         
                                         
                                          <!-- --------------------問與答---------------- -->
-                                        <div role="tabpanel" class="tab-pane" id="qa_prod${p_index.count}">
+                                        <div role="tabpanel" class="${(param.status==2)?'active':''} tab-pane" id="qa_prod${p_index.count}">
                                         	
                                         	<c:set var="qalist" value="${qaSvc.getVOByProd(prodVO.prod_no)}"/>
 
@@ -453,9 +454,77 @@
                                                 </div>
                                                 </c:if>
 
+                                                <c:if test="${qaVO.qa_reply_cont==null&&storeVO.mem_ac==mem_ac}">
+                                                  
+                                                    <div class="col-xs-12 col-sm-9 col-sm-offset-2">
+                                                      <div class="form-group">
+                                                         <textarea class="form-control" rows="3" id="qa_reply_cont${qaVO.qa_no}"  name="qa_reply_cont" qa_no="${qaVO.qa_no}" placeholder="回覆..." required></textarea>
+                                                        </div>
+                                                        <span class="btn btn-default btn-sm mgb10 pull-right" id="replyBtn${qaVO.qa_no}" >回覆</span>
+                                                    </div>
+                                             
+                                                </c:if>
+
                                             </div>
 
-                                            </c:forEach>
+
+
+<script type="text/javascript">
+    
+var $replyBtn = $("#replyBtn${qaVO.qa_no}").click(function(){
+        console.log(this);
+        var $action = "replyQa";
+        var $prod_no =  "${prodVO.prod_no}";
+        var $qa_no =  $("#qa_reply_cont${qaVO.qa_no}").attr('qa_no');
+        var $qa_reply_cont = $('#qa_reply_cont${qaVO.qa_no}').val();
+        var urlstr = '<%=request.getContextPath()%>/qa/qaAjax.do';
+        $.ajax({
+            url : urlstr,
+            type : 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({action:$action, qa_no: $qa_no,prod_no:$prod_no, qa_reply_cont:$qa_reply_cont}),
+            dataType: "html",
+            async: false,
+            success : function(result) {
+                if(result.err!=null){
+                    console.log(result.err);
+                }else{
+                     while($modalX.children().length > 0){
+                        $modalX.empty();
+                    }
+                    $modalX.html(result);
+                }
+            },
+            error : function(xhr) {
+                alert('Ajax request 發生錯誤');
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+                                            </c:forEach> <!-- qaVO -->
+
+                                            <c:if test="${storeVO.mem_ac!=mem_ac}">
+                                            <div class="row mgt20">
+                                                <div class="container-floid">
+                                                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                                      <div class="form-group">
+                                                          <textarea class="form-control" rows="5" id="qa_cont"  name="qa_cont" placeholder="${(param.errQa_cont==null)?'提出詢問...':param.errQa_cont}" required></textarea>
+
+                                                        </div>
+                                                        <span class="btn btn-default btn-sm pull-right" id="askBtn" >提問</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </c:if>
+
 
 
 
@@ -481,23 +550,53 @@
 var $modalX = $("#modalX");
 
 var $btn = $("#pp${prodVO.store_no}").click(function(){
-		var storeNo =  $("#pp${prodVO.store_no}").attr("href");
-		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
-		$.ajax({
-			url : urlstr,
-			type : 'GET',
-			dataType: "html",
-			async: false,
-			success : function(result) {
-				while($modalX.children().length > 0){
-					$modalX.empty();
-				}
-				$modalX.html(result);
-			},
-			error : function(xhr) {
-				alert('Ajax request 發生錯誤');
-			}
-		});
-		$modalX.scrollTop(0);
-	});
+        var storeNo =  $("#pp${prodVO.store_no}").attr("href");
+        var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
+        $.ajax({
+            url : urlstr,
+            type : 'GET',
+            dataType: "html",
+            async: false,
+            success : function(result) {
+                while($modalX.children().length > 0){
+                    $modalX.empty();
+                }
+                $modalX.html(result);
+            },
+            error : function(xhr) {
+                alert('Ajax request 發生錯誤');
+            }
+        });
+        $modalX.scrollTop(0);
+    });
+
+var $askBtn = $("#askBtn").click(function(){
+        var $action = "addQa";
+        var $prod_no =  "${prodVO.prod_no}";
+        var $qa_cont = $('#qa_cont').val();
+        var urlstr = '<%=request.getContextPath()%>/qa/qaAjax.do';
+        $.ajax({
+            url : urlstr,
+            type : 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({action:$action, prod_no: $prod_no,qa_cont:$qa_cont}),
+            dataType: "html",
+            async: false,
+            success : function(result) {
+                if(result.err!=null){
+                    console.log(result.err);
+                }else{
+                     while($modalX.children().length > 0){
+                        $modalX.empty();
+                    }
+                    $modalX.html(result);
+                }
+            },
+            error : function(xhr) {
+                alert('Ajax request 發生錯誤');
+            }
+        });
+    });
+
+
 </script>

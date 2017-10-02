@@ -110,7 +110,6 @@ public class ReviewServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				
 				String ord_no = req.getParameter("ord_no").trim();
 				if(!ord_no.matches("O[0-9]{10}")){
 					errorMsgs.put("errOrd_no","Order編號格式不正確");
