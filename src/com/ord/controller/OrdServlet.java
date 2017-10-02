@@ -39,8 +39,9 @@ public class OrdServlet extends HttpServlet {
 			Map<String,String> errorMsgs = new HashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			try {
+				HttpSession session = req.getSession();
+				String mem_ac = (String) session.getAttribute("mem_ac");
 
-				String mem_ac = req.getParameter("mem_ac");
 				String store_no = req.getParameter("store_no");
 				int count = Integer.parseInt(req.getParameter("count"));
 				String[] prod_noAry = new String[count];
@@ -84,7 +85,7 @@ public class OrdServlet extends HttpServlet {
 				req.setAttribute("ord_listVOs", ord_listSet);
 				
 				String url = "/FrontEnd/order/order.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 				
 			} catch (Exception e){
@@ -105,8 +106,9 @@ public class OrdServlet extends HttpServlet {
 			OrdVO ordVO = new OrdVO();
 			Set<Ord_listVO> ord_listSet = new LinkedHashSet<Ord_listVO>();
 			try {
-
-				String mem_ac = req.getParameter("mem_ac");
+				HttpSession session = req.getSession();
+				String mem_ac = (String) session.getAttribute("mem_ac");
+				
 				String store_no = req.getParameter("store_no");
 				String ord_name = req.getParameter("ord_name");			
 				String ord_add = req.getParameter("ord_add");
@@ -120,6 +122,8 @@ public class OrdServlet extends HttpServlet {
 				}
 				if (ord_phone == null || (ord_phone.trim()).length() == 0) {
 					errorMsgs.put("errPhone","請輸入手機");
+				} else if ((ord_phone.trim()).length() < 9 || (ord_phone.trim()).length() > 20) {
+					errorMsgs.put("errPhone","手機格式錯誤");
 				}
 				
 				int count = Integer.parseInt(req.getParameter("count"));
@@ -166,7 +170,7 @@ public class OrdServlet extends HttpServlet {
 					req.setAttribute("ordVO", ordVO);
 					req.setAttribute("ord_listVOs", ord_listSet);
 					String url = "/FrontEnd/order/order.jsp";
-					RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+					RequestDispatcher failureView = req.getRequestDispatcher(url);
 					failureView.forward(req, res);
 					return;
 				}
@@ -186,7 +190,7 @@ public class OrdServlet extends HttpServlet {
 				//forward
 				String stat = "?status=1";
 				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 				
 			} catch (Exception e){
@@ -207,7 +211,9 @@ public class OrdServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
-				String mem_ac = req.getParameter("mem_ac");
+				HttpSession session = req.getSession();
+				String mem_ac = (String) session.getAttribute("mem_ac");
+				
 				String ord_no = req.getParameter("ord_no");
 				String bankAc =  req.getParameter("bankAc");
 				String [] crdNo = new String[4];
@@ -244,7 +250,7 @@ public class OrdServlet extends HttpServlet {
 					req.setAttribute("errorMsgs", errorMsgs);
 					String stat = "?status=1";
 					String url = "/FrontEnd/FrontEnd/buyerorder/buyerorder.jsp"+stat;
-					RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+					RequestDispatcher failureView = req.getRequestDispatcher(url); 
 					failureView.forward(req, res);
 					return;
 				}
@@ -254,7 +260,7 @@ public class OrdServlet extends HttpServlet {
 				//forward
 				System.out.println("OK");
 				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 				
 			} catch  (Exception e) {
@@ -263,7 +269,7 @@ public class OrdServlet extends HttpServlet {
 //				req.setAttribute("errorMsgs", errorMsgs);
 				String stat = "?status=1";
 				String url = "/FrontEnd/buyerorder/buyerorder.jsp"+stat;
-				RequestDispatcher failureView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				RequestDispatcher failureView = req.getRequestDispatcher(url); 
 				failureView.forward(req, res);
 				return;
 			}
@@ -278,9 +284,8 @@ public class OrdServlet extends HttpServlet {
 			try {
 				HttpSession session = req.getSession();
 				String mem_ac = (String) session.getAttribute("mem_ac");
+				
 				String ord_no = req.getParameter("ord_no");
-				String bankAc =  req.getParameter("bankAc");
-				String [] crdNo = new String[4];
 				
 				OrdService ordSvc = new OrdService();
 				OrdVO ordVO = ordSvc.getOrdByOrdno(ord_no);

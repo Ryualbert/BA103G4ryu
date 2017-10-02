@@ -37,14 +37,13 @@
   	Boolean isFollow = false;
   	List<Fo_prodVO> fo_list = (List<Fo_prodVO>)pageContext.getAttribute("fo_list");
   	for (Fo_prodVO fo_prodVO: fo_list){
-  		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
+  		if(fo_prodVO.getProd_no().equals(prod_no)){
   			isFollow = true;
   		}
   	}
   	pageContext.setAttribute("isFollow",isFollow);
 
 
-  	
   	//此商品的分數轉換星星Boolean
   	Boolean [] star = new Boolean[5];
   	Double score = ((ReviewService)(pageContext.getAttribute("reviewSvc"))).getScoreByProd(prod_no);
@@ -52,7 +51,7 @@
   	for (int i = 0 ; i < scoreLong ; i++){
   		star[i] = true;
   	}
-  	pageContext.setAttribute("star",star);      	
+  	pageContext.setAttribute("star",star);
 %>
 
 <%--     <div class="modal" id="prod${p_index.count}"> --%>
@@ -134,7 +133,7 @@
                                 </div>
                                 <h4 class="text-info inline-b bold">NT$${prodVO.prod_price}　${prodVO.prod_wt} lb</h4>
                                 <div class="pull-right mgt10" title="${reviewSvc.getScoreByProd(prodVO.prod_no)}/5.0">
- 
+
 	                              <span class="glyphicon glyphicon-star ${(star['0'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
 	                              <span class="glyphicon glyphicon-star ${(star['1'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
 	                              <span class="glyphicon glyphicon-star ${(star['2'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
@@ -242,20 +241,22 @@
         });
     });
 </script>
-                        
-                        
 
 
 
                         <div class="row mgt20">
                             <div class="col-xs-12 col-sm-6">
-
+                                <%
+                                    ProdVO prodVO = (ProdVO) pageContext.getAttribute("prodVO");
+                                    String prod_cont = prodVO.getProd_cont().replaceAll("(\r\n|\n)", "<br>");
+                                    pageContext.setAttribute("prod_cont",prod_cont);
+                                %>
                                 <!-- ---------------商品描述-------------- -->
                                 <div class="container-floid">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-11 col-sm-offset-1">
                                             <p>
-                                               ${prodVO.prod_cont}
+                                               ${prod_cont}
                                             </p>
                                         </div>
                                     </div>

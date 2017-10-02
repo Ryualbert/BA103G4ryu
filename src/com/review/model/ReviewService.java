@@ -12,7 +12,7 @@ public class ReviewService {
 	}
 
 	public ReviewVO addReview(String ord_no, String prod_no, Integer prod_score,
-			String use_way, String rev_cont, Date rev_date) {
+			String use_way, String rev_cont) {
 
 		ReviewVO reviewVO = new ReviewVO();
 
@@ -21,7 +21,7 @@ public class ReviewService {
 		reviewVO.setProd_score(prod_score);
 		reviewVO.setUse_way(use_way);
 		reviewVO.setRev_cont(rev_cont);
-		reviewVO.setRev_date(rev_date);
+		reviewVO.setRev_date(new Date(System.currentTimeMillis()));
 		dao.insert(reviewVO);
 
 		return reviewVO;
@@ -49,6 +49,10 @@ public class ReviewService {
 
 	public ReviewVO getOneReview(String rev_no) {
 		return dao.findByPrimaryKey(rev_no);
+	}
+	
+	public ReviewVO getByOrdProd(String ord_no, String prod_no) {
+		return dao.findByOrdProd(ord_no, prod_no);
 	}
 
 	public List<ReviewVO> getAll() {

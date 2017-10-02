@@ -7,10 +7,12 @@
 <%@ page import="com.store.model.*"%>
 <%@ page import="com.ord.model.*"%>
 <%@ page import="com.ord_list.model.*"%>
+<%@ page import="com.review.model.*"%>
 
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
 <jsp:useBean id="ordSvc" scope="page" class="com.ord.model.OrdService" />
+<jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 <c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
@@ -78,11 +80,6 @@
 							<div>
 								<h4 class="bold text-info">匯款資訊</h4>
 								<div class="well" id="payInfo">
-									
-									匯款銀行：彰化銀行 蘆洲分行<br>
-									戶名：陳建儒<br>
-									銀行代碼：009 <br>
-									銀行帳號：9832-51-326845-00
 								</div>
 
 								<h4 class="bold text-info">銀行轉帳</h4>
@@ -136,9 +133,6 @@
         </div>
     </div>
 
-
-
-
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 <!--  --------------------------------------------------------------取消跳窗---------------------------------------------------------------->
 <div class="modal fade" id="modal-del">
@@ -152,7 +146,7 @@
 
             				<div class="container-floid">
 								<div class="row">
-									<div class="col-xs-12 col-sm-12 well">
+									<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 well">
 										<div class="pull-left">
 											訂單編號：<span id="ordNoD">O10000000001</span><br>
 											<small><span id="ordDateD">2017-09-30</span></small>
@@ -191,8 +185,86 @@
         </div>
     </div>
 
+<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
+ <!--  --------------------------------------------------------------評論跳窗---------------------------------------------------------------->
+<div class="modal fade" id="modal-rev">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" id="modalR">
 
+    			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="prodNameR">商品名稱</h4>
+				</div>
+
+            	<div class="container-folid pad15">
+            		<div class="row">
+            			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+
+							<form method="post" action="<%=request.getContextPath()%>/review/review.do">
+							<div>
+								<h4 class="bold text-info">沖泡方式</h4>
+								<div class="input-group">
+									<div class="input-group-addon">
+										重量
+									</div>
+									<input type="text" maxlength="3" name="useG" id="useG" class="form-control payWay atm textNumOnly" required>
+									<div class="input-group-addon bg-white">g</div>
+								</div>
+								<div class="input-group">
+									<div class="input-group-addon">
+										水量
+									</div>
+									<input type="text" maxlength="3" name="useMl" id="useMl" class="form-control payWay atm textNumOnly" required>
+									<div class="input-group-addon bg-white">ml</div>
+								</div>
+								<div class="input-group">
+									<div class="input-group-addon">
+										水溫
+									</div>
+									<input type="text" maxlength="3" name="useC" id="usesC" class="form-control payWay atm textNumOnly" required>
+									<div class="input-group-addon bg-white">°C</div>
+								</div>
+								<div class="input-group">
+									<div class="input-group-addon">
+										時間
+									</div>
+									<input type="text" maxlength="3" name="useS" id="useS" class="form-control payWay atm textNumOnly" required>
+									<div class="input-group-addon bg-white">sec</div>
+								</div>
+
+								<h4 class="bold text-info">評價</h4>
+								<div class="pull-right">
+									<span class="glyphicon glyphicon-star tx-gray revStar" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-star tx-gray revStar" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-star tx-gray revStar" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-star tx-gray revStar" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-star tx-gray revStar" aria-hidden="true"></span>
+								</div>
+								<input type="hidden" name="prod_score" required>
+					
+
+								<div class="form-group">
+								  <label for="rev_cont">評論:</label>
+								  <textarea class="form-control" rows="5" id="rev_cont"  name="rev_cont" required></textarea>
+								</div>
+
+								<div class="pull-right">
+									<input type="hidden" name="action" value="addRev">
+									<input type="hidden" id="ordNoR" name="ord_no" value="">
+									<input type="hidden" id="prodNoR" name="prod_no" value="">
+									<input type="submit" value="給評" class="form-control pull-right btn btn-primary btn-ms mgt10">
+								</div>
+							</div>
+							</form>
+
+            			</div>
+            		</div>
+            	</div>
+
+            </div>
+        </div>
+    </div>
 
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
 
@@ -240,7 +312,7 @@
 												</a></h4>
 											</div>
 											<div class="col-xs-8 col-sm-6 pull-right text-right">
-												<small>${ordVO.ord_date}</small><br>
+												<small><fmt:formatDate value="${ordVO.ord_date}" pattern="yyyy-MM-dd HH:mm"/></small><br>
 												<small>訂單編號：${ordVO.ord_no}</small>
 											</div>
 										</div>
@@ -273,8 +345,8 @@
 										                    </div>
 										                 </a>
 										                 	<div class="col-xs-10 col-xs-offset-1 col-sm-1 col-sm-offset-0">
-										                 		<c:if test="${ordVO.ord_stat=='已出貨'}">
-										                 		<span class="btn btn-xs btn-warning inline-b pull-right">給評</span>
+										                 		<c:if test="${ordVO.ord_stat=='已出貨'&&reviewSvc.getByOrdProd(ordVO.ord_no,prodVO.prod_no)==null}">
+										                 		<span class="btn btn-xs btn-warning inline-b pull-right" id="rev${ordVO.ord_no}${prodVO.prod_no}" >給評</span>
 										                 		</c:if>
 										                 	</div>
 										                 
@@ -287,7 +359,7 @@
 												</td>
 												<td data-th="小計">
 													NT$${prodVO.prod_price*ord_listVO.amont}
-												</td>												
+												</td>
 											</tr>
 										</tbody>
 										<c:set var="totalAmount" value="${totalAmount+ord_listVO.amont}"/>
@@ -317,10 +389,25 @@ var $btnPordX = $(".${prodVO.prod_no}").click(function(){
 		});
 		
 	});
-</script> 						
-										
+	
+//show Review Modal
+<c:if test="${ordVO.ord_stat=='已出貨'}">
+var $btnRev = $("#rev${ordVO.ord_no}${prodVO.prod_no}").click(function(){
+     var $ord_no = "${ordVO.ord_no}";
+     var $prod_no = "${prodVO.prod_no}";
+
+     $('#prodNameR').text("${prodVO.prod_name}");
+     $('#ordNoR').val($ord_no);
+     $('#prodNoR').val($prod_no);
+
+		$('#modal-rev').modal('show');
+		return false;
+ });
+</c:if>
+</script>
+
 										</c:forEach><%-- ord_listVO --%>
-										
+
 									</table>
 									</div>
 									<div class="container-floid cus-order-row">
@@ -353,18 +440,48 @@ var $btnPordX = $(".${prodVO.prod_no}").click(function(){
 												手機：${ordVO.ord_phone}
 											</div>
 											<div class="inline-b mgr40">
-												付款時間：${ordVO.pay_date}<br>
-												確認付款：${ordVO.pay_chk_date}<br>
+												<c:if test="${ordVO.pay_date!=null}">
+												付款時間：<fmt:formatDate value="${ordVO.pay_date}" pattern="yyyy-MM-dd HH:mm"/><br>
+												</c:if>
+												<c:if test="${ordVO.pay_chk_date!=null}">
+												確認付款：<fmt:formatDate value="${ordVO.pay_chk_date}" pattern="yyyy-MM-dd HH:mm"/>
+												</c:if>
 											</div>
 											<div class="inline-b">
-												出貨時間：${ordVO.send_date}<br>
+												<c:if test="${ordVO.send_date!=null}">
+												出貨時間：<fmt:formatDate value="${ordVO.send_date}" pattern="yyyy-MM-dd HH:mm"/><br>
 												物流編號：${ordVO.send_id}
+												</c:if>
 											</div>
 										</div>
 									</div>
 									
 <script>
 
+//show Store
+var $modalX = $("#modalX");
+var $btnStoreX = $(".${storeVO.store_no}").click(function(){
+		var storeNo =  $(".${storeVO.store_no}").attr("name");
+		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
+		$.ajax({
+			url : urlstr,
+			type : 'GET',
+			dataType: "html",
+			async: false,
+			success : function(result) {
+				while($modalX.children().length > 0){
+					$modalX.empty();
+				}
+				$modalX.html(result);
+			},
+			error : function(xhr) {
+				alert('Ajax request 發生錯誤');
+			}
+		});
+	});
+	
+
+<c:if test="${ordVO.ord_stat=='未付款'}">
 //show PayInfo
 var $btnPayInfo = $("#pay${ordVO.ord_no}").click(function(){
        var $action = "getPayInfo";
@@ -412,29 +529,9 @@ var $btnDel = $("#del${ordVO.ord_no}").click(function(){
 		$('#modal-del').modal('show');
 		return false;
    });
-   
-   
-//show Store
-var $modalX = $("#modalX");
-var $btnStoreX = $(".${storeVO.store_no}").click(function(){
-		var storeNo =  $(".${storeVO.store_no}").attr("name");
-		var urlstr = '<%=request.getContextPath()%>/FrontEnd/store/storePage.jsp?storeNo='+ storeNo;
-		$.ajax({
-			url : urlstr,
-			type : 'GET',
-			dataType: "html",
-			async: false,
-			success : function(result) {
-				while($modalX.children().length > 0){
-					$modalX.empty();
-				}
-				$modalX.html(result);
-			},
-			error : function(xhr) {
-				alert('Ajax request 發生錯誤');
-			}
-		});
-	});
+</c:if>   
+
+
 </script>									
 
 									</c:forEach><%-- ordVO --%>
@@ -450,7 +547,6 @@ var $btnStoreX = $(".${storeVO.store_no}").click(function(){
 		    </div>
 		    
 
-					   
 
 
 

@@ -54,7 +54,6 @@ $(document).ready(function(){
 });
 //pay from check
 $('#modal-pay :submit').click(function(){
-	console.log('333');
 	var isNG=false;
 	if(!$('.card').attr('readonly')&&!$('.atm').attr('readonly')){
 		var $point = $('#bankAc');
@@ -183,3 +182,60 @@ function cleanAttr(node){
 	node.removeAttr("data-placement");
 	node.removeAttr("data-original-title");
 }
+
+
+//choose star
+$(document).ready(function(){
+//		$('.revStar').mouseenter(function(){
+//			var $revStar = $('.revStar');
+//			for(var i = 0 ; i<=$('.revStar').index(this);i++){
+//				$($revStar[i]).removeClass('tx-gray');
+//				$($revStar[i]).addClass('tx-brn');
+//			}
+//		});
+//		$('.revStar').mouseleave(function(){
+//			var $revStar = $('.tx-brn');
+//			for(var i = 0 ; i<=$('.revStar').index(this);i++){
+//				$($revStar[i]).addClass('tx-gray');
+//				$($revStar[i]).removeClass('tx-brn');
+//			}
+//		});
+
+	$('.revStar').click(function(){
+		var $revStar = $('.revStar');
+		for(var i = 0 ; i<=$('.revStar').index(this);i++){
+			$($revStar[i]).removeClass('tx-gray');
+			$($revStar[i]).addClass('tx-brn');
+		}
+		for(var i = $('.revStar').index(this)+1 ; i<5;i++){
+			$($revStar[i]).addClass('tx-gray');
+			$($revStar[i]).removeClass('tx-brn');
+		}
+		$(':hidden[name="prod_score"]').val($('.revStar').index(this)+1);
+	});
+	
+
+	//modal-rev check
+	$('#modal-rev :submit').click(function(){
+		if($(':hidden[name="prod_score"]').val()==''){
+			var $ptr = $('.revStar');
+			$($ptr[0]).attr("data-toggle","tooltip");
+			$($ptr[0]).attr("data-placement","left");
+			$($ptr[0]).attr("data-original-title","請給星數");
+			$("[data-toggle='tooltip']").tooltip('show');
+			return false;
+		}
+	});
+	
+	//modal-rev closed Clean
+	$('#modal-rev').on('hide.bs.modal', function (e) {
+		$('#modal-rev input').not(':submit').each(function(){$(this).val('')});
+		$('#rev_cont').val('');
+		for(var i = 0 ; i<5;i++){
+			$($('.revStar')[i]).addClass('tx-gray');
+			$($('.revStar')[i]).removeClass('tx-brn');
+		}
+		return;
+	});
+
+});

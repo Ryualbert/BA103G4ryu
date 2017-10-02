@@ -36,6 +36,8 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 		"select avg(prod_score) from review where prod_no = ?";
 	private static final String GET_VO_BY_PROD = 
 		"SELECT rev_no, ord_no, prod_no, prod_score, use_way, rev_cont, to_char(rev_date,'yyyy-mm-dd') rev_date FROM REVIEW where prod_no = ? order by rev_no";
+	private static final String GET_VO_BY_ORD_PROD = 
+			"SELECT * FROM REVIEW where ord_no =? and prod_no = ?";
 	
 	
 	@Override
@@ -214,6 +216,71 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, rev_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVo 也稱為 Domain objects
+				reviewVO = new ReviewVO();
+				reviewVO.setRev_no(rs.getString("rev_no"));
+				reviewVO.setOrd_no(rs.getString("ord_no"));
+				reviewVO.setProd_no(rs.getString("prod_no"));
+				reviewVO.setProd_score(rs.getInt("prod_score"));
+				reviewVO.setUse_way(rs.getString("use_way"));
+				reviewVO.setRev_cont(rs.getString("rev_cont"));
+				reviewVO.setRev_date(rs.getDate("rev_date"));
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return reviewVO;
+	}
+	
+	@Override
+	public ReviewVO findByOrdProd(String ord_no, String prod_no) {
+		ReviewVO reviewVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_VO_BY_ORD_PROD);
+
+			pstmt.setString(1, ord_no);
+			pstmt.setString(2, prod_no);
 
 			rs = pstmt.executeQuery();
 
@@ -568,23 +635,34 @@ public class ReviewJDBCDAO implements ReviewDAO_interface {
 //		}
 		
 		// 查詢by Prod_no
-		List<ReviewVO> list = dao.getByProd("P1000000001");
-		for (ReviewVO aReviewVO : list) {
-			System.out.print(aReviewVO.getRev_no() + ",");
-			System.out.print(aReviewVO.getOrd_no() + ",");
-			System.out.print(aReviewVO.getProd_no() + ",");
-			System.out.print(aReviewVO.getProd_score() + ",");
-			System.out.print(aReviewVO.getUse_way() + ",");
-			System.out.print(aReviewVO.getRev_cont() + ",");
-			System.out.println(aReviewVO.getRev_date());
-			System.out.println();
-		}
+//		List<ReviewVO> list = dao.getByProd("P1000000001");
+//		for (ReviewVO aReviewVO : list) {
+//			System.out.print(aReviewVO.getRev_no() + ",");
+//			System.out.print(aReviewVO.getOrd_no() + ",");
+//			System.out.print(aReviewVO.getProd_no() + ",");
+//			System.out.print(aReviewVO.getProd_score() + ",");
+//			System.out.print(aReviewVO.getUse_way() + ",");
+//			System.out.print(aReviewVO.getRev_cont() + ",");
+//			System.out.println(aReviewVO.getRev_date());
+//			System.out.println();
+//		}
 		
 		//查心得分享人數
-		System.out.println(dao.countByProd("P1000000002"));
+//		System.out.println(dao.countByProd("P1000000002"));
 		
 		//查分數
-		System.out.println(dao.scoreByProd("P1000000002"));
+//		System.out.println(dao.scoreByProd("P1000000002"));
+		
+		// 查詢
+		ReviewVO reviewVO3 = dao.findByOrdProd("O1000000010", "P1000000004");
+		System.out.print(reviewVO3.getRev_no() + ",");
+		System.out.print(reviewVO3.getOrd_no() + ",");
+		System.out.print(reviewVO3.getProd_no() + ",");
+		System.out.print(reviewVO3.getProd_score() + ",");
+		System.out.print(reviewVO3.getUse_way() + ",");
+		System.out.print(reviewVO3.getRev_cont() + ",");
+		System.out.println(reviewVO3.getRev_date());
+		System.out.println("---------------------");
 	}
 
 

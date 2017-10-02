@@ -62,10 +62,14 @@
             <div class="container-floid">
               <div class="row">
                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
-                
+                	<%
+                        StoreVO storeVO = (StoreVO) pageContext.getAttribute("storeVO");
+                        String store_cont = storeVO.getStore_cont().replaceAll("(\r\n|\n)", "<br>");
+                        pageContext.setAttribute("store_cont",store_cont);
+                    %>
                 
                   <h3 class="text-info bold">${storeVO.store_name}</h3>
-                  <p>${storeVO.store_cont}</p>
+                  <p>${store_cont}</p>
 
                 </div>
                 <div class="col-xs-12 col-sm-5 mgt20">
@@ -73,7 +77,6 @@
                     <p>
                       地址： ${storeVO.store_add}<br>
                       電話：  ${storeVO.store_phone}<br>
-                      營業時間： 10:00～18:00??
                     </p>
                     <h4 class="text-warning">全店滿$${storeVO.store_free_ship}免運費</h4>
                     <small class="pull-right">店家編號 ${storeVO.store_no}</small>

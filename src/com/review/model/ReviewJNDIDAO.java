@@ -46,6 +46,8 @@ public class ReviewJNDIDAO implements ReviewDAO_interface {
 		"select avg(prod_score) from review where prod_no = ?";
 	private static final String GET_VO_BY_PROD = 
 		"SELECT rev_no, ord_no, prod_no, prod_score, use_way, rev_cont, to_char(rev_date,'yyyy-mm-dd') rev_date FROM REVIEW where prod_no = ? order by rev_no";
+	private static final String GET_VO_BY_ORD_PROD = 
+			"SELECT * FROM REVIEW where ord_no =? and prod_no = ?";
 	
 	
 	@Override
@@ -253,6 +255,69 @@ public class ReviewJNDIDAO implements ReviewDAO_interface {
 		}
 		return reviewVO;
 	}
+	
+	
+	@Override
+	public ReviewVO findByOrdProd(String ord_no, String prod_no) {
+		ReviewVO reviewVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_VO_BY_ORD_PROD);
+
+			pstmt.setString(1, ord_no);
+			pstmt.setString(2, prod_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVo 也稱為 Domain objects
+				reviewVO = new ReviewVO();
+				reviewVO.setRev_no(rs.getString("rev_no"));
+				reviewVO.setOrd_no(rs.getString("ord_no"));
+				reviewVO.setProd_no(rs.getString("prod_no"));
+				reviewVO.setProd_score(rs.getInt("prod_score"));
+				reviewVO.setUse_way(rs.getString("use_way"));
+				reviewVO.setRev_cont(rs.getString("rev_cont"));
+				reviewVO.setRev_date(rs.getDate("rev_date"));
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return reviewVO;
+	}
+
+	
 
 	@Override
 	public List<ReviewVO> getAll() {
