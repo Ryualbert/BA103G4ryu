@@ -74,9 +74,13 @@ public class MemService {
 	public void deleteMem(String mem_ac) {
 		dao.delete(mem_ac);
 	}
-	
-	public MemVO getOneProd(String mem_ac) {
+
+	public MemVO getOneMem(String mem_ac) {
 		return dao.findByPrimaryKey(mem_ac);
+	}
+	//名稱錯誤
+	public MemVO getOneProd(String mem_ac) {
+		return getOneMem(mem_ac);
 	}
 
 	public List<MemVO> getAll() {

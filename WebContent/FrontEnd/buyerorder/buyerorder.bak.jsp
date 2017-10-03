@@ -60,7 +60,7 @@
             		<div class="row">
             			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 
-            				<div class="container-fluid">
+            				<div class="container-floid">
 								<div class="row">
 									<div class="col-xs-12 col-sm-12">
 										<div class="pull-left">
@@ -144,7 +144,7 @@
             		<div class="row">
             			<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 
-            				<div class="container-fluid">
+            				<div class="container-floid">
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 well">
 										<div class="pull-left">
@@ -304,7 +304,7 @@
  									<c:forEach var="ordVO" items="${ordVOsList.get(count.index)}">
 									<c:set var="storeVO" value="${storeSvc.getOneStore(prodSvc.getOneProd(ordSvc.getOrd_listByOrd(ordVO.ord_no).toArray()[0].prod_no).store_no)}" scope="page"/>
 									
-									<div class="container-fluid padt10 mgt20">
+									<div class="container-floid padt10 mgt20">
 										<div class="row">
 											<div class="col-xs-4 col-sm-6 bold pull-left">
 												<h4><a class="${storeVO.store_no}" name="${storeVO.store_no}" href='#modal-id' data-toggle="modal">
@@ -317,7 +317,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="container-fluid ">
+									<div class="container-floid ">
 									<table class="table table-hover table-striped table-rwd">
 
 
@@ -329,7 +329,7 @@
 										<tbody>
 											<tr>
 												<td  data-th="商品">
-													<div class="container-fluid">
+													<div class="container-floid">
 										                <div class="row zidx0">
 										                
 										                <a class="${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
@@ -410,7 +410,7 @@ var $btnRev = $("#rev${ordVO.ord_no}${prodVO.prod_no}").click(function(){
 
 									</table>
 									</div>
-									<div class="container-fluid cus-order-row">
+									<div class="container-floid cus-order-row">
 										<a role="button" data-toggle="collapse" href="#sendInfo${ordVO.ord_no}" aria-expanded="false" aria-controls="#sendInfo${ordVO.ord_no}">
 										<div class="row">
 											<div class="col-xs-12 col-sm-12">

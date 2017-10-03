@@ -138,7 +138,7 @@
       <div class="row ">
 
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 mgb30">
-          <div class="container-floid">
+          <div class="container-fluid">
             <div class="row">
               <div class="col-xs-12 col-sm-12">
                 <div class="pull-left inline-b">
@@ -155,7 +155,8 @@
             </div>
           </div>
 
-          <div class="container-floid">
+          <div class="container-fluid">
+            <div class="row">
 
 
 
@@ -183,19 +184,18 @@
 		           	}
 		           	pageContext.setAttribute("star",star);
 		         %>
-				
+			         	<a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
                 <div class="row cus-prod-row zidx0">
                   <div class="col-xs-12 col-sm-2 vam-div150">
                     <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
                   </div>
-                  <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
                     <div class="col-xs-12 col-sm-10">
                       <h4 class="inline-b bold">${prodVO.prod_name}</h4><small class="inline-b pull-right">${prodVO.ed_time}</small>
                       <div>
                         <h5 class="inline-b bold text-info">NT$ ${prodVO.prod_price}　${prodVO.bean_contry}　${prodVO.proc}　${prodVO.roast}　${storeSvc.getonestore(prodVO.store_no).store_name}</h5>
-                        <button type="button" class="btn btn-default btn-sm inline-b pull-right zidx5 ${(isFollow)?'bor-info':''}" aria-label="Left Align">
-                            <span class="${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
-                            <span class="glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
+                        <button type="button" class="bk${prodVO.prod_no} btn btn-default btn-sm inline-b pull-right zidx5 ${(isFollow)?'bor-info':''}" aria-label="Left Align">
+                            <span class="bk${prodVO.prod_no} count ${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
+                            <span class="bk${prodVO.prod_no} glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
                         </button>
                         <div class="pull-right mgr20" title="${reviewSvc.getScoreByProd(prodVO.prod_no)}/5.0">
                        		<span class="glyphicon glyphicon-star ${(star['0'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
@@ -208,13 +208,13 @@
                       </div>
                       <p>${fn:substring(prodVO.prod_cont,0,120)} ${(prodVO.prod_cont.length() >120)? '...' : ''}</p>
                     </div>
-                  </a>
                 </div>
+                </a>
                 
                 
 <script>
+//show Prod
 var $modalX = $("#modalX");
-
 var $btn = $("#${prodVO.prod_no}").click(function(){
 		var prodNo =  $("#${prodVO.prod_no}").attr("id");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
@@ -236,11 +236,47 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 		});
 		
 	});
-</script> 
+
+
+//foProd
+var $btnFoProd = $("button.bk${prodVO.prod_no}").click(function(){
+    var $action = "foProd";
+    var $prod_no = "${prodVO.prod_no}"
+    $.ajax({
+        url : "<%=request.getContextPath()%>/fo_prod/fo_prodAjax.do",
+        type : 'post',
+        contentType: "application/json",
+        data: JSON.stringify({action:$action, prod_no: $prod_no}),
+        dataType: "JSON",
+        async: false,
+        success : function(jdata) {     
+            if(jdata.err!=null){
+                alert(jdata.err);
+            } else {
+                if(jdata.isAdd==1){
+          $('.bk${prodVO.prod_no}.count').each(function(){$(this).text(jdata.count)})
+            $('button.bk${prodVO.prod_no}').addClass('bor-info');
+                    $('.bk${prodVO.prod_no}').addClass('text-info');
+                    $('.bk${prodVO.prod_no}').removeClass('tx-gray');
+                } else{
+          $('.bk${prodVO.prod_no}.count').each(function(){$(this).text(jdata.count)})
+                    $('button.bk${prodVO.prod_no}').removeClass('bor-info');
+                    $('.bk${prodVO.prod_no}').removeClass('text-info');
+                    $('.bk${prodVO.prod_no}').addClass('tx-gray');
+                }
+            }
+        },
+        error : function(xhr) {
+            console.log('修改收藏失敗');
+        }
+    });
+    return false;
+});
+</script>  
 
 				</c:forEach>
 				
-
+                </div>
               </div>
         </div>
       </div>

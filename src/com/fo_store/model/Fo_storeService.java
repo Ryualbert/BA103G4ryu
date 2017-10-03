@@ -3,6 +3,8 @@ package com.fo_store.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.fo_prod.model.Fo_prodVO;
+
 public class Fo_storeService {
 	private Fo_storeDAO_interface dao;
 	
@@ -35,5 +37,9 @@ public class Fo_storeService {
 	
 	public  List<Fo_storeVO> getAllByMem(String mem_ac) {
 		return  dao.getByMem(mem_ac);
+	}
+	
+	public  Fo_storeVO getOne (String store_no, String mem_ac) {
+		return  dao.findByPrimaryKey(store_no, mem_ac);
 	}
 }

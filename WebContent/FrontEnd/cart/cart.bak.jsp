@@ -73,7 +73,7 @@
 									<tbody id="tbody${prodVO.prod_no}">
 										<tr>
 											<td  data-th="商品">
-												<div class="container-fluid">
+												<div class="container-floid">
 									                <div class="row zidx0">
 									                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 									                  
@@ -97,7 +97,7 @@
 												NT$<span class="price${storeVO.store_no}" price="${prodVO.prod_price}">${prodVO.prod_price}<span>
 											</td>
 											<td data-th="數量">
-												<div class="container-fluid inline-b w100">
+												<div class="container-floid inline-b w100">
 													<div class="row">									
 														<div class="col-xs-12 col-sm-12">
 			                                            <span id="sub${cart_listVO.prod_no}" class="glyphicon glyphicon-minus btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
@@ -267,7 +267,7 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 								</table>
 
 
-								<div class="container-fluid">
+								<div class="container-floid">
 									<div class="row">
 										<div class="col-xs-12 col-sm-12">
 											

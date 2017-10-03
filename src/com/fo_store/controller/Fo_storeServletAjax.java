@@ -1,9 +1,8 @@
-package com.ord.controller;
+package com.fo_store.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,25 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fo_store.model.Fo_storeService;
+import com.fo_store.model.Fo_storeVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.ord.model.OrdService;
-import com.ord.model.OrdVO;
-import com.store.model.StoreService;
-import com.store.model.StoreVO;
 
 
-@WebServlet("/ord/ordAjax.do")
-public class OrdServletAjax extends HttpServlet {
+@WebServlet("/fo_store/fo_storeAjax.do")
+public class Fo_storeServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static String CONTENT_TYPE = "application/json; charset=utf-8";
-	
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PrintWriter out = res.getWriter();
 		out.println("doGet");
 	}
-
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
@@ -47,31 +43,21 @@ public class OrdServletAjax extends HttpServlet {
 //		System.out.println("Jin"+jsonIn);
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
-		String ord_no = jsonObject.get("ord_no").getAsString();
 		String store_no = jsonObject.get("store_no").getAsString();
 		
 		String outStr = "";
 		res.setContentType(CONTENT_TYPE);
 		PrintWriter out = res.getWriter();
 		
-		if(action.equals("getPayInfo")){
+		if(action.equals("foStore")){
 			
 			Map<String,String> errorMsgs = new HashMap<String,String>();
-	
+			
 			try{
 				HttpSession session = req.getSession();
 				String mem_ac = (String) session.getAttribute("mem_ac");
 				if(mem_ac==null || mem_ac.trim().length()==0){
-					errorMsgs.put("errLogin", "沒有登入");
-				}
-				
-				OrdService ordSvc = new OrdService();
-				OrdVO ordVO = ordSvc.getOrdByOrdno(ord_no);
-				StoreService storeSvc = new StoreService();
-				StoreVO storeVO = storeSvc.getOneStore(store_no);
-				
-				if(!mem_ac.equals(ordVO.getMem_ac())){
-					errorMsgs.put("errMem_ac", "非下訂單帳號查詢");
+					errorMsgs.put("err", "沒有登入");
 				}
 				
 				if (!errorMsgs.isEmpty()) {
@@ -80,10 +66,27 @@ public class OrdServletAjax extends HttpServlet {
 					return;
 				}
 				
-				PayInfo payInfo = new PayInfo(ordVO.getOrd_no(),  ordVO.getOrd_date(),  ordVO.getTotal_pay(),  storeVO.getStore_atm_info());
-				outStr = gson.toJson(payInfo);
+				Fo_storeService fo_storeSvc = new Fo_storeService();
+				Fo_storeVO fo_storeVO = fo_storeSvc.getOne(store_no,mem_ac);
+				Map<String,Integer> jdata = new HashMap<String,Integer>();
+				//add
+				if(fo_storeVO == null){
+					fo_storeVO = fo_storeSvc.addFo_store(store_no, mem_ac);
+					Integer count = fo_storeSvc.getCountByStore(store_no);
+					jdata.put("isAdd", 1);
+					jdata.put("count", count);
+				//delete
+				} else {
+					fo_storeSvc.deleteFo_store(store_no, mem_ac);
+					Integer count = fo_storeSvc.getCountByStore(store_no);
+					jdata.put("isAdd", 0);
+					jdata.put("count", count);
+				}
+				
+				outStr = gson.toJson(jdata);
 				out.print(outStr);
-//				System.out.println("Jout"+outStr);
+				System.out.println("***************");
+				System.out.println("Jout"+outStr);
 				
 				
 			} catch (Exception e) {//其他錯誤
@@ -91,26 +94,10 @@ public class OrdServletAjax extends HttpServlet {
 //				errorMsgs.put("err","查詢訂單資訊失敗");
 				outStr = gson.toJson(errorMsgs);
 				out.print(outStr);
-				return;//程式中斷		
+				return;
 			}
 
 		}
+	}
 
-	}
-	
-	class PayInfo{
-		String ord_no;
-		Date ord_date;
-		Integer total_pay;
-		String store_atm_info;
-		
-		public PayInfo(String ord_no, Date ord_date, Integer total_pay, String store_atm_info) {
-			super();
-			this.ord_no = ord_no;
-			this.ord_date = ord_date;
-			this.total_pay = total_pay;
-			this.store_atm_info = store_atm_info;
-		}
-		
-	}
 }

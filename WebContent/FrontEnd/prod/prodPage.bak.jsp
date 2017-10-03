@@ -68,7 +68,7 @@
                     <h4 class="modal-title bold">${prodVO.prod_name}</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="container-fluid">
+                    <div class="container-floid">
 
 
                         <div class="row">
@@ -77,7 +77,7 @@
 
 
                                 <!-- ---------------商品圖片-------------- -->
-                                <div class="container-fluid">
+                                <div class="container-floid">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-11 col-sm-offset-1">
                                             <div id="prod-cas" class="carousel slide" data-ride="carousel">
@@ -157,7 +157,7 @@
                                     供應數量：${prodVO.prod_sup}
                                 </p>
 
-                                <div class="container-fluid">
+                                <div class="container-floid">
                                     <div class="row">
                                         <div class="col-xs-7 col-sm-6">
                                             <span id="sub" class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
@@ -292,7 +292,7 @@
                                     pageContext.setAttribute("prod_cont",prod_cont);
                                 %>
                                 <!-- ---------------商品描述-------------- -->
-                                <div class="container-fluid">
+                                <div class="container-floid">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-11 col-sm-offset-1">
                                             <p>
@@ -376,7 +376,7 @@
                                                 <!-- -----------------沖泡方式------------------- -->               
                                                 <c:set var="use_way" value="${fn:split(reviewVO.use_way, ',')}" />
                                                 <div class="col-xs-12 col-sm-4 col-sm-offset-1 mgt10 mg-auto">
-                                                    <div class="container-fluid padt10">
+                                                    <div class="container-floid padt10">
                                                         <div class="row">
                                                             <div class="col-xs-3 col-sm-3 text-center">
                                                                 <img class="img-responsive mg-auto inline-b w45 " src="<%=request.getContextPath()%>/FrontEnd/res\img\icon\weight.png">
@@ -428,7 +428,7 @@
                                                  <!-- -----------------給分 喜歡------------------- -->
                                                 <div class="col-xs-12 col-sm-2 col-sm-offset-1">
 
-                                                    <div class="container-fluid">
+                                                    <div class="container-floid">
                                                         <div class="row">
                                                             <div class="col-xs-6 col-sm-12 padt10">
                                                                 <span class="glyphicon glyphicon-star ${(starOfRev['0'])? 'tx-brn' : 'tx-gray'}" aria-hidden="true"></span>
@@ -597,15 +597,13 @@ var $replyBtn = $("#replyBtn${qaVO.qa_no}").click(function(){
 
                                             <c:if test="${storeVO.mem_ac!=mem_ac}">
                                             <div class="row mgt20">
-                                                <div class="container-fluid">
-                                                    <div class="row">
-                                                        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                                                          <div class="form-group">
-                                                              <textarea class="form-control" rows="5" id="qa_cont"  name="qa_cont" placeholder="${(param.errQa_cont==null)?'提出詢問...':param.errQa_cont}" required></textarea>
-                                                        
-                                                            </div>
-                                                            <span class="btn btn-default btn-sm pull-right" id="askBtn" >提問</span>
+                                                <div class="container-floid">
+                                                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                                      <div class="form-group">
+                                                          <textarea class="form-control" rows="5" id="qa_cont"  name="qa_cont" placeholder="${(param.errQa_cont==null)?'提出詢問...':param.errQa_cont}" required></textarea>
+
                                                         </div>
+                                                        <span class="btn btn-default btn-sm pull-right" id="askBtn" >提問</span>
                                                     </div>
                                                 </div>
                                             </div>

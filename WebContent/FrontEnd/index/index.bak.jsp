@@ -42,8 +42,7 @@
 
 
 		<!--BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB-->
-		<div class="container-fluid mgt-depn-nav">
-			<div class="row">
+		<div class="container-floid mgt-depn-nav">
 			<div id="index-cas" class="carousel slide" data-ride="carousel">
 			    <!-- 幻燈片小圓點區 -->
 			    <ol class="carousel-indicators">
@@ -83,7 +82,7 @@
 			    <a class="right carousel-control" href="#index-cas" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
 			</div>
 		</div>
-	</div>
+		
 
 
 
@@ -117,7 +116,7 @@
 
 					    	<!-- tab1111111111111111111111111111111 -->
 					        <div role="tabpanel" class="tab-pane active" id="tab1">
-								<div class="container-fluid">
+								<div class="container-floid">
 									<div class="row">
 
 
@@ -266,27 +265,25 @@ var $btnFoProd = $("button.bk${prodVO.prod_no}").click(function(){
 
 					        <!-- tab333333333333333333333333333333333 -->
 					        <div role="tabpanel" class="tab-pane" id="tab3">
-								<div class="container-fluid">
-									
-									<div class="row">
-										<c:forEach var="actVO" items="${actlist}">
-											<div class="row mgb30 mgt20 ">
-												<div class="col-xs-12 col-sm-6">
-													<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/act/actImg.do?act_no=${actVO.act_no}&index=1">
-												</div>
-												<div class="col-xs-12 col-sm-6">
-													<h4 class="inline-b bold">${actVO.act_name}</h4>
-													<p>${fn:substring(actVO.act_cont,0,160)}...</p>
-													<h5 class="inline-b pull-left text-info">${actVO.act_op_date}</h5>
-													<h5 class="inline-b pull-left mgl20 text-info">${fn:substring(actVO.act_add,0,3)}</h5>
-													<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
-																        					<span class="tx-gray">42</span>
-														<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
-													</button>
-												</div>
+								<div class="container-floid">
+
+									<c:forEach var="actVO" items="${actlist}">
+										<div class="row mgb30 mgt20 ">
+											<div class="col-xs-12 col-sm-6">
+												<img class="img-responsive  mg-auto vam-img" src="<%=request.getContextPath()%>/act/actImg.do?act_no=${actVO.act_no}&index=1">
 											</div>
-										</c:forEach>
-									</div>
+											<div class="col-xs-12 col-sm-6">
+												<h4 class="inline-b bold">${actVO.act_name}</h4>
+												<p>${fn:substring(actVO.act_cont,0,160)}...</p>
+												<h5 class="inline-b pull-left text-info">${actVO.act_op_date}</h5>
+												<h5 class="inline-b pull-left mgl20 text-info">${fn:substring(actVO.act_add,0,3)}</h5>
+												<button type="button" class="btn btn-default btn-sm zidx5 pull-right" aria-label="Left Align">
+						        					<span class="tx-gray">42</span>
+													<span class="glyphicon glyphicon-bookmark tx-gray" aria-hidden="true"></span>
+												</button>
+											</div>
+										</div>
+									</c:forEach>
 									
 
 

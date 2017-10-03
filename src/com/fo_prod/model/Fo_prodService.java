@@ -15,7 +15,7 @@ public class Fo_prodService {
 		Fo_prodVO fo_prodVO = new Fo_prodVO();
 		fo_prodVO.setProd_no(prod_no);
 		fo_prodVO.setMem_ac(mem_ac);
-		fo_prodVO.setFo_date(Date.valueOf(java.time.LocalDate.now()));
+		fo_prodVO.setFo_date(new Date(System.currentTimeMillis()));
 		dao.insert(fo_prodVO);
 		return fo_prodVO;
 	}
@@ -35,5 +35,9 @@ public class Fo_prodService {
 	
 	public  List<Fo_prodVO> getAllByMem(String mem_ac) {
 		return  dao.getByMem(mem_ac);
+	}
+	
+	public  Fo_prodVO getOne (String prod_no, String mem_ac) {
+		return  dao.findByPrimaryKey(prod_no, mem_ac);
 	}
 }

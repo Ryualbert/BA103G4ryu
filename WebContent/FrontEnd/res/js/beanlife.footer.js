@@ -23,7 +23,9 @@ function myFunction() {
 
 //modal closed toTop
 $('#modal-id').on('hide.bs.modal', function (e) {
-	$modalX.scrollTop(0);
+	$("#modalX").empty();
+	$("#modalX").scrollTop(0);
+//	$modalX.scrollTop(0);
 	return;
 });
 

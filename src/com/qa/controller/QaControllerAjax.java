@@ -49,7 +49,7 @@ public class QaControllerAjax extends HttpServlet {
 			jsonIn.append(line);
 		}
 		br.close();
-		System.out.println("Jin"+jsonIn);
+//		System.out.println("Jin"+jsonIn);
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
 
@@ -62,9 +62,6 @@ public class QaControllerAjax extends HttpServlet {
 		if ("addQa".equals(action)) { // 來自addEmp.jsp的請求  
 			
 			Map<String,String> errorMsgs = new HashMap<String,String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String prod_no = jsonObject.get("prod_no").getAsString();
 			if(!prod_no.matches("P[0-9]{10}")){
@@ -74,7 +71,9 @@ public class QaControllerAjax extends HttpServlet {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				HttpSession session = req.getSession();
 				String mem_ac = (String) session.getAttribute("mem_ac");
-				
+				if(mem_ac==null || mem_ac.trim().length()==0){
+					errorMsgs.put("errLogin", "沒有登入");
+				}
 				
 				String qa_cont = jsonObject.get("qa_cont").getAsString().trim();
 				if (qa_cont == null || (qa_cont).length() == 0) {
@@ -114,10 +113,7 @@ public class QaControllerAjax extends HttpServlet {
 		if ("replyQa".equals(action)) { // 來自addEmp.jsp的請求  
 			
 			Map<String,String> errorMsgs = new HashMap<String,String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-			
+				
 			String prod_no = jsonObject.get("prod_no").getAsString();
 			if(!prod_no.matches("P[0-9]{10}")){
 				errorMsgs.put("errProd_no","Prod編號格式不正確");
@@ -126,6 +122,9 @@ public class QaControllerAjax extends HttpServlet {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				HttpSession session = req.getSession();
 				String mem_ac = (String) session.getAttribute("mem_ac");
+				if(mem_ac==null || mem_ac.trim().length()==0){
+					errorMsgs.put("errLogin", "沒有登入");
+				}
 				
 				ProdService prodSvc =new ProdService();
 				StoreService storeSvc = new StoreService();
@@ -133,7 +132,6 @@ public class QaControllerAjax extends HttpServlet {
 				
 				if(!storeVO.getMem_ac().equals(mem_ac)){
 					System.out.println(storeVO.getMem_ac());
-					System.out.println(mem_ac);
 					errorMsgs.put("errMem_ac","回覆帳號不正確");
 				}				
 				String qa_no = jsonObject.get("qa_no").getAsString();
@@ -147,7 +145,7 @@ public class QaControllerAjax extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println(errorMsgs);
+//					System.out.println(errorMsgs);
 					String stat = "?prodNo="+prod_no+"&status=2&errQa_reply_cont="+errorMsgs.get("errQa_reply_cont");
 					String url = "/FrontEnd/prod/prodPage.jsp"+stat;
 					RequestDispatcher successView = req.getRequestDispatcher(url); 
@@ -167,7 +165,7 @@ public class QaControllerAjax extends HttpServlet {
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+//				System.out.println(e.getMessage());
 				errorMsgs.put("err", e.getMessage());
 //				errorMsgs.put("err","加入購物車失敗");
 				String stat = "?prodNo="+prod_no+"&status=2&errQa_reply_cont="+errorMsgs.get("errQa_reply_cont");

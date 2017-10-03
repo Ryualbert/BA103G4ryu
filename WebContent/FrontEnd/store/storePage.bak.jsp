@@ -5,7 +5,6 @@
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.store.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
-<%@ page import="com.fo_store.model.*"%>
 <%@ page import="com.review.model.*"%>
 <%@ page import="com.like_rev.model.*"%>
 <%@ page import="com.qa.model.*"%>
@@ -15,14 +14,12 @@
 <!-- --------------------------------------------------店家---------------------------------------------------------------------- -->
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
-<jsp:useBean id="fo_storeSvc" scope="page" class="com.fo_store.model.Fo_storeService" />
 <jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
     
 <c:set var="mem_ac" value="${session.mem_ac}" scope="page"/>
 <c:set var="storeVO" value="${storeSvc.getOneStore(param.storeNo)}" scope="page"/>
 <c:set var="prodSet" value="${storeSvc.getProdsByStore(param.storeNo)}" scope="page"/>
-<c:set var="fo_prodlist" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
-<c:set var="fo_storelist" value="${fo_storeSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 
 <!--     <div class="modal" id="store1"> -->
 <!--       <div class="modal-dialog modal-lg"> -->
@@ -34,7 +31,7 @@
           </div>
           <div class="modal-body">
 
-            <div class="container-fluid">
+            <div class="container-floid">
               <div class="row">
                 <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                   
@@ -62,23 +59,13 @@
               </div>
             </div>
 
-            <div class="container-fluid">
+            <div class="container-floid">
               <div class="row">
                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
                 	<%
                         StoreVO storeVO = (StoreVO) pageContext.getAttribute("storeVO");
                         String store_cont = storeVO.getStore_cont().replaceAll("(\r\n|\n)", "<br>");
                         pageContext.setAttribute("store_cont",store_cont);
-
-                        
-                        //此會員對此Store是否Follow的Boolean
-                        Boolean isFollow = false;
-                        for (Fo_storeVO fo_storeVO: (List<Fo_storeVO>)pageContext.getAttribute("fo_storelist")){
-                          if(fo_storeVO.getStore_no().equals(storeVO.getStore_no())){
-                            isFollow = true;
-                          }
-                        }
-                        pageContext.setAttribute("isFollow",isFollow);
                     %>
                 
                   <h3 class="text-info bold">${storeVO.store_name}</h3>
@@ -91,13 +78,8 @@
                       地址： ${storeVO.store_add}<br>
                       電話：  ${storeVO.store_phone}<br>
                     </p>
-                    <button type="button" class="bk${storeVO.store_no} btn btn-default btn-sm zidx5 pull-right ${(isFollow)?'bor-info':''}" aria-label="Left Align">
-                        <span class="bk${storeVO.store_no} count ${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
-                        <span class="bk${storeVO.store_no} glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
-                    </button>
                     <h4 class="text-warning">全店滿$${storeVO.store_free_ship}免運費</h4>
-
-                    <small class="">店家編號 ${storeVO.store_no}</small>
+                    <small class="pull-right">店家編號 ${storeVO.store_no}</small>
                   </div>
 
                   <div id="map"></div>
@@ -107,7 +89,7 @@
             </div>
 
 
-            <div class="container-fluid padt20">
+            <div class="container-floid padt20">
               <div class="row">
         
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
@@ -116,8 +98,8 @@
 						<%
 							String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 							//此會員對此商品是否Follow的Boolean
-                             	isFollow = false;
-                             	for (Fo_prodVO fo_prodVO: (List<Fo_prodVO>)pageContext.getAttribute("fo_prodlist")){
+                             	Boolean isFollow = false;
+                             	for (Fo_prodVO fo_prodVO: (List<Fo_prodVO>)pageContext.getAttribute("fo_list")){
                              		if(fo_prodVO.getProd_no().equals(prod_no)){	                              			
                              			isFollow = true;
                              		}
@@ -169,6 +151,7 @@
 				                      
 <script>
 var $modalX = $("#modalX");
+
 var $btn = $("#sp${prodVO.prod_no}").click(function(){
 		var prodNo =  $("#sp${prodVO.prod_no}").attr("href");
 		var urlstr = '<%=request.getContextPath()%>/FrontEnd/prod/prodPage.jsp?prodNo='+prodNo;
@@ -190,7 +173,8 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
 		});
 		$modalX.scrollTop(0);
 	});
-</script>
+</script>                   
+				                      
 
 				    	</c:forEach>
 
@@ -217,40 +201,4 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
         map: map
       });
   };
-
-
-//foStore
-var $btnFoStore = $("#modal-id button.bk${storeVO.store_no}").click(function(){
-    var $action = "foStore";
-    var $store_no = "${storeVO.store_no}"
-    $.ajax({
-        url : "<%=request.getContextPath()%>/fo_store/fo_storeAjax.do",
-        type : 'post',
-        contentType: "application/json",
-        data: JSON.stringify({action:$action, store_no: $store_no}),
-        dataType: "JSON",
-        async: false,
-        success : function(jdata) {
-            if(jdata.err!=null){
-                alert(jdata.err);
-            } else {
-                if(jdata.isAdd==1){
-                    $('.bk${storeVO.store_no}.count').each(function(){$(this).text(jdata.count)})
-                    $('.bk${storeVO.store_no}').addClass('text-info');
-                    $('.bk${storeVO.store_no}').removeClass('tx-gray');
-                    $('button.bk${storeVO.store_no}').addClass('bor-info');
-                } else{
-                    $('.bk${storeVO.store_no}.count').each(function(){$(this).text(jdata.count)})
-                    $('button.bk${storeVO.store_no}').removeClass('bor-info');
-                    $('.bk${storeVO.store_no}').removeClass('text-info');
-                    $('.bk${storeVO.store_no}').addClass('tx-gray');
-                }
-            }
-        },
-        error : function(xhr) {
-            console.log('修改收藏失敗');
-        }
-    });
-    return false;
-});
 </script>

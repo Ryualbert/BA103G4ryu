@@ -2,6 +2,7 @@ package com.like_rev.model;
 
 import java.util.List;
 
+import com.fo_prod.model.Fo_prodVO;
 import com.fo_store.model.Fo_storeVO;
 
 public class Like_revService {
@@ -35,6 +36,10 @@ public class Like_revService {
 	
 	public  List<Like_revVO> getAllByMem(String mem_ac) {
 		return  dao.getByMem(mem_ac);
+	}
+	
+	public  Like_revVO getOne (String rev_no, String mem_ac) {
+		return  dao.findByPrimaryKey(rev_no, mem_ac);
 	}
 	
 }
