@@ -92,7 +92,7 @@
                       電話：  ${storeVO.store_phone}<br>
                     </p>
                     <button type="button" class="bk${storeVO.store_no} btn btn-default btn-sm zidx5 pull-right ${(isFollow)?'bor-info':''}" aria-label="Left Align">
-                        <span class="bk${storeVO.store_no} count ${(isFollow)?'text-info':'tx-gray'}">${fo_prodSvc.getCountByProd(prodVO.prod_no)}</span>
+                        <span class="bk${storeVO.store_no} count ${(isFollow)?'text-info':'tx-gray'}">${fo_storeSvc.getCountByStore(storeVO.store_no)}</span>
                         <span class="bk${storeVO.store_no} glyphicon glyphicon-bookmark ${(isFollow)?'text-info':'tx-gray'}" aria-hidden="true"></span>
                     </button>
                     <h4 class="text-warning">全店滿$${storeVO.store_free_ship}免運費</h4>

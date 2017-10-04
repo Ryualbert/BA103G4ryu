@@ -98,14 +98,20 @@
                       </a>
                       <ul class="dropdown-menu zidx5">
                     <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
-	                    <li><a href="">店家中心</a></li>
-	                    <li><a href="">訂單管理</a></li>
-	                    <li role="presentation" class="divider"></li>
+                      <li><a href="">店家中心</a></li>
+                      <li><a href="">訂單管理</a></li>
+                      <li role="presentation" class="divider"></li>
                     </c:if>
                     <li><a href="">會員中心</a></li>
                     <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp?status=1">購買清單</a></li>
                     <li><a href="">我的活動</a></li>
                   </ul>
+                    </div>
+
+                    <div class="pull-right">
+                      <a id="btn-search" class="navbar-brand" href="#">
+                          <span class="glyphicon glyphicon-search"></span>
+                      </a>
                     </div>
                 </div>
         </div>
@@ -118,9 +124,7 @@
           <!-- 左選單 -->
           <ul class="nav navbar-nav">
             <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.jsp">找豆</a></li>
-            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/forum/forum.jsp">討論板</a></li>
             <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/activity/activity.jsp">辦活動</a></li>
-            <li><a class="padt20 padb17" href="#">地圖</a></li>
           </ul>
         </div>
         <!-- 手機隱藏選單區結束 -->
@@ -146,3 +150,11 @@
     </div>
     
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#btn-search').click(function(){
+      console.log('search');
+      $('#funcbar').slideToggle('300');
+    });
+  });
+</script>

@@ -34,44 +34,42 @@
 
     <!-- funcbar -->
     <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn border0" role="navigation">
+    <form>
       <div class="container padt8">
         <div class="col-xs-12 col-sm-2 col-sm-offset-1">
-          <select class="form-control">
+          <select class="form-control" name="bean_contry">
             <option>請選擇產地</option>
-                <option>巴西</option>
-                <option>越南</option>
-                <option>台灣</option>
-                <option>爪哇</option>
-                <option>越南</option>
-                <option>台灣</option>
-                <option>爪哇</option>
+            <c:forEach var="country" items="${countrys}">
+				<option value="${country}">${country}</option>
+            </c:forEach>
             </select>
         </div>
         <div class="col-xs-12 col-sm-2">
-          <select class="form-control">
+          <select class="form-control" name="proc">
             <option>請選擇處理法</option>
-                <option>日曬  </option>
-                <option>半水洗</option>
-                <option>水洗</option>
-                <option>蜜處理</option>
+                <option value="日曬">日曬  </option>
+                <option value="半水洗">半水洗</option>
+                <option value="水洗">水洗</option>
+                <option value="處理">蜜處理</option>
             </select>
         </div>
         <div class="col-xs-12 col-sm-2 padt8">
-          <input type="range" name="points" min="0" max="7">
+          <input type="range" name="roast" min="0" max="7">
         </div>
         <div class="col-xs-12 col-sm-4">
-          <form>
+          
            <div class="input-group">
-             <input type="text" class="form-control" placeholder="Search">
+             <input name="others" type="text" class="form-control" placeholder="Search">
              <div class="input-group-btn">
                <button class="btn btn-default" type="submit">
-                 <i class="glyphicon glyphicon-search"></i>
+                 <span class="glyphicon glyphicon-search"></span>
                </button>
              </div>
            </div>
-          </form>
+         
         </div>
       </div>
+       </form>
     </nav>
 
 
@@ -88,7 +86,7 @@
 
 
     <!-- -------------------------------------------------------廣告 ------------------------------>
-    <div class="container mgt120 mgb30">
+    <div class="container mgt80 mgb30">
       <div class="row">
         <div class="col-xs-12 col-sm-10 col-sm-offset-1">
           <div id="ad-cas" class="carousel slide" data-ride="carousel">
@@ -134,7 +132,7 @@
 
 
 
-    <div class="container content">
+    <div class="container">
       <div class="row ">
 
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 mgb30">
@@ -186,7 +184,7 @@
 		         %>
 			         	<a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
                 <div class="row cus-prod-row zidx0">
-                  <div class="col-xs-12 col-sm-2 vam-div150">
+                  <div class="col-xs-8  col-xs-offset-2 col-sm-2 col-sm-offset-0 vam-div150">
                     <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
                   </div>
                     <div class="col-xs-12 col-sm-10">

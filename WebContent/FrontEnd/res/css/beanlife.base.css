@@ -1,3 +1,7 @@
+*{
+	/*outline: 1px solid red;*/
+}
+
 
 .bg-white{
 	background-color: white;
@@ -88,6 +92,9 @@ div .bold{
 }
 .mgt60{
 	margin-top: 60px;
+}
+.mgt80{
+	margin-top: 80px;
 }
 .mgt120{
 	margin-top: 120px;
@@ -197,11 +204,14 @@ div .bold{
 .w60{
 	width: 60px;
 }
+.w90{
+	width: 90px;
+}
 .w100{
 	width: 100px;
 }
-.w90{
-	width: 90px;
+.w110{
+	width: 110px;
 }
 .w300{
 	width: 300px;

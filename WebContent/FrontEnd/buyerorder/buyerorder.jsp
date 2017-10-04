@@ -333,7 +333,7 @@
 										                <div class="row zidx0">
 										                
 										                <a class="${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
-										                  <div class="col-xs-3 col-sm-2 vam-div60">
+										                  <div class="col-xs-3 col-sm-2 vam-div60 pad0">
 										                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 										                  </div>
 										                  

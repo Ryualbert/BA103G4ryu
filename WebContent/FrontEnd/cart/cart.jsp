@@ -77,7 +77,7 @@
 									                <div class="row zidx0">
 									                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
 									                  
-									                  <div class="col-xs-3 col-sm-2 vam-div60">
+									                  <div class="col-xs-3 col-sm-2 vam-div60 pad0">
 									                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 									                  </div>
 									                  
@@ -99,11 +99,11 @@
 											<td data-th="數量">
 												<div class="container-fluid inline-b w100">
 													<div class="row">									
-														<div class="col-xs-12 col-sm-12">
-			                                            <span id="sub${cart_listVO.prod_no}" class="glyphicon glyphicon-minus btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
-			                                            <input type="hidden" name="prod_no${count}" value="${prodVO.prod_no}">
-			                                            <input id="amount${prodVO.prod_no}" class="amount${storeVO.store_no} btn btn-xs w35" type="text" maxlength="2" name="amount${count}" value="${cart_listVO.prod_amount}">
-			                                            <span id="add${cart_listVO.prod_no}" class="glyphicon glyphicon-plus  btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
+														<div class="col-xs-12 col-sm-12 pad0">
+				                                            <span id="sub${cart_listVO.prod_no}" class="glyphicon glyphicon-minus btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
+				                                            <input type="hidden" name="prod_no${count}" value="${prodVO.prod_no}">
+				                                            <input id="amount${prodVO.prod_no}" class="amount${storeVO.store_no} btn btn-xs w30" type="text" maxlength="2" name="amount${count}" value="${cart_listVO.prod_amount}">
+				                                            <span id="add${cart_listVO.prod_no}" class="glyphicon glyphicon-plus  btn btn-default btn-xs btn-danger" aria-hidden="true"></span>
 
 														</div>
 													</div>
