@@ -12,20 +12,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.prod.query.ProdQuery;
 
-import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_Emp2;
 
-
-@WebServlet("/prod/prod.do")
+@WebServlet("/prod/prodSer.do")
 public class ProdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
 
-		if ("search".equals(action)) { // 來自select_page.jsp的請求
+		if ("searchProds".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -38,24 +37,29 @@ public class ProdServlet extends HttpServlet {
 				String proc = req.getParameter("proc");
 				String roast = req.getParameter("roast");
 				String others = req.getParameter("others");
-				if(roast=="0"){
+				if(roast.equals("0")){
+					roast="";
+				} else if(roast.equals("1")){
 					roast = "極淺焙"	;	
-				} else if (roast=="1"){
+				} else if (roast.equals("2")){
 					roast = "淺焙";
-				}else if (roast=="2"){
+				}else if (roast.equals("3")){
 					roast = "中焙";
-				}else if (roast=="3"){
+				}else if (roast.equals("4")){
 					roast = "中深焙";
-				}else if (roast=="4"){
+				}else if (roast.equals("5")){
 					roast = "城市烘焙";
-				}else if (roast=="5"){
+				}else if (roast.equals("6")){
 					roast = "深焙";
-				}else if (roast=="6"){
+				}else if (roast.equals("7")){
 					roast = "法式烘焙";
-				}else if (roast=="7"){
+				}else if (roast.equals("8")){
 					roast = "重焙";
 				}
 
+				if(others == null || others.trim().length()==0){
+					others = "%%";
+				}
 				
 				/***************************2.開始查詢資料*****************************************/
 
@@ -79,11 +83,13 @@ public class ProdServlet extends HttpServlet {
 				map2.put("bean_aroma", new String[] {others });
 				map2.put("prod_stat", new String[] {others });
 				
+				String str1 = (ProdQuery.get_WhereCondition(map).trim().length()==0)?"where (":"and (";
+				String str2 = (ProdQuery.get_WhereCondition(map).trim().length()==0)?"":")";
 
 				String finalSQL = "select * from prod "
-						          + jdbcUtil_CompositeQuery_Emp2.get_WhereCondition(map)
-						          + "and ("
-						          + jdbcUtil_CompositeQuery_Emp2.get_ElseCondition(map2)
+						          + ProdQuery.get_WhereCondition(map)
+						          + str1
+						          + ProdQuery.get_ElseCondition(map2)
 						          + ")"
 						          + "order by prod_no desc";
 				System.out.println(finalSQL);
@@ -106,7 +112,7 @@ public class ProdServlet extends HttpServlet {
 		
 	}
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}
 

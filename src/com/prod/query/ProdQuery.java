@@ -1,26 +1,19 @@
-/*
- *  1. ¸U¥Î½Æ¦X¬d¸ß-¥i¥Ñ«È¤áºİÀH·N¼W´î¥ô¦ó·Q¬d¸ßªºÄæ¦ì
- *  2. ¬°¤FÁ×§K¼vÅT®Ä¯à:
- *        ©Ò¥H°ÊºA²£¥Í¸U¥ÎSQLªº³¡¥÷,¥»½d¨ÒµL·N±Ä¥ÎMetaDataªº¤è¦¡,¤]¥u°w¹ï­Ó§OªºTable¦Û¦æµø»İ­n¦Ó­Ó§O»s§@¤§
- * */
-
-
-package jdbc.util.CompositeQuery;
+package com.prod.query;
 
 import java.util.*;
 
-public class jdbcUtil_CompositeQuery_Emp2 {
+public class ProdQuery {
 
 	public static String get_aCondition_For_Oracle(String columnName, String value) {
 
 		String aCondition = null;
 		
-		if ("bean_contry".equals(columnName) || "proc".equals(columnName) || "roast".equals(columnName) || "prod_no".equals(columnName) || "store_no".equals(columnName)) // ¥Î©ó¨ä¥L
+		if ("bean_contry".equals(columnName) || "proc".equals(columnName) || "roast".equals(columnName) || "prod_no".equals(columnName) || "store_no".equals(columnName)) // ç”¨æ–¼å…¶ä»–
 			aCondition = columnName + "=" + " '" + value + "' ";
 		else if ("prod_name".equals(columnName) || "bean_type".equals(columnName)|| "bean_grade".equals(columnName)|| "bean_region".equals(columnName)
-				|| "bean_farm".equals(columnName)|| "bean_farmer".equals(columnName)|| "prod_cont".equals(columnName)|| "prod_stat".equals(columnName)|| "bean_aroma".equals(columnName)) // ¥Î©óvarchar
+				|| "bean_farm".equals(columnName)|| "bean_farmer".equals(columnName)|| "prod_cont".equals(columnName)|| "prod_stat".equals(columnName)|| "bean_aroma".equals(columnName)) // ç”¨æ–¼varchar
 			aCondition = columnName + " like '%" + value + "%'";
-		else if ("".equals(columnName))                          // ¥Î©óOracleªºdate
+		else if ("".equals(columnName))                          // ç”¨æ–¼Oracleçš„date
 			aCondition = "to_char(" + columnName + ",'yyyy-mm-dd')='" + value + "'";
 
 		return aCondition + " ";
@@ -41,7 +34,7 @@ public class jdbcUtil_CompositeQuery_Emp2 {
 				else
 					whereCondition.append(" and " + aCondition);
 
-				System.out.println("¦³°e¥X¬d¸ß¸ê®ÆªºÄæ¦ì¼Æcount = " + count);
+				System.out.println("æœ‰é€å‡ºæŸ¥è©¢è³‡æ–™çš„æ¬„ä½æ•¸count = " + count);
 			}
 		}
 		
@@ -70,13 +63,13 @@ public class jdbcUtil_CompositeQuery_Emp2 {
 
 	public static void main(String argv[]) {
 
-		// °t¦X req.getParameterMap()¤èªk ¦^¶Ç java.util.Map<java.lang.String,java.lang.String[]> ¤§´ú¸Õ
+		// é…åˆ req.getParameterMap()æ–¹æ³• å›å‚³ java.util.Map<java.lang.String,java.lang.String[]> ä¹‹æ¸¬è©¦
 		Map<String, String[]> map = new TreeMap<String, String[]>();
 		map.put("bean_contry", new String[] { "" });
-		map.put("proc", new String[] { "¤éÅÎ" });
-		map.put("roast", new String[] { "²LµH" });
+		map.put("proc", new String[] { "æ—¥æ›¬" });
+		map.put("roast", new String[] { "æ·ºç„™" });
 
-		map.put("action", new String[] { "searchProds" }); // ª`·NMap¸Ì­±·|§t¦³actionªºkey
+		map.put("action", new String[] { "searchProds" }); // æ³¨æ„Mapè£¡é¢æœƒå«æœ‰actionçš„key
 		
 		String ser = "%%";
 		Map<String, String[]> map2 = new TreeMap<String, String[]>();
@@ -93,9 +86,9 @@ public class jdbcUtil_CompositeQuery_Emp2 {
 		
 
 		String finalSQL = "select * from prod "
-				          + jdbcUtil_CompositeQuery_Emp2.get_WhereCondition(map)
+				          + get_WhereCondition(map)
 				          + "and ("
-				          + jdbcUtil_CompositeQuery_Emp2.get_ElseCondition(map2)
+				          + get_ElseCondition(map2)
 				          + ")"
 				          + "order by prod_no desc";
 		System.out.println(finalSQL);

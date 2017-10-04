@@ -34,11 +34,11 @@
 
     <!-- funcbar -->
     <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn border0" role="navigation">
-    <form>
+    <form method="post" action="<%=request.getContextPath()%>/prod/prodSer.do">
       <div class="container padt8">
         <div class="col-xs-12 col-sm-2 col-sm-offset-1">
           <select class="form-control" name="bean_contry">
-            <option>請選擇產地</option>
+            <option value="">請選擇產地</option>
             <c:forEach var="country" items="${countrys}">
 				<option value="${country}">${country}</option>
             </c:forEach>
@@ -46,7 +46,7 @@
         </div>
         <div class="col-xs-12 col-sm-2">
           <select class="form-control" name="proc">
-            <option>請選擇處理法</option>
+            <option value="">請選擇處理法</option>
                 <option value="日曬">日曬  </option>
                 <option value="半水洗">半水洗</option>
                 <option value="水洗">水洗</option>
@@ -54,11 +54,12 @@
             </select>
         </div>
         <div class="col-xs-12 col-sm-2 padt8">
-          <input type="range" name="roast" min="0" max="7">
+          <input type="range" name="roast" min="0" max="8">
         </div>
         <div class="col-xs-12 col-sm-4">
           
            <div class="input-group">
+           	 <input name="action" type="hidden" value="searchProds">
              <input name="others" type="text" class="form-control" placeholder="Search">
              <div class="input-group-btn">
                <button class="btn btn-default" type="submit">
