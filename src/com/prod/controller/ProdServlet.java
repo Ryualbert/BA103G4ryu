@@ -1,18 +1,23 @@
 package com.prod.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.prod.query.ProdQuery;
+import com.prod.model.ProdService;
+import com.prod.model.ProdVO;
+
 
 
 @WebServlet("/prod/prodSer.do")
@@ -37,6 +42,17 @@ public class ProdServlet extends HttpServlet {
 				String proc = req.getParameter("proc");
 				String roast = req.getParameter("roast");
 				String others = req.getParameter("others");
+
+				//bring the search param back
+				HttpSession session = req.getSession();
+				Map<String, String> mapBack = new HashMap<>();
+				mapBack.put("bean_contry", bean_contry);
+				mapBack.put("proc", proc);
+				mapBack.put("roast", roast);
+				mapBack.put("others", others);
+				session.setAttribute("mapBack", mapBack);
+				
+				
 				if(roast.equals("0")){
 					roast="";
 				} else if(roast.equals("1")){
@@ -56,10 +72,8 @@ public class ProdServlet extends HttpServlet {
 				}else if (roast.equals("8")){
 					roast = "重焙";
 				}
-
-				if(others == null || others.trim().length()==0){
-					others = "%%";
-				}
+				
+				
 				
 				/***************************2.開始查詢資料*****************************************/
 
@@ -83,29 +97,22 @@ public class ProdServlet extends HttpServlet {
 				map2.put("bean_aroma", new String[] {others });
 				map2.put("prod_stat", new String[] {others });
 				
-				String str1 = (ProdQuery.get_WhereCondition(map).trim().length()==0)?"where (":"and (";
-				String str2 = (ProdQuery.get_WhereCondition(map).trim().length()==0)?"":")";
-
-				String finalSQL = "select * from prod "
-						          + ProdQuery.get_WhereCondition(map)
-						          + str1
-						          + ProdQuery.get_ElseCondition(map2)
-						          + ")"
-						          + "order by prod_no desc";
-				System.out.println(finalSQL);
 				
-				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-//				req.setAttribute("reviewVO", reviewVO); // 資料庫取出的empVO物件,存入req
-//				String url = "/review/listOneReview.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
-//				successView.forward(req, res);
-
-				/***************************其他可能的錯誤處理*************************************/
+				
+				ProdService prodSvc = new ProdService();
+				List<ProdVO> list  = prodSvc.getAll(map,map2);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("searchRs", list); // 資料庫取出的list物件,存入request
+				RequestDispatcher successView = req.getRequestDispatcher("/FrontEnd/shop/shop.jsp"); // 成功轉交listEmps_ByCompositeQuery.jsp
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add("無法取得資料:" + e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/review/select_page.jsp");
-//				failureView.forward(req, res);
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/FrontEnd/shop/shop.jsp");
+				failureView.forward(req, res);
 			}
 		}
 		

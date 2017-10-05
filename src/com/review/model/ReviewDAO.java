@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -509,6 +510,8 @@ public class ReviewDAO implements ReviewDAO_interface {
 	
 			while (rs.next()) {
 				score = rs.getDouble(1);
+				DecimalFormat formatter = new DecimalFormat("#.#");
+				score = Double.parseDouble(formatter.format(score));
 			}
 
 			// Handle any driver errors

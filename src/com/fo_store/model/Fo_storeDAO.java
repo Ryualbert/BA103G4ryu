@@ -38,7 +38,7 @@ public class Fo_storeDAO implements Fo_storeDAO_interface{
 		private static final String GET_COUNT_BY_STORE =
 				"SELECT count(*) FROM fo_store WHERE store_no = ?";
 		private static final String GET_FO_BY_MEM =
-				"SELECT * FROM fo_store WHERE mem_ac = ?";
+				"SELECT * FROM fo_store WHERE mem_ac = ? order by fo_date desc";
 
 		@Override
 		public void insert(Fo_storeVO fo_storeVO) {

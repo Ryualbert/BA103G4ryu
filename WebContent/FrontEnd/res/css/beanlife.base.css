@@ -283,6 +283,9 @@ body a:visited{
 .mgt-depn-nav{
 	margin-top: 57px;
 }
+.mgt-depn-nav-lg{
+	margin-top: 65px;
+}
 .func-h{
 	/*min-height: 40px;*/
 }
@@ -300,7 +303,7 @@ body a:visited{
 	margin-bottom: 50px;
 }
 .cart-tab-block{
-	margin-top: 87px;
+	margin-top: 65px;
 	margin-bottom: 50px;
 }
 .cus-tab-content{
@@ -308,7 +311,7 @@ body a:visited{
 }
 
 .cus-prod-row{
-	padding-top: 10px;
+	padding-top: 20px;
 	padding-bottom: 10px;
 	border-bottom-style: solid;
 	border-color: rgba(200, 182, 161, 0.54);
@@ -413,6 +416,10 @@ body .navbar-default .navbar-nav>li>a:hover{
 /*img垂直水平置中*/
 .vam-div150{
 	line-height:150px;
+	text-align:center;
+}
+.vam-div120{
+	line-height:120px;
 	text-align:center;
 }
 .vam-div60{

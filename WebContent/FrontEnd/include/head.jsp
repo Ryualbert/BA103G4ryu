@@ -55,7 +55,7 @@
   <body>
 
     <!-- NavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbarNavbar -->
-    <nav class="navbar navbar-default navbar-fixed-top bg-light-brn border0 cus-nav content" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top bg-light-brn border0 cus-nav" role="navigation">
       <div class="container">
         <div>
           <button type="button" class="navbar-toggle pull-left cus-ham" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -98,11 +98,11 @@
                       </a>
                       <ul class="dropdown-menu zidx5">
                     <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
-                      <li><a href="">店家中心</a></li>
+                      <li><a href="<%=request.getContextPath()%>/FrontEnd/store/store.jsp">店家中心</a></li>
                       <li><a href="">訂單管理</a></li>
                       <li role="presentation" class="divider"></li>
                     </c:if>
-                    <li><a href="">會員中心</a></li>
+                    <li><a href="<%=request.getContextPath()%>/FrontEnd/mem/mem.jsp">會員中心</a></li>
                     <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp?status=1">購買清單</a></li>
                     <li><a href="">我的活動</a></li>
                   </ul>

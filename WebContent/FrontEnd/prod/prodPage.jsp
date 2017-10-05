@@ -159,7 +159,7 @@
 
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-xs-7 col-sm-6">
+                                        <div class="col-xs-7 col-sm-6 pad0">
                                             <span id="sub" class="glyphicon glyphicon-minus btn btn-default btn-sm btn-danger" aria-hidden="true"></span>
                                             <input class="btn w50" type="text" maxlength="3" name="amount" value="1">
                                             <span id="add" class="glyphicon glyphicon-plus  btn btn-default btn-sm btn-danger" aria-hidden="true"></span>

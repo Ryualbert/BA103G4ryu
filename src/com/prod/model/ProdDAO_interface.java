@@ -1,6 +1,7 @@
 package com.prod.model;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProdDAO_interface {
 	public void insert(ProdVO prodVO);
@@ -12,4 +13,5 @@ public interface ProdDAO_interface {
 	public List<byte[]> getImageByPK(String prod_no);
 	public List <ProdVO> getQueryResult(String bean_contry, String proc, String roast, String prod_name);
 	public ProdVO findByPrimaryKeyNoImg(String prod_no);
+	public List<ProdVO> getAll(Map<String, String[]> map, Map<String, String[]> map2);
 }

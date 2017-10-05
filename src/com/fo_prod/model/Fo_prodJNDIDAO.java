@@ -38,7 +38,7 @@ public class Fo_prodJNDIDAO implements Fo_prodDAO_interface{
 	private static final String GET_COUNT_BY_PROD =
 			"SELECT count(*) FROM FO_PROD WHERE PROD_NO = ?";
 	private static final String GET_FO_BY_MEM =
-			"SELECT * FROM FO_PROD WHERE mem_ac = ?";
+			"SELECT * FROM FO_PROD WHERE mem_ac = ? order by fo_date desc";
 
 	
 	@Override

@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+
+import com.prod.query.ProdQuery;
+
 import java.sql.*;
 
 
@@ -449,6 +452,99 @@ public class ProdJDBCDAO implements ProdDAO_interface {
 		return list;
 	}
 	
+	
+	@Override
+	public List<ProdVO> getAll(Map<String, String[]> map, Map<String, String[]> map2) {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		ProdVO prodVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			
+
+			String str1 = (ProdQuery.get_WhereCondition(map).trim().length()==0)?"where (":"and (";
+			String finalSQL = "select * from prod "
+					          + ProdQuery.get_WhereCondition(map)
+					          + str1
+					          + ProdQuery.get_ElseCondition(map2)
+					          + ")"
+					          + "order by prod_no desc";
+			System.out.println(finalSQL);
+			
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				prodVO = new ProdVO();
+				prodVO.setProd_no(rs.getString("prod_no"));
+				prodVO.setStore_no(rs.getString("store_no"));
+				prodVO.setProd_name(rs.getString("prod_name"));
+				prodVO.setBean_type(rs.getString("bean_type"));
+				prodVO.setBean_grade(rs.getString("bean_grade"));
+				prodVO.setBean_contry(rs.getString("bean_contry"));
+				prodVO.setBean_region(rs.getString("bean_region"));
+				prodVO.setBean_farm(rs.getString("bean_farm"));
+				prodVO.setBean_farmer(rs.getString("bean_farmer"));
+				prodVO.setBean_el(rs.getInt("bean_el"));
+				prodVO.setProc(rs.getString("proc"));
+				prodVO.setRoast(rs.getString("roast"));
+				prodVO.setBean_attr_acid(rs.getInt("bean_attr_acid"));
+				prodVO.setBean_attr_aroma(rs.getInt("bean_attr_aroma"));
+				prodVO.setBean_attr_body(rs.getInt("bean_attr_body"));
+				prodVO.setBean_attr_after(rs.getInt("bean_attr_after"));
+				prodVO.setBean_attr_bal(rs.getInt("bean_attr_bal"));
+				prodVO.setBean_aroma(rs.getString("Bean_aroma"));
+				prodVO.setProd_price(rs.getInt("prod_price"));
+				prodVO.setProd_wt(rs.getDouble("prod_wt"));
+				prodVO.setSend_fee(rs.getInt("send_fee"));
+				prodVO.setProd_sup(rs.getInt("prod_sup"));
+				prodVO.setProd_cont(rs.getString("prod_cont"));
+				prodVO.setProd_pic1(rs.getBytes("prod_pic1"));
+				prodVO.setProd_pic2(rs.getBytes("prod_pic2"));
+				prodVO.setProd_pic3(rs.getBytes("prod_pic3"));
+				prodVO.setProd_stat(rs.getString("prod_stat"));
+				prodVO.setEd_time(rs.getDate("ed_time"));
+				list.add(prodVO);
+			}
+			
+		}  catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
 	@Override
 	public List<ProdVO> getAllNoImg() {
 		List<ProdVO> list = new ArrayList<ProdVO>();
@@ -785,12 +881,64 @@ public class ProdJDBCDAO implements ProdDAO_interface {
 //		getImageTest(dao);
 //		getAllTest(dao);
 //		getAllNoImgTest(dao);
-		getOneNoImgTest(dao);
+//		getOneNoImgTest(dao);
 		//只新增照片方法，暫為測試用
 //		for(int i = 1; i<10 ;i++){
 //			String prod_no = "P100000000" + i;
 //			updateImg1Test(dao,prod_no ,"D:\\apache-tomcat-7.0.75\\webapps\\BeanLife_front\\res\\img\\p"+((i % 3)+1)+".jpg" );
 //		}
+		
+		//getAllMap
+		Map<String, String[]> map = new TreeMap<String, String[]>();
+		map.put("bean_contry", new String[] {""});
+		map.put("proc", new String[] { "" });
+		map.put("roast", new String[] {"中深焙" });
+
+
+		Map<String, String[]> map2 = new TreeMap<String, String[]>();
+		map2.put("prod_no", new String[] {" " });
+		map2.put("store_no", new String[] {" " });
+		map2.put("prod_name", new String[] {" " });
+		map2.put("bean_type", new String[] {" " });
+		map2.put("bean_grade", new String[] {" " });
+		map2.put("bean_region", new String[] {" " });
+		map2.put("bean_farm", new String[] {" " });
+		map2.put("bean_farmer", new String[] {" " });
+		map2.put("bean_aroma", new String[] {" " });
+		map2.put("prod_stat", new String[] {" " });
+		
+		List<ProdVO> list = dao.getAll(map, map2);
+		for (ProdVO prodVO : list) {
+			System.out.print(prodVO.getProd_no() + ", ");
+			System.out.print(prodVO.getStore_no() + ", ");
+			System.out.print(prodVO.getProd_name() + ", ");
+			System.out.print(prodVO.getBean_type() + ", ");
+			System.out.print(prodVO.getBean_grade() + ", ");
+			System.out.print(prodVO.getBean_contry() + ", ");
+			System.out.print(prodVO.getBean_region() + ", ");
+			System.out.print(prodVO.getBean_farm() + ", ");
+			System.out.print(prodVO.getBean_farmer() + ", ");
+			System.out.print(prodVO.getBean_el() + ", ");
+			System.out.print(prodVO.getProc() + ", ");
+			System.out.print(prodVO.getRoast() + ", ");
+			System.out.print(prodVO.getBean_attr_acid() + ", ");
+			System.out.print(prodVO.getBean_attr_aroma() + ", ");
+			System.out.print(prodVO.getBean_attr_body() + ", ");
+			System.out.print(prodVO.getBean_attr_after() + ", ");
+			System.out.print(prodVO.getBean_attr_bal() + ", ");
+			System.out.print(prodVO.getBean_aroma() + ", ");
+			System.out.print(prodVO.getProd_price() + ", ");
+			System.out.print(prodVO.getProd_wt() + ", ");
+			System.out.print(prodVO.getSend_fee() + ", ");
+			System.out.print(prodVO.getProd_sup() + ", ");
+			System.out.print(prodVO.getProd_cont() + ", ");
+			System.out.print(prodVO.getProd_pic1() + ", ");
+			System.out.print(prodVO.getProd_pic2() + ", ");
+			System.out.print(prodVO.getProd_pic3() + ", ");
+			System.out.print(prodVO.getProd_stat() + ", ");
+			System.out.print(prodVO.getEd_time() + ", ");
+			System.out.println();
+		}
 		
 	}
 	
