@@ -46,7 +46,8 @@ public class OrdJNDIDAO implements OrdDAO_interface {
 	private static final String UPDATE_STAT = "UPDATE ord set ORD_STAT=?, PAY_CHK_DATE=?, SEND_DATE=? ,SEND_ID=? where ORD_NO = ?";
 	private static final String GET_ALL_ORDER_LIST = "select * from ord_list where ORD_NO=?";
 	private static final String GET_ALL_ORD_BY_MEM = "SELECT * FROM ORD WHERE MEM_AC=? order by ord_no desc";
-
+	private static final String GET_ALL_FROM_DATE = "SELECT * FROM ORD WHERE send_date > ?";
+	
 	@Override
 	public void insert(OrdVO ordVO) {
 		Connection con = null;
@@ -295,6 +296,79 @@ public class OrdJNDIDAO implements OrdDAO_interface {
 		
 		return set;
 	}
+	
+	@Override
+	public Set<OrdVO> getAll(Date date) {
+		Set<OrdVO> set = new LinkedHashSet<OrdVO>();
+		OrdVO ordVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_FROM_DATE);
+			pstmt.setDate(1, date);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				ordVO = new  OrdVO();
+				ordVO.setOrd_no(rs.getString("ORD_NO"));
+				ordVO.setMem_ac(rs.getString("MEM_AC"));
+				ordVO.setSend_fee(rs.getInt("SEND_FEE"));
+				ordVO.setTotal_pay(rs.getInt("TOTAL_PAY"));
+				ordVO.setOrd_name(rs.getString("ORD_NAME"));
+				ordVO.setOrd_phone(rs.getString("ORD_PHONE"));
+				ordVO.setOrd_add(rs.getString("ORD_ADD"));
+				ordVO.setPay_info(rs.getString("PAY_INFO"));
+				ordVO.setOrd_stat(rs.getString("ORD_STAT"));
+//				ordVO.setOrd_date(new Date(rs.getTimestamp("ORD_DATE").getTime()));
+//				ordVO.setPay_date(new Date(rs.getTimestamp("PAY_DATE").getTime()));
+//				ordVO.setPay_chk_date(new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()));
+//				ordVO.setSend_date(new Date(rs.getTimestamp("SEND_DATE").getTime()));
+
+				ordVO.setOrd_date((rs.getTimestamp("ORD_DATE")!=null)?new Date(rs.getTimestamp("ORD_DATE").getTime()):null);
+				ordVO.setPay_date((rs.getTimestamp("PAY_DATE")!=null)?new Date(rs.getTimestamp("PAY_DATE").getTime()):null);
+				ordVO.setPay_chk_date((rs.getTimestamp("PAY_CHK_DATE")!=null)?new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()):null);
+				ordVO.setSend_date((rs.getTimestamp("SEND_DATE")!=null)?new Date(rs.getTimestamp("SEND_DATE").getTime()):null);
+				ordVO.setSend_id(rs.getString("SEND_ID"));
+				set.add(ordVO);
+				
+			}
+			
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+
+		}
+		return set;
+	}
+	
+	
 	
 	@Override
 	public Set<Ord_listVO> getOrd_listByOrd(String ord_no) {

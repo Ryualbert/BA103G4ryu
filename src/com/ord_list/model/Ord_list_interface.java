@@ -1,6 +1,7 @@
 package com.ord_list.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.List;
 
 public interface Ord_list_interface {

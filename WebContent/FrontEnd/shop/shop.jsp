@@ -54,7 +54,7 @@
             </select>
         </div>
         <div class="col-xs-12 col-sm-2 padt8">
-          <input type="range" name="roast" min="0" max="8" value="${mapBack.get('roast')}">
+          <input type="range" name="roast" min="0" max="8" value="${(mapBack.get('roast')==null)?'0':mapBack.get('roast')}">
         </div>
         <div class="col-xs-12 col-sm-4">
           

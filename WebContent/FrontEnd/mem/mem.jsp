@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.mem.model.*"%>
+<%@ page import="com.mem_grade.model.*"%>
 <%@ page import="com.prod.model.*"%>
 <%@ page import="com.store.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
@@ -11,6 +12,7 @@
 <%@ page import="com.review.model.*"%>
 
 <jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
+<jsp:useBean id="mem_gradeSvc" scope="page" class="com.mem_grade.model.Mem_gradeService" />
 <jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
 <jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
@@ -36,7 +38,7 @@
 
 			<div class="col-xs-12 col-sm-4 col-sm-offset-4 text-center mgt20">
 				<span>${memVO.mem_ac}</span><br>
-				${memVO.grade_no}待　${memVO.mem_pt}/${memVO.mem_total_pt}<br>
+				${mem_gradeSvc.getOneMem_grade(memVO.grade_no).grade_title}　${memVO.mem_pt}/${memVO.mem_total_pt}<br>
 				<small>修改資料　積分兌換</small>
 			</div>
 		</div>

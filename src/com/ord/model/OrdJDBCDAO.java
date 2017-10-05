@@ -7,10 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +32,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	private static final String UPDATE = "UPDATE ord set ORD_NAME=?, ORD_PHONE=?, ORD_ADD=? ,PAY_INFO=? ,ORD_STAT=? ,PAY_DATE=? ,PAY_CHK_DATE=?,SEND_DATE=?,SEND_ID=? where ORD_NO = ?";
 	private static final String GET_ALL_ORDER_LIST = "select * from ord_list where ORD_NO=?";
 	private static final String GET_ALL_ORD_BY_MEM = "SELECT * FROM ORD WHERE MEM_AC=? order by ord_no desc";
+	private static final String GET_ALL_FROM_DATE = "SELECT * FROM ORD WHERE send_date > ?";
 
 	@Override
 	public void insert(OrdVO ordVO) {
@@ -308,6 +306,82 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		}
 		
 		
+		return set;
+	}
+	
+	
+	@Override
+	public Set<OrdVO> getAll(Date date) {
+		Set<OrdVO> set = new LinkedHashSet<OrdVO>();
+		OrdVO ordVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_FROM_DATE);
+			pstmt.setDate(1, date);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+				ordVO = new  OrdVO();
+				ordVO.setOrd_no(rs.getString("ORD_NO"));
+				ordVO.setMem_ac(rs.getString("MEM_AC"));
+				ordVO.setSend_fee(rs.getInt("SEND_FEE"));
+				ordVO.setTotal_pay(rs.getInt("TOTAL_PAY"));
+				ordVO.setOrd_name(rs.getString("ORD_NAME"));
+				ordVO.setOrd_phone(rs.getString("ORD_PHONE"));
+				ordVO.setOrd_add(rs.getString("ORD_ADD"));
+				ordVO.setPay_info(rs.getString("PAY_INFO"));
+				ordVO.setOrd_stat(rs.getString("ORD_STAT"));
+//				ordVO.setOrd_date(new Date(rs.getTimestamp("ORD_DATE").getTime()));
+//				ordVO.setPay_date(new Date(rs.getTimestamp("PAY_DATE").getTime()));
+//				ordVO.setPay_chk_date(new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()));
+//				ordVO.setSend_date(new Date(rs.getTimestamp("SEND_DATE").getTime()));
+
+				ordVO.setOrd_date((rs.getTimestamp("ORD_DATE")!=null)?new Date(rs.getTimestamp("ORD_DATE").getTime()):null);
+				ordVO.setPay_date((rs.getTimestamp("PAY_DATE")!=null)?new Date(rs.getTimestamp("PAY_DATE").getTime()):null);
+				ordVO.setPay_chk_date((rs.getTimestamp("PAY_CHK_DATE")!=null)?new Date(rs.getTimestamp("PAY_CHK_DATE").getTime()):null);
+				ordVO.setSend_date((rs.getTimestamp("SEND_DATE")!=null)?new Date(rs.getTimestamp("SEND_DATE").getTime()):null);
+				ordVO.setSend_id(rs.getString("SEND_ID"));
+				set.add(ordVO);
+				
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+
+		}
 		return set;
 	}
 	
@@ -613,25 +687,25 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 //		System.out.println(ordVO3.getSend_id());
 //		System.out.println("---------------------");
 //		
-//		//查詢所有訂單
-//		Set<OrdVO> set =dao.getAll();
-//		for(OrdVO aord:set){
-//			System.out.println(aord.getOrd_no());
-//			System.out.println(aord.getMem_ac());
-//			System.out.println(aord.getSend_fee());
-//			System.out.println(aord.getTotal_pay());
-//			System.out.println(aord.getOrd_name());
-//			System.out.println(aord.getOrd_phone());
-//			System.out.println(aord.getOrd_add());
-//			System.out.println(aord.getPay_info());
-//			System.out.println(aord.getOrd_stat());
-//			System.out.println(aord.getOrd_date());
-//			System.out.println(aord.getPay_date());
-//			System.out.println(aord.getPay_chk_date());
-//			System.out.println(aord.getSend_date());
-//			System.out.println(aord.getSend_id());
-//			System.out.println("---------------------");	
-//		}
+		//查詢所有訂單
+		Set<OrdVO> set =dao.getAll(new Date(System.currentTimeMillis()-7*24*60*60*1000));
+		for(OrdVO aord:set){
+			System.out.println(aord.getOrd_no());
+			System.out.println(aord.getMem_ac());
+			System.out.println(aord.getSend_fee());
+			System.out.println(aord.getTotal_pay());
+			System.out.println(aord.getOrd_name());
+			System.out.println(aord.getOrd_phone());
+			System.out.println(aord.getOrd_add());
+			System.out.println(aord.getPay_info());
+			System.out.println(aord.getOrd_stat());
+			System.out.println(aord.getOrd_date());
+			System.out.println(aord.getPay_date());
+			System.out.println(aord.getPay_chk_date());
+			System.out.println(aord.getSend_date());
+			System.out.println(aord.getSend_id());
+			System.out.println("---------------------");	
+		}
 		//查詢某單筆訂單的細目
 //		Set<Ord_listVO> set1 = dao.getOrd_listByOrd("O1000000011");
 //		for(Ord_listVO ordlist:set1){

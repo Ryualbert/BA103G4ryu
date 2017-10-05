@@ -92,5 +92,9 @@ public class OrdService {
 		dao.update(ordVO);
 		return ordVO;
 	}
+	
+	public Set<OrdVO> getOrdThisWeek(){
+		return dao.getAll(new Date(System.currentTimeMillis()-7*24*60*60*1000));
+	}
 
 }

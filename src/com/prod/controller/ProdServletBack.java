@@ -38,6 +38,16 @@ public class ProdServletBack extends HttpServlet {
 				System.out.println(exeTime+" "+countrys);
 			}		
 		}, new Date(), 60*60*1000);		
+		
+		
+		timer.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				
+				
+			}
+			
+		}, new Date(), 7*24*60*60*1000);
     }
     
     public static Set<String> setCountrys(){

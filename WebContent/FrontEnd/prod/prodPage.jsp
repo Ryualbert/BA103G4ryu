@@ -367,7 +367,7 @@
                                                 <div class="col-xs-6 col-sm-2">
                                                     <span class="text-info">${revMemVO.mem_ac}</span>
                                                     <br>
-                                                    <span>${revMemVO.grade_no}待加工</span>
+                                                    <span>${mem_gradeSvc.getOneMem_grade(revMemVO.grade_no).grade_title}</span>
                                                     <br>
                                                     <small>${reviewVO.rev_date}</small>
                                                 </div>
