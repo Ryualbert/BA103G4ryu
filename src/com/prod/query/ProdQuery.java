@@ -12,7 +12,7 @@ public class ProdQuery {
 			aCondition = columnName + "=" + " '" + value + "' ";
 		else if ("prod_name".equals(columnName) || "bean_type".equals(columnName)|| "bean_grade".equals(columnName)|| "bean_region".equals(columnName)
 				|| "bean_farm".equals(columnName)|| "bean_farmer".equals(columnName)|| "prod_cont".equals(columnName)|| "prod_stat".equals(columnName)|| "bean_aroma".equals(columnName)) // 用於varchar
-			aCondition = columnName + " like '%" + value + "%'";
+			aCondition = "lower("+columnName + ") like lower('%" + value + "%')";
 		else if ("".equals(columnName))                          // 用於Oracle的date
 			aCondition = "to_char(" + columnName + ",'yyyy-mm-dd')='" + value + "'";
 

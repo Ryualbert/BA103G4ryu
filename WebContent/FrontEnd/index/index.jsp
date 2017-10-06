@@ -24,7 +24,8 @@
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 <c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
-<c:set var="prodlist" value="${prodSvc.all}" scope="page"/>
+<c:set var="hotProdVOs" value="${sessionScope.hotProdVOs}" scope="page"/>
+<c:set var="prodVOs" value="${hotProdVOs}" scope="page"/>
 <c:set var="fo_list" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
 <c:set var="like_rev_list" value="${like_revSvc.getAllByMem(mem_ac)}" scope="page"/>
 <c:set var="cart_listSet" value="${cart_listSvc.getVOsByMem(mem_ac)}" scope="page"/>
@@ -121,7 +122,7 @@
 									<div class="row">
 
 
-									<c:forEach var="prodVO" items="${prodlist}">
+									<c:forEach var="prodVO" items="${prodVOs}">
 									<%
 										String prod_no = ((ProdVO)pageContext.getAttribute("prodVO")).getProd_no();
 										//此會員對此商品是否Follow的Boolean
