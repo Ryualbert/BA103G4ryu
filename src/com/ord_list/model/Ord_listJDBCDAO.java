@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ord_listJDBCDAO implements Ord_list_interface {
+public class Ord_listJDBCDAO implements Ord_listDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
 	String userid = "ba103g4";
@@ -90,8 +90,8 @@ public class Ord_listJDBCDAO implements Ord_list_interface {
 				}
 			}
 		}
-
 	}
+	
 
 	@Override
 	public void update(Ord_listVO ord_listvo) {

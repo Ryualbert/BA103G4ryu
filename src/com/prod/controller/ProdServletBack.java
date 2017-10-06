@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ import com.prod.model.ProdVO;
 public class ProdServletBack extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private Timer timer = new Timer();
+	public static Timer timer = new Timer();
 	
     @Override
     public void init(){
@@ -49,9 +48,9 @@ public class ProdServletBack extends HttpServlet {
 
 				System.out.println(exeTime+" "+countrys);
 			}		
-		}, new Date(), 60*60*1000);		
+		}, new Date(System.currentTimeMillis()), 60*60*1000);		
 		
-		//find hotProds every week 
+		//find hotProds every week
 		timer.schedule(new TimerTask(){
 			@Override
 			public void run() {

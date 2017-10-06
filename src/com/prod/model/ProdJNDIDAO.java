@@ -248,6 +248,73 @@ public class ProdJNDIDAO implements ProdDAO_interface {
 		}	
 	}
 	
+	
+
+	@Override
+	public void updateByCon(ProdVO prodVO, Connection con) {
+		
+		PreparedStatement pstmt = null;	
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE);
+			
+			pstmt.setString(1, prodVO.getStore_no());
+			pstmt.setString(2, prodVO.getProd_name());
+			pstmt.setString(3, prodVO.getBean_type());
+			pstmt.setString(4, prodVO.getBean_grade());
+			pstmt.setString(5, prodVO.getBean_contry());
+			pstmt.setString(6, prodVO.getBean_region());
+			pstmt.setString(7, prodVO.getBean_farm());
+			pstmt.setString(8, prodVO.getBean_farmer());
+			pstmt.setInt(9, prodVO.getBean_el());
+			pstmt.setString(10, prodVO.getProc());
+			pstmt.setString(11, prodVO.getRoast());
+			pstmt.setInt(12, prodVO.getBean_attr_acid());
+			pstmt.setInt(13, prodVO.getBean_attr_aroma());
+			pstmt.setInt(14, prodVO.getBean_attr_body());
+			pstmt.setInt(15, prodVO.getBean_attr_after());
+			pstmt.setInt(16, prodVO.getBean_attr_bal());
+			pstmt.setString(17, prodVO.getBean_aroma());
+			pstmt.setInt(18, prodVO.getProd_price());
+			pstmt.setDouble(19, prodVO.getProd_wt());
+			pstmt.setInt(20, prodVO.getSend_fee());
+			pstmt.setInt(21, prodVO.getProd_sup());
+			pstmt.setString(22, prodVO.getProd_cont());
+			pstmt.setBytes(23, prodVO.getProd_pic1());
+			pstmt.setBytes(24, prodVO.getProd_pic2());
+			pstmt.setBytes(25, prodVO.getProd_pic3());
+			pstmt.setString(26, prodVO.getProd_stat());
+			pstmt.setDate(27, prodVO.getEd_time());
+			pstmt.setString(28, prodVO.getProd_no());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-prod");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ e.getMessage());	
+		} finally{
+			if (pstmt != null) {
+				try{
+					pstmt.close();
+				} catch (SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	
 	@Override
 	public void delete(String prod_no) {
 		Connection con = null;
@@ -300,7 +367,6 @@ public class ProdJNDIDAO implements ProdDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
 
 		try {
 			con = ds.getConnection();

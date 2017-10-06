@@ -4,9 +4,14 @@ import java.sql.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.servlet.ServletContext;
 
 import com.ord.model.OrdVO;
 import com.ord_list.model.Ord_listVO;
+import com.prod.controller.ProdServletBack;
 
 public class OrdService {
 	private OrdDAO_interface dao;
@@ -40,6 +45,7 @@ public class OrdService {
 		ordVO.setOrd_add(ord_add);
 		ordVO.setOrd_phone(ord_phone);
 		ordVO.setOrd_stat("未付款");
+		ordVO.setOrd_date(new Date(System.currentTimeMillis()));
 
 		//Set<Ord_listVO>
 		for(int i=0; i<prod_noAry.length; i++){
@@ -49,7 +55,22 @@ public class OrdService {
 			ord_listSet.add(ord_listVO);
 		}
 		
-		return dao.insertWithOrd_list(ordVO, ord_listSet);
+		String ord_no = dao.insertWithOrd_list(ordVO, ord_listSet);
+		
+		//Auto cancel in a day
+		ProdServletBack.timer.schedule(new TimerTask(){
+			@Override
+			public void run() {
+								
+				Date exeTime = new Date(scheduledExecutionTime());
+				if(dao.findByPrimaryKey(ord_no).getOrd_stat().equals("未付款")){
+					updateCancel(ord_no);
+				}
+				System.out.println(exeTime);
+			}		
+		}, 24*60*60*1000);
+		
+		return ord_no;
 	}
 
 	public List<OrdVO> getOrdByMem_ac(String mem_ac) {
@@ -89,8 +110,9 @@ public class OrdService {
 	public OrdVO updateCancel(String ord_no) {
 		OrdVO ordVO = dao.findByPrimaryKey(ord_no);
 		ordVO.setOrd_stat("已取消");
-		dao.update(ordVO);
-		return ordVO;
+		
+		dao.updateCancel(ordVO);
+		return ordVO; 
 	}
 	
 	public Set<OrdVO> getOrdThisWeek(){
