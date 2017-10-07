@@ -183,7 +183,7 @@
 		           	}
 		           	pageContext.setAttribute("star",star);
 		         %>
-			         	<a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+			         	<a id="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
                 <div class="row cus-prod-row zidx0">
                   <div class="col-xs-8  col-xs-offset-2 col-sm-2 col-sm-offset-0 vam-div150">
                     <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">

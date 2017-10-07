@@ -20,17 +20,44 @@
     <servlet-class>com.prod.controller.ProdServletBack</servlet-class>
     <load-on-startup>10</load-on-startup>
   </servlet>
+ 
+ 
+  <filter>
+    <filter-name>GlobalFilter</filter-name>
+    <filter-class>com.filter.GlobalFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>GlobalFilter</filter-name>
+    <url-pattern>/FrontEnd/buyerorder/*</url-pattern>
+    <url-pattern>/FrontEnd/cart/*</url-pattern>
+    <url-pattern>/FrontEnd/index/*</url-pattern>
+    <url-pattern>/FrontEnd/mem/*</url-pattern>
+    <url-pattern>/FrontEnd/order/*</url-pattern>
+    <url-pattern>/FrontEnd/shop/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  
   <filter>
     <filter-name>MemLoginFilter</filter-name>
     <filter-class>com.memlogin.controller.MemLoginFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>MemLoginFilter</filter-name>
-    <url-pattern>/FrontEnd/*</url-pattern>
+    <url-pattern>/FrontEnd/buyerorder/buyerorder.jsp</url-pattern>
+    <url-pattern>/FrontEnd/cart/cart.jsp</url-pattern>
+    <url-pattern>/FrontEnd/mem/mem.jsp</url-pattern>
+    <url-pattern>/FrontEnd/order/order.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
+  
+  
+  
 </web-app>

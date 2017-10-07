@@ -133,13 +133,13 @@
 
 <!-- --------------------------------------NAV尾NAV尾NAV尾NAV尾NAV尾----------FUNC BAR開頭--------------------------------------------- -->
 
-<!--  --------------------------------------------------------------跳窗---------------------------------------------------------------->
+<!--  --------------------------------------------------------------跳窗inner---------------------------------------------------------------->
 
 
 
 
 
-    <div class="modal fade" id="modal-id">
+    <div class="modal fade" id="modal-inner">
         <div class="modal-dialog modal-lg">
             <div class="modal-content fix-h scrollbar-macosx" id="modalX">
 
@@ -150,11 +150,72 @@
     </div>
     
 <!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
+<!--  --------------------------------------------------------------跳窗Login---------------------------------------------------------------->
+
+
+    <div class="modal fade" id="modal-login">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content scrollbar-macosx" id="modalL">
+
+
+              <div class="container-folid pad15">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                  
+			<form method="post" action="<%=request.getContextPath()%>/memlogin/memlogin.do">
+			
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12">
+                    <h3>登入</h3>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <input id="mem_ac" type="text" class="form-control" name="mem_ac" placeholder="帳號">
+                    </div>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                      <input id="mem_pwd" type="password" class="form-control" name="mem_pwd" placeholder="密碼">
+                    </div>
+                    <small class="pull-right">忘記密碼</small>
+                    
+                    <input type="hidden" name="action" value="login">
+                  	<input type="submit" value="確定" class=" btn btn-primary btn-block mgt50">
+                  </div>
+                </div>
+              </div>
+
+              </form>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+        </div>
+    </div>
+    
+<!--  --------------------------------------------------------------跳窗結束---------------------------------------------------------------->
+
 <script type="text/javascript">
-  $(document).ready(function(){
+  $(document).ready(function(){  
     $('#btn-search').click(function(){
-      console.log('search');
-      $('#funcbar').slideToggle('300');
+        $('#funcbar').slideToggle('300');
     });
   });
+  
+	console.log('${sessionScope.errorMsgs.login_err}'+'fff');
+
+	console.log('${sessionScope.showLogin}'+'fxx');
+	
+//   if(${sessionScope.errorMsgs.get('login_err')!=null}){
+//       $('#modal-login').modal("show");
+//   }
+  if(${sessionScope.showLogin}){
+      $('#modal-login').modal("show");
+  }
+  
 </script>
+<c:remove var="errorMsgs"/>
+<c:set var="showLogin" value="false"/>
+

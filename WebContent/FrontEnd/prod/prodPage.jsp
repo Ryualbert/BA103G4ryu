@@ -247,7 +247,7 @@
     });
 
     //foProd
-    var $btnFoProd = $("#modal-id button.bk${prodVO.prod_no}").click(function(){
+    var $btnFoProd = $("#modal-inner button.bk${prodVO.prod_no}").click(function(){
         var $action = "foProd";
         var $prod_no = "${prodVO.prod_no}"
         $.ajax({
@@ -461,7 +461,7 @@
 
 <script type="text/javascript">
 //likeRev
-var $btnLikeRev = $("#modal-id button.lk${reviewVO.rev_no}").click(function(){
+var $btnLikeRev = $("#modal-inner button.lk${reviewVO.rev_no}").click(function(){
     var $action = "likeRev";
     var $rev_no = "${reviewVO.rev_no}"
     $.ajax({

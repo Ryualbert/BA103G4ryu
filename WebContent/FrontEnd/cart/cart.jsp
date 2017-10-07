@@ -75,7 +75,7 @@
 											<td  data-th="商品">
 												<div class="container-fluid">
 									                <div class="row zidx0">
-									                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+									                <a id="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
 									                  
 									                  <div class="col-xs-3 col-sm-2 vam-div60 pad0">
 									                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
@@ -358,7 +358,7 @@ $(document).ready(function(){
 		</div>
 		
 <script> //page
-$('#modal-id').on('hidden.bs.modal', function (e) {
+$('#modal-inner').on('hidden.bs.modal', function (e) {
 	if(isAdd){
 		location.reload();
 	}

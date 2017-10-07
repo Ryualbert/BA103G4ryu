@@ -307,7 +307,7 @@
 									<div class="container-fluid padt10 mgt20">
 										<div class="row">
 											<div class="col-xs-4 col-sm-6 bold pull-left">
-												<h4><a class="${storeVO.store_no}" name="${storeVO.store_no}" href='#modal-id' data-toggle="modal">
+												<h4><a class="${storeVO.store_no}" name="${storeVO.store_no}" href='#modal-inner' data-toggle="modal">
 													${storeVO.store_name}
 												</a></h4>
 											</div>
@@ -332,7 +332,7 @@
 													<div class="container-fluid">
 										                <div class="row zidx0">
 										                
-										                <a class="${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+										                <a class="${prodVO.prod_no}" name="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
 										                  <div class="col-xs-3 col-sm-2 vam-div60 pad0">
 										                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 										                  </div>

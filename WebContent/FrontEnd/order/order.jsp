@@ -51,7 +51,7 @@
 									<div class="container-floid">
 						                <div class="row zidx0">
 						                
-						                <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+						                <a id="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
 						                  <div class="col-xs-3  col-sm-2 vam-div60 pad0">
 						                    <img class="img-responsive mg-auto vam-img rd5 " src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 						                  </div>

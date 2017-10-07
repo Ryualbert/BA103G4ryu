@@ -99,5 +99,8 @@ public class MemService {
 		return dao.getImageByPK(mem_ac);
 	}
 	
+	public MemVO findPwdByPK(String mem_ac){
+		return dao.findPwdByPK(mem_ac);
+	}
 
 }

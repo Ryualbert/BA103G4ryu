@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 /**
  * Servlet Filter implementation class MemLogin
@@ -21,6 +22,11 @@ public class MemLoginFilter implements Filter {
 
     public MemLoginFilter() {
     }
+
+	
+	public void init(FilterConfig config) throws ServletException {
+		this.config = config;
+	}
 
 
 	public void destroy() {
@@ -36,24 +42,34 @@ public class MemLoginFilter implements Filter {
 		HttpSession session = req.getSession();
 		// 【從 session 判斷此user是否登入過】
 		Object mem_ac = session.getAttribute("mem_ac");
+		String location = (String)session.getAttribute("location");
+		
+		System.out.println("innnn");
+
+		//go login
 		if (mem_ac == null) {
-//			session.setAttribute("location", req.getRequestURI());
-//			res.sendRedirect(req.getContextPath() + "/login.html");
-			session.setAttribute("mem_ac","mrbrown");
-//			System.out.println("filterSet");
-			chain.doFilter(request, response);
+//				session.setAttribute("location", req.getRequestURI());
+//				res.sendRedirect(req.getContextPath() + "/login.html");
+//				session.setAttribute("mem_ac","mrbrown");
+
+			System.out.println("toLogin");
+			session.setAttribute("showLogin", true); 
+			if(location!=null){
+				res.sendRedirect(location); 
+			} else {
+				res.sendRedirect(req.getContextPath()+"/FrontEnd/index/index.jsp"); 
+			}
 			return;
+		//pass save this URI to session
 		} else {
-//			System.out.println("filterElse");
-			session.setAttribute("mem_ac","mrbrown");
+			session.setAttribute("showLogin", false); 
+			session.setAttribute("location", req.getRequestURI());
+			System.out.println("filterElse");
 			chain.doFilter(request, response);
 		}
 		
+
 	}
 
-	
-	public void init(FilterConfig config) throws ServletException {
-		this.config = config;
-	}
 
 }

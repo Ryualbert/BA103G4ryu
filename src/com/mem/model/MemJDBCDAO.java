@@ -79,6 +79,7 @@ public class MemJDBCDAO implements MemDAO_interface{
 
 	
 	private static final String GET_IMG_BY_PK_STMT = "SELECT MEM_PIC FROM MEM WHERE MEM_AC = ?";
+	private static final String GET_PWD_STMT = "SELECT mem_ac, mem_pwd, mem_no FROM MEM WHERE MEM_AC = ?";
 	
 	
 	@Override
@@ -724,6 +725,62 @@ public class MemJDBCDAO implements MemDAO_interface{
 	public static void getImgByPKTest(MemJDBCDAO dao) throws IOException{
 		byte[] mem_pic = dao.getImageByPK("mrbrown");
 		System.out.println(mem_pic);
+	}
+	
+	@Override
+	public MemVO findPwdByPK(String mem_ac) {
+		MemVO memVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_PWD_STMT);
+			pstmt.setString(1, mem_ac);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()){
+
+				memVO = new MemVO();
+
+				memVO.setMem_ac(rs.getString("mem_ac"));
+				memVO.setMem_no(rs.getString("mem_no"));
+				memVO.setMem_pwd(rs.getString("mem_pwd"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
 	}
 	
 

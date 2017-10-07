@@ -13,4 +13,5 @@ public interface MemDAO_interface {
 	public List<MemVO> getAllNoImg();
 	public MemVO findByPrimaryKeyNoImg(String mem_ac);
 	public byte[] getImageByPK(String mem_ac);
+	public MemVO findPwdByPK(String mem_ac);
 }

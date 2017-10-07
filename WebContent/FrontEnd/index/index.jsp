@@ -149,7 +149,7 @@
 
 				                      <!-- ////////////////////////////// -->
 				                      <div class="col-xs-6 col-sm-3 padt10">
-				                        <a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+				                        <a id="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
 				                          
 				                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 				                          

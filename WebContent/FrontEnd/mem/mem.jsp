@@ -97,7 +97,7 @@
 		           	}
 		           	pageContext.setAttribute("star",star);
 		         %>
-			  	<a id="${prodVO.prod_no}" href='#modal-id' data-toggle="modal">
+			  	<a id="${prodVO.prod_no}" href='#modal-inner' data-toggle="modal">
                 <div class="row cus-prod-row zidx0">
                   <div class="col-xs-8  col-xs-offset-2 col-sm-2 col-sm-offset-0 vam-div120">
                     <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
@@ -222,7 +222,7 @@ var $btnFoProd = $("button.bk${prodVO.prod_no}").click(function(){
 	                        pageContext.setAttribute("isFollow",isFollow);
 	                    %>
     					
-						<a id="${storeVO.store_no}" href='#modal-id' data-toggle="modal">
+						<a id="${storeVO.store_no}" href='#modal-inner' data-toggle="modal">
 		                <div class="row cus-prod-row zidx0">
 		                  <div class="col-xs-8  col-xs-offset-2 col-sm-2 col-sm-offset-0 vam-div120 pad0">
 		                    <img class="img-responsive mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/store/storeImg.do?store_no=${storeVO.store_no}&index=1">

@@ -139,7 +139,7 @@
 
 	                      <!-- ////////////////////////////// -->
 	                      <div class="col-xs-12 col-sm-3 padt10">
-<%-- 	                        <a id="sp${prodVO.prod_no}" href='#modal-id' data-toggle="modal"> --%>
+<%-- 	                        <a id="sp${prodVO.prod_no}" href='#modal-inner' data-toggle="modal"> --%>
 	                        <a id="sp${prodVO.prod_no}" href='${prodVO.prod_no}' data-toggle="modal">
 	                          <img class="img-responsive  mg-auto vam-img  rd10" src="<%=request.getContextPath()%>/prod/prodImg.do?prod_no=${prodVO.prod_no}&index=1">
 	                          
@@ -220,7 +220,7 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
 
 
 //foStore
-var $btnFoStore = $("#modal-id button.bk${storeVO.store_no}").click(function(){
+var $btnFoStore = $("#modal-inner button.bk${storeVO.store_no}").click(function(){
     var $action = "foStore";
     var $store_no = "${storeVO.store_no}"
     $.ajax({
