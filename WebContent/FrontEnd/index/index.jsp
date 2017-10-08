@@ -199,11 +199,15 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 				alert('Ajax request 發生錯誤');
 			}
 		});
-		
+		$modalX.scrollTop(0);
 	});
 
 //foProd
 var $btnFoProd = $("button.bk${prodVO.prod_no}").click(function(){
+	if(${mem_ac==null}){
+		 $('#modal-login').modal("show");
+		 return false;
+	}
     var $action = "foProd";
     var $prod_no = "${prodVO.prod_no}"
     $.ajax({

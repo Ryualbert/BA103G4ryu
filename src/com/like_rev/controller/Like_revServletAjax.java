@@ -22,7 +22,7 @@ import com.like_rev.model.Like_revService;
 import com.like_rev.model.Like_revVO;
 
 
-@WebServlet("/like_rev/like_revAjax.do")
+@WebServlet(name="Like_revServletAjax",urlPatterns={ "/like_rev/like_revAjax.do"})
 public class Like_revServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static String CONTENT_TYPE = "application/json; charset=utf-8";

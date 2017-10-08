@@ -34,7 +34,7 @@
 
     <!-- funcbar -->
     <nav id="funcbar" class="navbar navbar-default navbar-fixed-top mgt-depn-nav func-h zidx1 bg-light-brn border0" role="navigation">
-    <form method="post" action="<%=request.getContextPath()%>/prod/prodSer.do">
+    <form method="post" action="<%=request.getContextPath()%>/prod/prod.do">
       <div class="container padt8">
         <div class="col-xs-12 col-sm-2 col-sm-offset-1">
           <select class="form-control" name="bean_contry">
@@ -234,12 +234,16 @@ var $btn = $("#${prodVO.prod_no}").click(function(){
 				alert('Ajax request 發生錯誤');
 			}
 		});
-		
+		$modalX.scrollTop(0);
 	});
 
 
 //foProd
 var $btnFoProd = $("button.bk${prodVO.prod_no}").click(function(){
+	if(${mem_ac==null}){
+		 $('#modal-login').modal("show");
+		 return false;
+	}
     var $action = "foProd";
     var $prod_no = "${prodVO.prod_no}"
     $.ajax({

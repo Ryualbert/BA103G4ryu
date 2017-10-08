@@ -22,7 +22,7 @@ import com.prod.model.ProdService;
 import com.store.model.StoreService;
 
 
-@WebServlet("/ord/ord.do")
+@WebServlet(name="OrdServlet",urlPatterns={"/ord/ord.do"})
 public class OrdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

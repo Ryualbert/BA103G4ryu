@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 
-@WebServlet("/fo_prod/fo_prodAjax.do")
+@WebServlet(name="Fo_prodServletAjax",urlPatterns={"/fo_prod/fo_prodAjax.do"} )
 public class Fo_prodServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static String CONTENT_TYPE = "application/json; charset=utf-8";

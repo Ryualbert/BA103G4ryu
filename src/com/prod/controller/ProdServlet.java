@@ -20,7 +20,7 @@ import com.prod.model.ProdVO;
 
 
 
-@WebServlet("/prod/prodSer.do")
+@WebServlet(name="ProdServlet",urlPatterns={"/prod/prod.do"})
 public class ProdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -44,15 +44,15 @@ public class MemLoginFilter implements Filter {
 		Object mem_ac = session.getAttribute("mem_ac");
 		String location = (String)session.getAttribute("location");
 		
-		System.out.println("innnn");
+		
+		if((Boolean)session.getAttribute("showLogin")){
+			chain.doFilter(request, response);
+			return;
+		}
 
 		//go login
 		if (mem_ac == null) {
-//				session.setAttribute("location", req.getRequestURI());
-//				res.sendRedirect(req.getContextPath() + "/login.html");
-//				session.setAttribute("mem_ac","mrbrown");
 
-			System.out.println("toLogin");
 			session.setAttribute("showLogin", true); 
 			if(location!=null){
 				res.sendRedirect(location); 
@@ -64,7 +64,6 @@ public class MemLoginFilter implements Filter {
 		} else {
 			session.setAttribute("showLogin", false); 
 			session.setAttribute("location", req.getRequestURI());
-			System.out.println("filterElse");
 			chain.doFilter(request, response);
 		}
 		

@@ -211,6 +211,10 @@
 
     //intoCart
     var $btnIntoCart = $("#intoCart").click(function(){
+    	if(${mem_ac==null}){
+    		 $('#modal-login').modal("show");
+    		 return false;
+    	}
         var $action = "insert";
         var $prod_no = "${prodVO.prod_no}"
         var $amount = Number($("[name='amount']").val());
@@ -248,6 +252,10 @@
 
     //foProd
     var $btnFoProd = $("#modal-inner button.bk${prodVO.prod_no}").click(function(){
+    	if(${mem_ac==null}){
+    		 $('#modal-login').modal("show");
+    		 return false;
+    	}
         var $action = "foProd";
         var $prod_no = "${prodVO.prod_no}"
         $.ajax({
@@ -462,6 +470,10 @@
 <script type="text/javascript">
 //likeRev
 var $btnLikeRev = $("#modal-inner button.lk${reviewVO.rev_no}").click(function(){
+	if(${mem_ac==null}){
+		 $('#modal-login').modal("show");
+		 return false;
+	}
     var $action = "likeRev";
     var $rev_no = "${reviewVO.rev_no}"
     $.ajax({
@@ -557,6 +569,10 @@ var $btnLikeRev = $("#modal-inner button.lk${reviewVO.rev_no}").click(function()
 <script type="text/javascript">
     
 var $replyBtn = $("#replyBtn${qaVO.qa_no}").click(function(){
+		if(${mem_ac==null}){
+			 $('#modal-login').modal("show");
+			 return false;
+		}
         var $action = "replyQa";
         var $prod_no =  "${prodVO.prod_no}";
         var $qa_no =  $("#qa_reply_cont${qaVO.qa_no}").attr('qa_no');
@@ -595,7 +611,7 @@ var $replyBtn = $("#replyBtn${qaVO.qa_no}").click(function(){
 
                                             </c:forEach> <!-- qaVO -->
 
-                                            <c:if test="${storeVO.mem_ac!=mem_ac}">
+                                            <c:if test="${storeVO.mem_ac!=mem_ac&&mem_ac!=null}">
                                             <div class="row mgt20">
                                                 <div class="container-fluid">
                                                     <div class="row">
@@ -656,6 +672,10 @@ var $btn = $("#pp${prodVO.store_no}").click(function(){
     });
 
 var $askBtn = $("#askBtn").click(function(){
+		if(${mem_ac==null}){
+			 $('#modal-login').modal("show");
+			 return false;
+		}
         var $action = "addQa";
         var $prod_no =  "${prodVO.prod_no}";
         var $qa_cont = $('#qa_cont').val();

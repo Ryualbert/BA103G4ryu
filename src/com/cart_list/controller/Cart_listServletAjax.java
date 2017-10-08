@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
 import com.prod.model.ProdService;
 import com.prod.model.ProdVO;
 
-@WebServlet("/cart_list/cart_listAjax.do")
+@WebServlet(name="Cart_listServletAjax",urlPatterns={"/cart_list/cart_listAjax.do"} )
 public class Cart_listServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

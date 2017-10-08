@@ -20,18 +20,32 @@
     <servlet-class>com.prod.controller.ProdServletBack</servlet-class>
     <load-on-startup>10</load-on-startup>
   </servlet>
- 
- 
+  
+   <filter>
+    <filter-name>SetShowLoginFilter</filter-name>
+    <filter-class>com.filter.SetShowLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SetShowLoginFilter</filter-name>
+    <url-pattern>/FrontEnd/*</url-pattern>
+    <servlet-name>*</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
   <filter>
-    <filter-name>GlobalFilter</filter-name>
-    <filter-class>com.filter.GlobalFilter</filter-class>
+    <filter-name>SetEncodeFilter</filter-name>
+    <filter-class>com.filter.SetEncodeFilter</filter-class>
     <init-param>
-        <param-name>encoding</param-name>
-        <param-value>UTF-8</param-value>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>GlobalFilter</filter-name>
+    <filter-name>SetEncodeFilter</filter-name>
     <url-pattern>/FrontEnd/buyerorder/*</url-pattern>
     <url-pattern>/FrontEnd/cart/*</url-pattern>
     <url-pattern>/FrontEnd/index/*</url-pattern>
@@ -40,7 +54,6 @@
     <url-pattern>/FrontEnd/shop/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  
   <filter>
     <filter-name>MemLoginFilter</filter-name>
     <filter-class>com.memlogin.controller.MemLoginFilter</filter-class>
@@ -51,13 +64,18 @@
     <url-pattern>/FrontEnd/cart/cart.jsp</url-pattern>
     <url-pattern>/FrontEnd/mem/mem.jsp</url-pattern>
     <url-pattern>/FrontEnd/order/order.jsp</url-pattern>
+    <servlet-name>Cart_listServletAjax</servlet-name>
+    <servlet-name>Fo_prodServletAjax</servlet-name>
+    <servlet-name>Fo_storeServletAjax</servlet-name>
+    <servlet-name>Like_revServletAjax</servlet-name>
+    <servlet-name>OrdServlet</servlet-name>
+    <servlet-name>OrdServletAjax</servlet-name>
+    <servlet-name>QaControllerAjax</servlet-name>
+    <servlet-name>ReviewServlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
-  
-  
-  
 </web-app>

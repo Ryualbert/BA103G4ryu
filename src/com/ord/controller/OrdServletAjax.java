@@ -23,7 +23,7 @@ import com.store.model.StoreService;
 import com.store.model.StoreVO;
 
 
-@WebServlet("/ord/ordAjax.do")
+@WebServlet(name="OrdServletAjax",urlPatterns={"/ord/ordAjax.do"})
 public class OrdServletAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static String CONTENT_TYPE = "application/json; charset=utf-8";

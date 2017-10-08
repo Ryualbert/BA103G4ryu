@@ -22,7 +22,7 @@
 // }
 
 //modal closed toTop
-$('#modal-id').on('hide.bs.modal', function (e) {
+$('#modal-inner').on('hide.bs.modal', function (e) {
 	$("#modalX").empty();
 	$("#modalX").scrollTop(0);
 //	$modalX.scrollTop(0);

@@ -27,7 +27,7 @@ import com.store.model.StoreService;
 import com.store.model.StoreVO;
 
 
-@WebServlet("/qa/qaAjax.do")
+@WebServlet(name="QaControllerAjax",urlPatterns={"/qa/qaAjax.do"})
 public class QaControllerAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

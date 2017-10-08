@@ -204,6 +204,7 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe7Hy0dluCzRjH-1M55UoLXXFER4UbhXY&callback=initMap" async defer></script>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe7Hy0dluCzRjH-1M55UoLXXFER4UbhXY&libraries=geometry&sensor=false&callback=initMap"></script> -->
 <script>
   var map;
   function initMap() {
@@ -221,6 +222,10 @@ var $btn = $("#sp${prodVO.prod_no}").click(function(){
 
 //foStore
 var $btnFoStore = $("#modal-inner button.bk${storeVO.store_no}").click(function(){
+	if(${mem_ac==null}){
+		 $('#modal-login').modal("show");
+		 return false;
+	}
     var $action = "foStore";
     var $store_no = "${storeVO.store_no}"
     $.ajax({

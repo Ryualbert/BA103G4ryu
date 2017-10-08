@@ -39,7 +39,7 @@
 			<div class="col-xs-12 col-sm-4 col-sm-offset-4 text-center mgt20">
 				<span>${memVO.mem_ac}</span><br>
 				${mem_gradeSvc.getOneMem_grade(memVO.grade_no).grade_title}　${memVO.mem_pt}/${memVO.mem_total_pt}<br>
-				<small>修改資料　積分兌換</small>
+				<small>修改資料　積分兌換　<a href="<%=request.getContextPath()%>/FrontEnd/reg_store/UpToStore.jsp">申請店家</a></small>
 			</div>
 		</div>
 	</div>
@@ -263,7 +263,9 @@ var $btn = $("#${storeVO.store_no}").click(function(){
                 alert('Ajax request 發生錯誤');
             }
         });
-        $modalX.scrollTop(0);
+        $("#modal-inner").on('shown.bs.modal', function () {
+        	 initMap();
+   	 	});
     });
     
     

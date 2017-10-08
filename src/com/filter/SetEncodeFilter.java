@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter("/GlobalFilter")
-public class GlobalFilter implements Filter {
+@WebFilter("/SetEncodeFilter")
+public class SetEncodeFilter implements Filter {
 
 	protected String encoding = null;
 	protected FilterConfig config = null;
  
-    public GlobalFilter() {
+    public SetEncodeFilter() {
         // TODO Auto-generated constructor stub
     }
     
@@ -40,7 +40,10 @@ public class GlobalFilter implements Filter {
 		// 【取得 session】
 		HttpSession session = req.getSession();
 		
-		session.setAttribute("showLogin", false); 
+		//first time false
+//		if(session.getAttribute("showLogin")==null){
+//			session.setAttribute("showLogin", false); 
+//		}
 	
 		chain.doFilter(request, response);
 		
