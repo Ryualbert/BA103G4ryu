@@ -2,6 +2,7 @@ package com.fo_act.model;
 
 import java.util.List;
 
+import com.gift_data.model.Gift_dataVO;
 
 public interface Fo_actDAO_interface {
 	 public void insert(Fo_actVO fo_act_VO);

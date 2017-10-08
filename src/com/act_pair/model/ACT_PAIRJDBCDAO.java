@@ -289,13 +289,13 @@ public class ACT_PAIRJDBCDAO implements Act_pairDAO_interface{
 	public static void main(String[] args){
 		ACT_PAIRJDBCDAO dao=new ACT_PAIRJDBCDAO();
 		
-		Act_pairVO act_pair_vo1=new Act_pairVO();
-		act_pair_vo1.setAct_no("A1000000002");
-		act_pair_vo1.setMem_ac("tony141");
-		act_pair_vo1.setApply_date(java.sql.Date.valueOf("2017-09-08"));
-		act_pair_vo1.setPay_state("已繳費");
-		act_pair_vo1.setChk_state("未報到");
-		dao.insert(act_pair_vo1);
+//		Act_pairVO act_pair_vo1=new Act_pairVO();
+//		act_pair_vo1.setAct_no("A1000000002");
+//		act_pair_vo1.setMem_ac("tony141");
+//		act_pair_vo1.setApply_date(java.sql.Date.valueOf("2017-09-08"));
+//		act_pair_vo1.setPay_state("已繳費");
+//		act_pair_vo1.setChk_state("未報到");
+//		dao.insert(act_pair_vo1);
 		
 //		Act_pairVO act_pair_vo2=new Act_pairVO();
 //		act_pair_vo2.setAct_no("A1000000001");
@@ -307,12 +307,12 @@ public class ACT_PAIRJDBCDAO implements Act_pairDAO_interface{
 //		
 //		dao.delete("A1000000002", "tony141");
 //		
-//		Act_pairVO act_pair_vo3=dao.findByPrimaryKey("A1000000001","tony141");
-//		System.out.print(act_pair_vo3.getAct_no()+",");
-//		System.out.print(act_pair_vo3.getMem_ac()+",");
-//		System.out.print(act_pair_vo3.getApply_date()+",");
-//		System.out.print(act_pair_vo3.getPay_state()+",");
-//		System.out.print(act_pair_vo3.getChk_state()+",");
+		Act_pairVO act_pair_vo3=dao.findByPrimaryKey("A1000000001","mrbrown");
+		System.out.print(act_pair_vo3.getAct_no()+",");
+		System.out.print(act_pair_vo3.getMem_ac()+",");
+		System.out.print(act_pair_vo3.getApply_date()+",");
+		System.out.print(act_pair_vo3.getPay_state()+",");
+		System.out.print(act_pair_vo3.getChk_state()+",");
 //		
 //		 List<Act_pairVO> list=dao.getAll();
 //		 for(Act_pairVO act_pair_vo4:list){

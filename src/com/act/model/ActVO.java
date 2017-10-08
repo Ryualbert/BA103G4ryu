@@ -2,6 +2,7 @@ package com.act.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ActVO implements Serializable{
 	private String act_no;
@@ -15,6 +16,10 @@ public class ActVO implements Serializable{
 	private Date act_ed_date;
 	private Date dl_date;
 	private Date fd_date;
+//	private Timestamp act_op_date;
+//	private  Timestamp act_ed_date;
+//	private  Timestamp dl_date;
+//	private  Timestamp fd_date;
 	private String act_add;
 	private String act_add_lat;
 	private String act_add_lon;
@@ -28,6 +33,15 @@ public class ActVO implements Serializable{
 	private String act_stat;
 	private String re_cont;
 	private Date review_ed_date;
+//	private Timestamp review_ed_date;
+	
+	private String act_atm_info;
+	public String getAct_atm_info() {
+		return act_atm_info;
+	}
+	public void setAct_atm_info(String act_atm_info) {
+		this.act_atm_info = act_atm_info;
+	}
 	public ActVO() {
 		
 		super();
@@ -100,6 +114,34 @@ public class ActVO implements Serializable{
 	public void setFd_date(Date fD_DATE) {
 		fd_date = fD_DATE;
 	}
+//	public Timestamp getAct_op_date() {
+//		
+//		return act_op_date;
+//	}
+//	public void setAct_op_date(Timestamp aCT_OP_DATE) {
+//		act_op_date = aCT_OP_DATE;
+//	}
+//	public Timestamp getAct_ed_date() {
+//		return act_ed_date;
+//	}
+//	public void setAct_ed_date(Timestamp aCT_ED_DATE) {
+//		act_ed_date = aCT_ED_DATE;
+//	}
+//	public Timestamp getDl_date() {
+//		return dl_date;
+//	}
+//	public void setDl_date(Timestamp dL_DATE) {
+//		dl_date = dL_DATE;
+//	}
+//	public Timestamp getFd_date() {
+//		return fd_date;
+//	}
+//	public void setFd_date(Timestamp fD_DATE) {
+//		fd_date = fD_DATE;
+//	}
+	
+	
+	
 	public String getAct_add() {
 		return act_add;
 	}
@@ -175,9 +217,15 @@ public class ActVO implements Serializable{
 	public Date getReview_ed_date() {
 		return review_ed_date;
 	}
+//	public Timestamp getReview_ed_date() {
+//		return review_ed_date;
+//	}
 	public void setReview_ed_date(Date rEVIEW_ED_DATE) {
 		review_ed_date = rEVIEW_ED_DATE;
 	}
+//	public void setReview_ed_date(Timestamp rEVIEW_ED_DATE) {
+//		review_ed_date = rEVIEW_ED_DATE;
+//	}
 	
 	
 	

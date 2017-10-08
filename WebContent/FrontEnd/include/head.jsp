@@ -134,7 +134,7 @@
           <!-- 左選單 -->
           <ul class="nav navbar-nav">
             <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.jsp">找豆</a></li>
-            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/activity/activity.jsp">辦活動</a></li>
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/act/act.jsp">辦活動</a></li>
           </ul>
         </div>
         <!-- 手機隱藏選單區結束 -->

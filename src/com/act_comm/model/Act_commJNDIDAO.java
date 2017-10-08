@@ -1,6 +1,7 @@
 package com.act_comm.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,8 @@ public class Act_commJNDIDAO implements Act_commDAO_interface{
 	private static final String GET_ONE_STMT="select * from act_comm where COMM_NO=?";
 	private static final String DELETE = "delete from act_comm where COMM_NO=?";
 	private static final String UPDATE ="update act_comm set ACT_NO=?,MEM_AC=?,COMM_CONT=?,COMM_DATE=?,COMM_REPLY_CONT=?,COMM_REPLY_DATE=? where comm_no=?";
+	private static final String UPDATE_RESPONSE_COMM ="update act_comm  set comm_reply_cont=? ,comm_reply_date=? where comm_no=?";
+	
 	@Override
 	public void insert(Act_commVO act_comm_VO) {
 		// TODO Auto-generated method stub
@@ -73,6 +76,47 @@ public class Act_commJNDIDAO implements Act_commDAO_interface{
 		
 		
 	}
+	
+	@Override
+	public void update_response(String comm_reply_cont, Date comm_reply_date, String comm_no) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_RESPONSE_COMM);
+			pstmt.setString(1,comm_reply_cont);
+			pstmt.setDate(2,comm_reply_date);
+			pstmt.setString(3, comm_no);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
 	@Override
 	public void update(Act_commVO act_comm_VO) {
 		// TODO Auto-generated method stub
@@ -256,6 +300,7 @@ public class Act_commJNDIDAO implements Act_commDAO_interface{
 		 
 		 
 	}
+	
 	
 	
 	

@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -17,7 +19,11 @@ import javax.sql.DataSource;
 
 import com.act_comm.model.Act_commVO;
 import com.act_pair.model.Act_pairVO;
+import com.ad.model.AdDAO_interface;
+import com.ad.model.AdVO;
 import com.fo_act.model.Fo_actVO;
+
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_act;
 
 public class ActJNDIDAO implements ActDAO_interface{
 	private static DataSource ds=null;
@@ -34,11 +40,11 @@ public class ActJNDIDAO implements ActDAO_interface{
 		
 	}
 	
-	private static final String INSERT_STMT ="insert into act values('A' || act_no_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_STMT ="insert into act values('A' || act_no_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String GET_ALL_STMT ="select * from act";
 	private static final String GET_ONE_STMT="select * from act where ACT_NO=?";
 	private static final String DELETE_ACT= "delete from act where act_no=?";
-	private static final String UPDATE ="update act set MEM_AC=?,ORG_CONT=?,ACT_NAME=?,MIN_MEM=?,MAX_MEM=?,MEM_COUNT=?,ACT_OP_DATE=?,ACT_ED_DATE=?,DL_DATE=?,FD_DATE=?,ACT_ADD=?, ACT_ADD_LAT=?,ACT_ADD_LON=?,ACT_CONT=?,ACT_TAG=?,ACT_FEE=?,PAY_WAY=?,ACT_PIC1=?,ACT_PIC2=?,ACT_PIC3=?,ACT_STAT=?,RE_CONT=?,REVIEW_ED_DATE=?where act_no=?";
+	private static final String UPDATE ="update act set MEM_AC=?,ORG_CONT=?,ACT_NAME=?,MIN_MEM=?,MAX_MEM=?,MEM_COUNT=?,ACT_OP_DATE=?,ACT_ED_DATE=?,DL_DATE=?,FD_DATE=?,ACT_ADD=?, ACT_ADD_LAT=?,ACT_ADD_LON=?,ACT_CONT=?,ACT_TAG=?,ACT_FEE=?,PAY_WAY=?,ACT_PIC1=?,ACT_PIC2=?,ACT_PIC3=?,ACT_STAT=?,RE_CONT=?,REVIEW_ED_DATE=?,ACT_ATM_INFO=? where act_no=?";
 	
 	private static final String DELETE_ACT_COMM="delete from act_comm where act_no=?";
 	private static final String DELETE_ACT_PAIR="delete from act_pair where act_no=?";
@@ -47,6 +53,8 @@ public class ActJNDIDAO implements ActDAO_interface{
 	private static final String GET_ACT_PAIR_ByAct_no_STMT="SELECT * FROM ACT_PAIR WHERE ACT_NO=? ORDER BY ACT_NO";
 	private static final String GET_FO_ACT_ByAct_no_STMT="SELECT * FROM FO_ACT WHERE ACT_NO=? ORDER BY ACT_NO";
 	
+	private static final String FIND_MEM_COUNT_BY_ACT_NO="SELECT MEM_COUNT FROM ACT WHERE ACT_NO=?";
+	private static final String ADD_ONE_TO_MEM_COUNT="update act set MEM_COUNT=? where act_no=?";
 	@Override
 	public void insert(ActVO act_VO) {
 		// TODO Auto-generated method stub
@@ -62,10 +70,20 @@ public class ActJNDIDAO implements ActDAO_interface{
 			pstmt.setInt(4,act_VO.getMin_mem());
 			pstmt.setInt(5,act_VO.getMax_mem());
 			pstmt.setInt(6,act_VO.getMem_count());
-			pstmt.setDate(7,act_VO.getAct_op_date());
-			pstmt.setDate(8,act_VO.getAct_ed_date());
-			pstmt.setDate(9,act_VO.getDl_date());
-			pstmt.setDate(10,act_VO.getFd_date());
+		
+			
+//			pstmt.setDate(7,act_VO.getAct_op_date());
+			pstmt.setTimestamp(7,dateToTimestamp(act_VO.getAct_op_date()));
+			
+			
+			
+			pstmt.setTimestamp(8,dateToTimestamp(act_VO.getAct_ed_date()));
+			pstmt.setTimestamp(9,dateToTimestamp(act_VO.getDl_date()));
+			pstmt.setTimestamp(10,dateToTimestamp(act_VO.getFd_date()));
+//			pstmt.setTimestamp(7,act_VO.getAct_op_date());
+//			pstmt.setTimestamp(8,act_VO.getAct_ed_date());
+//			pstmt.setTimestamp(9,act_VO.getDl_date());
+//			pstmt.setTimestamp(10,act_VO.getFd_date());
 			pstmt.setString(11,act_VO.getAct_add());
 			pstmt.setString(12,act_VO.getAct_add_lat());
 			pstmt.setString(13,act_VO.getAct_add_lon());
@@ -87,7 +105,9 @@ public class ActJNDIDAO implements ActDAO_interface{
 			pstmt.setBlob(20,blob3);
 			pstmt.setString(21,act_VO.getAct_stat());
 			pstmt.setString(22,act_VO.getRe_cont());
-			pstmt.setDate(23,act_VO.getReview_ed_date());
+			pstmt.setTimestamp(23,dateToTimestamp(act_VO.getReview_ed_date()));
+//			pstmt.setTimestamp(23,act_VO.getReview_ed_date());
+			pstmt.setString(24,act_VO.getAct_atm_info());
 			pstmt.executeUpdate();
 			
 			
@@ -134,10 +154,14 @@ public class ActJNDIDAO implements ActDAO_interface{
 			pstmt.setInt(4,act_VO.getMin_mem());
 			pstmt.setInt(5,act_VO.getMax_mem());
 			pstmt.setInt(6,act_VO.getMem_count());
-			pstmt.setDate(7,act_VO.getAct_op_date());
-			pstmt.setDate(8,act_VO.getAct_ed_date());
-			pstmt.setDate(9,act_VO.getDl_date());
-			pstmt.setDate(10,act_VO.getFd_date());
+			pstmt.setTimestamp(7,dateToTimestamp(act_VO.getAct_op_date()));
+			pstmt.setTimestamp(8,dateToTimestamp(act_VO.getAct_ed_date()));
+			pstmt.setTimestamp(9,dateToTimestamp(act_VO.getDl_date()));
+			pstmt.setTimestamp(10,dateToTimestamp(act_VO.getFd_date()));
+//			pstmt.setTimestamp(7,act_VO.getAct_op_date());
+//			pstmt.setTimestamp(8,act_VO.getAct_ed_date());
+//			pstmt.setTimestamp(9,act_VO.getDl_date());
+//			pstmt.setTimestamp(10,act_VO.getFd_date());
 			pstmt.setString(11,act_VO.getAct_add());
 			pstmt.setString(12,act_VO.getAct_add_lat());
 			pstmt.setString(13,act_VO.getAct_add_lon());
@@ -159,8 +183,10 @@ public class ActJNDIDAO implements ActDAO_interface{
 			pstmt.setBlob(20,blob3);
 			pstmt.setString(21,act_VO.getAct_stat());
 			pstmt.setString(22,act_VO.getRe_cont());
-			pstmt.setDate(23,act_VO.getReview_ed_date());
-			pstmt.setString(24,act_VO.getAct_no());
+			pstmt.setTimestamp(23,dateToTimestamp(act_VO.getReview_ed_date()));
+//			pstmt.setTimestamp(23,act_VO.getReview_ed_date());
+			pstmt.setString(24,act_VO.getAct_atm_info());
+			pstmt.setString(25,act_VO.getAct_no());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -273,10 +299,18 @@ public class ActJNDIDAO implements ActDAO_interface{
 			act_vo.setMin_mem(rs.getInt("MIN_MEM"));
 			act_vo.setMax_mem(rs.getInt("MAX_MEM"));
 			act_vo.setMem_count(rs.getInt("MEM_COUNT"));
-			act_vo.setAct_op_date(rs.getDate("ACT_OP_DATE"));
-			act_vo.setAct_ed_date(rs.getDate("ACT_ED_DATE"));
-			act_vo.setDl_date(rs.getDate("DL_DATE"));
-			act_vo.setFd_date(rs.getDate("FD_DATE"));
+			
+
+		act_vo.setAct_op_date(timestampToDate(rs.getTimestamp("ACT_OP_DATE")));
+		
+//			act_vo.setAct_op_date(rs.getDate("ACT_OP_DATE"));
+			act_vo.setAct_ed_date(timestampToDate(rs.getTimestamp("ACT_ED_DATE")));
+			act_vo.setDl_date(timestampToDate(rs.getTimestamp("DL_DATE")));
+			act_vo.setFd_date(timestampToDate(rs.getTimestamp("FD_DATE")));
+//			act_vo.setAct_op_date(rs.getTimestamp("ACT_OP_DATE"));
+//			act_vo.setAct_ed_date(rs.getTimestamp("ACT_ED_DATE"));
+//			act_vo.setDl_date(rs.getTimestamp("DL_DATE"));
+//			act_vo.setFd_date(rs.getTimestamp("FD_DATE"));
 			act_vo.setAct_add(rs.getString("ACT_ADD"));
 			act_vo.setAct_add_lat(rs.getString("ACT_ADD_LAT"));
 			act_vo.setAct_add_lon(rs.getString("ACT_ADD_LON"));
@@ -290,7 +324,9 @@ public class ActJNDIDAO implements ActDAO_interface{
 			act_vo.setAct_pic3(rs.getBytes("ACT_PIC3"));
 			act_vo.setAct_stat(rs.getString("ACT_STAT"));
 			act_vo.setRe_cont(rs.getString("RE_CONT"));
-			act_vo.setReview_ed_date(rs.getDate("REVIEW_ED_DATE"));
+			act_vo.setReview_ed_date(timestampToDate(rs.getTimestamp("REVIEW_ED_DATE")));
+//			act_vo.setReview_ed_date(rs.getTimestamp("REVIEW_ED_DATE"));
+			act_vo.setAct_atm_info(rs.getString("ACT_ATM_INFO"));
 			
 		}
 		} catch (SQLException e) {
@@ -346,10 +382,14 @@ public class ActJNDIDAO implements ActDAO_interface{
 				act_vo.setMin_mem(rs.getInt("MIN_MEM"));
 				act_vo.setMax_mem(rs.getInt("MAX_MEM"));
 				act_vo.setMem_count(rs.getInt("MEM_COUNT"));
-				act_vo.setAct_op_date(rs.getDate("ACT_OP_DATE"));
-				act_vo.setAct_ed_date(rs.getDate("ACT_ED_DATE"));
-				act_vo.setDl_date(rs.getDate("DL_DATE"));
-				act_vo.setFd_date(rs.getDate("FD_DATE"));
+				act_vo.setAct_op_date(timestampToDate(rs.getTimestamp("ACT_OP_DATE")));
+				act_vo.setAct_ed_date(timestampToDate(rs.getTimestamp("ACT_ED_DATE")));
+				act_vo.setDl_date(timestampToDate(rs.getTimestamp("DL_DATE")));
+				act_vo.setFd_date(timestampToDate(rs.getTimestamp("FD_DATE")));
+//				act_vo.setAct_op_date(rs.getTimestamp("ACT_OP_DATE"));
+//				act_vo.setAct_ed_date(rs.getTimestamp("ACT_ED_DATE"));
+//				act_vo.setDl_date(rs.getTimestamp("DL_DATE"));
+//				act_vo.setFd_date(rs.getTimestamp("FD_DATE"));
 				act_vo.setAct_add(rs.getString("ACT_ADD"));
 				act_vo.setAct_add_lat(rs.getString("ACT_ADD_LAT"));
 				act_vo.setAct_add_lon(rs.getString("ACT_ADD_LON"));
@@ -363,10 +403,12 @@ public class ActJNDIDAO implements ActDAO_interface{
 				act_vo.setAct_pic3(rs.getBytes("ACT_PIC3"));
 				act_vo.setAct_stat(rs.getString("ACT_STAT"));
 				act_vo.setRe_cont(rs.getString("RE_CONT"));
-				act_vo.setReview_ed_date(rs.getDate("REVIEW_ED_DATE"));
-				
+				act_vo.setReview_ed_date(timestampToDate(rs.getTimestamp("REVIEW_ED_DATE")));
+//				act_vo.setReview_ed_date(rs.getTimestamp("REVIEW_ED_DATE"));
+				act_vo.setAct_atm_info(rs.getString("ACT_ATM_INFO"));
 				list.add(act_vo);
 			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -555,8 +597,260 @@ public class ActJNDIDAO implements ActDAO_interface{
 		
 		
 	}
+	@Override
+	public List<ActVO> getAll(Map<String, String[]> map) {
+		List<ActVO> list=new ArrayList<ActVO>();
+		ActVO act_vo=null;
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			con = ds.getConnection();
+			String finalSQL = "select * from act "
+			          + jdbcUtil_CompositeQuery_act.get_WhereCondition(map)+"order by act_op_date desc"
+			          ;
+			System.out.println(finalSQL);
+			pstmt=con.prepareStatement(finalSQL);
+			rs=pstmt.executeQuery();
+			while(rs.next()){
+				act_vo=new ActVO();
+				act_vo.setAct_no(rs.getString("ACT_NO"));
+				act_vo.setMem_ac(rs.getString("MEM_AC"));
+				act_vo.setOrg_cont(rs.getString("ORG_CONT"));
+				act_vo.setAct_name(rs.getString("ACT_NAME"));
+				act_vo.setMin_mem(rs.getInt("MIN_MEM"));
+				act_vo.setMax_mem(rs.getInt("MAX_MEM"));
+				act_vo.setMem_count(rs.getInt("MEM_COUNT"));
+				act_vo.setAct_op_date(timestampToDate(rs.getTimestamp("ACT_OP_DATE")));
+				act_vo.setAct_ed_date(timestampToDate(rs.getTimestamp("ACT_ED_DATE")));
+				act_vo.setDl_date(timestampToDate(rs.getTimestamp("DL_DATE")));
+				act_vo.setFd_date(timestampToDate(rs.getTimestamp("FD_DATE")));
+//				act_vo.setAct_op_date(rs.getTimestamp("ACT_OP_DATE"));
+//				act_vo.setAct_ed_date(rs.getTimestamp("ACT_ED_DATE"));
+//				act_vo.setDl_date(rs.getTimestamp("DL_DATE"));
+//				act_vo.setFd_date(rs.getTimestamp("FD_DATE"));
+				act_vo.setAct_add(rs.getString("ACT_ADD"));
+				act_vo.setAct_add_lat(rs.getString("ACT_ADD_LAT"));
+				act_vo.setAct_add_lon(rs.getString("ACT_ADD_LON"));
+				act_vo.setAct_cont(rs.getString("ACT_CONT"));
+				act_vo.setAct_tag(rs.getString("ACT_TAG"));
+				act_vo.setAct_fee(rs.getInt("ACT_FEE"));
+				act_vo.setPay_way(rs.getString("PAY_WAY"));
+			
+				act_vo.setAct_pic1(rs.getBytes("ACT_PIC1"));
+				act_vo.setAct_pic2(rs.getBytes("ACT_PIC2"));
+				act_vo.setAct_pic3(rs.getBytes("ACT_PIC3"));
+				act_vo.setAct_stat(rs.getString("ACT_STAT"));
+				act_vo.setRe_cont(rs.getString("RE_CONT"));
+				act_vo.setReview_ed_date(timestampToDate(rs.getTimestamp("REVIEW_ED_DATE")));
+//				act_vo.setReview_ed_date(rs.getTimestamp("REVIEW_ED_DATE"));
+				act_vo.setAct_atm_info(rs.getString("ACT_ATM_INFO"));
+				list.add(act_vo);
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+		
+		
+		
+	}
+	@Override
+	public List<ActVO> getSort(String sort) {
+		List<ActVO> list=new ArrayList<ActVO>();
+		ActVO act_vo=null;
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con = ds.getConnection();
+			String finalSQL;
+			if(!sort.equals("")){
+			 finalSQL = "select * from act   order by "+sort;
+			}else{
+				 finalSQL = "select * from act";
+			}
+	System.out.println(finalSQL);
+	pstmt=con.prepareStatement(finalSQL);
+	rs=pstmt.executeQuery();
+	while(rs.next()){
+		act_vo=new ActVO();
+		act_vo.setAct_no(rs.getString("ACT_NO"));
+		act_vo.setMem_ac(rs.getString("MEM_AC"));
+		act_vo.setOrg_cont(rs.getString("ORG_CONT"));
+		act_vo.setAct_name(rs.getString("ACT_NAME"));
+		act_vo.setMin_mem(rs.getInt("MIN_MEM"));
+		act_vo.setMax_mem(rs.getInt("MAX_MEM"));
+		act_vo.setMem_count(rs.getInt("MEM_COUNT"));
+		act_vo.setAct_op_date(timestampToDate(rs.getTimestamp("ACT_OP_DATE")));
+		act_vo.setAct_ed_date(timestampToDate(rs.getTimestamp("ACT_ED_DATE")));
+		act_vo.setDl_date(timestampToDate(rs.getTimestamp("DL_DATE")));
+		act_vo.setFd_date(timestampToDate(rs.getTimestamp("FD_DATE")));
+//		act_vo.setAct_op_date(rs.getTimestamp("ACT_OP_DATE"));
+//		act_vo.setAct_ed_date(rs.getTimestamp("ACT_ED_DATE"));
+//		act_vo.setDl_date(rs.getTimestamp("DL_DATE"));
+//		act_vo.setFd_date(rs.getTimestamp("FD_DATE"));
+		act_vo.setAct_add(rs.getString("ACT_ADD"));
+		act_vo.setAct_add_lat(rs.getString("ACT_ADD_LAT"));
+		act_vo.setAct_add_lon(rs.getString("ACT_ADD_LON"));
+		act_vo.setAct_cont(rs.getString("ACT_CONT"));
+		act_vo.setAct_tag(rs.getString("ACT_TAG"));
+		act_vo.setAct_fee(rs.getInt("ACT_FEE"));
+		act_vo.setPay_way(rs.getString("PAY_WAY"));
+	
+		act_vo.setAct_pic1(rs.getBytes("ACT_PIC1"));
+		act_vo.setAct_pic2(rs.getBytes("ACT_PIC2"));
+		act_vo.setAct_pic3(rs.getBytes("ACT_PIC3"));
+		act_vo.setAct_stat(rs.getString("ACT_STAT"));
+		act_vo.setRe_cont(rs.getString("RE_CONT"));
+		act_vo.setReview_ed_date(timestampToDate(rs.getTimestamp("REVIEW_ED_DATE")));
+//		act_vo.setReview_ed_date(rs.getTimestamp("REVIEW_ED_DATE"));
+		
+		list.add(act_vo);
+	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+		
+		
+		
+	}
+	
+	@Override
+	public void update_mem_count(String ACT_NO,Integer number) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		Integer mem_count=null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt=con.prepareStatement(FIND_MEM_COUNT_BY_ACT_NO);
+			pstmt.setString(1, ACT_NO);
+			rs=pstmt.executeQuery();
+			while(rs.next()){
+				mem_count=rs.getInt("MEM_COUNT");
+			}
+			pstmt2=con.prepareStatement(ADD_ONE_TO_MEM_COUNT);
+			pstmt2.setInt(1,mem_count+number);
+			
+			pstmt2.setString(2, ACT_NO);
+			pstmt2.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt2 != null) {
+				try {
+					pstmt2.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+		
+		
+	}
 	
 	
 	
 	
-}
+	public static java.sql.Date timestampToDate(java.sql.Timestamp timestamp){
+		Date test_timestamp=timestamp;
+		java.sql.Date test_date=new java.sql.Date(test_timestamp.getTime());
+		return test_date;
+	}
+
+	public static java.sql.Timestamp dateToTimestamp(java.sql.Date date){
+		
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+		return timestamp;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+

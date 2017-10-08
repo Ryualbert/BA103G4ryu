@@ -16,12 +16,12 @@ public class Act_commService {
 		dao=new Act_commJNDIDAO();
 	}
 	
-	public Act_commVO addAct_comm(String comm_no, String act_no, String mem_ac,
+	public Act_commVO addAct_comm( String act_no, String mem_ac,
 		String	comm_cont,java.sql.Date comm_date, String comm_reply_cont,java.sql.Date comm_reply_date) {
 
 		Act_commVO act_comm_VO = new Act_commVO();
 
-		act_comm_VO.setComm_no(comm_no);
+		
 		act_comm_VO.setAct_no(act_no);
 		act_comm_VO.setMem_ac(mem_ac);
 		act_comm_VO.setComm_cont(comm_cont);
@@ -59,7 +59,11 @@ public class Act_commService {
 		return dao.getAll();
 	}
 	
-	
+	public void update_response(String comm_reply_cont, java.sql.Date comm_reply_date, String comm_no){
+		dao.update_response(comm_reply_cont, comm_reply_date, comm_no);
+		
+		
+	}
 	
 	
 }

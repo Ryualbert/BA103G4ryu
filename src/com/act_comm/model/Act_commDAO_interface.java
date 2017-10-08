@@ -11,7 +11,7 @@ public interface Act_commDAO_interface {
      public  Act_commVO findByPrimaryKey(String comm_no);
      public List< Act_commVO> getAll();
      
-	
+	public void update_response(String comm_reply_cont,java.sql.Date comm_reply_date,String comm_no);
 	
 	
 }
