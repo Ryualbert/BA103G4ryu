@@ -3,7 +3,9 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.store.model.*"%>
 <%@ page import="com.prod.model.*"%>
-<%-- 此頁採用 JSTL 與 EL 取值 --%>
+
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 <%
 	
 	String mem_ac = (String) session.getAttribute("mem_ac");
@@ -15,38 +17,8 @@
 	ProdVO prodVO = (ProdVO) request.getAttribute("prodVO");
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-
-
-<link rel="stylesheet prefetch"
-	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel=stylesheet type="text/css"
-	href="<%=request.getContextPath()%>/FrontEnd/res/css/store_list.css">
-
-<title>Insert title here</title>
-
-</head>
-<body>
-	<div class="head1 ">
-		<div class="verticnav col-sm-4">
-			<ul class="verticnav">
-				<li>&nbsp;&nbsp;&nbsp;${storeVO.store_name}</li>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;認證狀態：</li>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${storeVO.store_stat}</li>
-				<li><img src="LOGO.svg" class="shop_photo"></li>
-				<li><a href="#">修改店家資料</a></li>
-				<li><a href="#">商品管理</a></li>
-				<li><a href="#">訂單管理</a></li>
-			</ul>
-		</div>
-	</div>
+<div class="content container mgt-depn-nav">
+	
 	<div>
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -303,12 +275,9 @@
 				
 		</div>
 	</div>
+</div>
 
-<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath()%>/BackEnd/res/js/sorttable.js"></script>
+<script src="<%=request.getContextPath()%>/FrontEnd/res/js/sorttable.js"></script>
 <script>
 function handleFileSelect1(evt) {
 	$("#pic1").empty();
@@ -425,7 +394,5 @@ document.getElementById('propic3').addEventListener('change',
 
 
 </script>
-</body>
-</html>
 
-
+<jsp:include page="/FrontEnd/include/footer.jsp"/>

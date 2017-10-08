@@ -95,24 +95,24 @@ public class Ord_manag extends HttpServlet {
 
 				OrdVO ordVO = new OrdVO();
 				OrdService ordSvc = new OrdService();
-//				
+				
 //				Sys_msgVO sys_msgVO = new Sys_msgVO();
 //				Sys_msgService sys_msgSvc = new Sys_msgService();
 //				sys_msgVO.setMem_ac(ordmem_ac);
 //				sys_msgVO.setMsg_cont("您訂購的商品已出貨");
 //				java.sql.Date msg_send_date = new java.sql.Date(new java.util.Date().getTime());
 //				sys_msgVO.setMsg_send_date(msg_send_date);
-//				
-//				
-//				if (ord_stat.equals("已付款")) {
-//					ordVO = ordSvc.update_payconiform(ord_no);
-//
-//				}
-//				if (ord_stat.equals("已確認付款")) {
-//					ordVO = ordSvc.update_sendstat(ord_no, send_id);
-//					
+				
+				
+				if (ord_stat.equals("已付款")) {
+					ordVO = ordSvc.update_payconiform(ord_no);
+
+				}
+				if (ord_stat.equals("已確認付款")) {
+					ordVO = ordSvc.update_sendstat(ord_no, send_id);
+					
 //					sys_msgVO = sys_msgSvc.addSys_msg(sys_msgVO);
-//				}
+				}
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {

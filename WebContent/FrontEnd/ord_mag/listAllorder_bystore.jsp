@@ -52,7 +52,6 @@
 	
 	
 	
-	
 	<div class="shop">
 		<div class="product col-sm-8">
 			<table class="table-bordered table-responsive ord_all">

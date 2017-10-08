@@ -420,7 +420,7 @@ public class ToStore extends HttpServlet {
 				 *************/
 
 				req.setAttribute("storeVO", storeVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/FrontEnd/store_mag/store_index.jsp";
+				String url = "/FrontEnd/prod_mag/listAllpro_bystore.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 
