@@ -1,26 +1,44 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib  prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.mem.model.*"%>
-<%@ page import="com.prod.model.*"%>
 <%@ page import="com.store.model.*"%>
+<%@ page import="com.prod.model.*"%>
+<%@ page import="com.ord.model.*"%>
+<%@ page import="com.ord_list.model.*"%>
+<%@ page import="com.review.model.*"%>
 <%@ page import="com.fo_prod.model.*"%>
-<%@ page import="com.fo_store.model.*"%>
 
 
-<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
-<jsp:useBean id="prodSvc" scope="page" class="com.prod.model.ProdService" />
+
 <jsp:useBean id="storeSvc" scope="page" class="com.store.model.StoreService" />
-
-
+<jsp:useBean id="fo_prodSvc" scope="page" class="com.fo_prod.model.Fo_prodService" />
+<jsp:useBean id="fo_storeSvc" scope="page" class="com.fo_store.model.Fo_storeService" />
+<jsp:useBean id="reviewSvc" scope="page" class="com.review.model.ReviewService" />
 <jsp:include page="/FrontEnd/include/head.jsp"/>
 <c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
-<c:set var="memVO" value="${memSvc.getOneMem(mem_ac)}" scope="page"/>
+<c:set var="fo_prodlist" value="${fo_prodSvc.getAllByMem(mem_ac)}" scope="page"/>
+<c:set var="fo_storelist" value="${fo_storeSvc.getAllByMem(mem_ac)}" scope="page"/>
 
+<%
+	
+	String store_no = (String) session.getAttribute("store_no");
+	ProdService prodSvc = new ProdService();
+	OrdService ordSvc = new OrdService();
+	
+	StoreVO storeVO=(StoreVO)storeSvc.getonestore(store_no);
+	pageContext.setAttribute("storeVO",storeVO);
+	
+	
+	Set<ProdVO> prodVOs = storeSvc.getProdsByStore_no(store_no);
+	pageContext.setAttribute("prodVOs",prodVOs);
+	
+	
+	
+%>
 
+ 
 
+		
 <div class="container mgt-depn-nav-lg">
 		<div class="row">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 mgb10 ">
@@ -50,14 +68,8 @@
 
 		</div>
 	</div>
-
 	
-<style type="text/css">
-	*{
-		
-	}
-</style>	      
-		
+
 
 
 <jsp:include page="/FrontEnd/include/footer.jsp"/>

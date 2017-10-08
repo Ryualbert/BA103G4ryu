@@ -25,7 +25,7 @@ import com.store.model.StoreService;
 import com.store.model.StoreVO;
 
 @MultipartConfig(fileSizeThreshold=1024*1024,maxFileSize=5*1024*1024,maxRequestSize=5*5*1024*1024)
-
+@WebServlet(name="StoreServlet",urlPatterns={"/store/store.do"})
 public class StoreServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

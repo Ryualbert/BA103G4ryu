@@ -23,6 +23,7 @@ import com.store.model.StoreService;
 import com.store.model.StoreVO;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
+@WebServlet(name="ToStore",urlPatterns={"/store/ToStore.do"})
 public class ToStore extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -261,6 +262,7 @@ public class ToStore extends HttpServlet {
 
 				/*************************** 其他可能的錯誤處理 **********************************/
 			} catch (Exception e) {
+
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/FrontEnd/reg_store/UpToStore.jsp");
 				failureView.forward(req, res);
@@ -430,7 +432,7 @@ public class ToStore extends HttpServlet {
 			}
 		}
 		
-if ("update_forAud".equals(action)) { // 來自store_index.jsp
+		if ("update_forAud".equals(action)) { // 來自store_index.jsp
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to

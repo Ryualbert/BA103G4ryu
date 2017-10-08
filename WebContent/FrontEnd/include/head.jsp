@@ -100,7 +100,7 @@
                       
                     <c:if test="${storeSvc.getOneByMem(mem_ac) != null}">
                       <li><a href="<%=request.getContextPath()%>/FrontEnd/store/store.jsp">店家中心</a></li>
-                      <li><a href="">訂單管理</a></li>
+                      <li><a href="<%=request.getContextPath()%>/FrontEnd/ord_mag/listAllorder_bystore.jsp">訂單管理</a></li>
                       <li role="presentation" class="divider"></li>
                     </c:if>
                     

@@ -12,7 +12,6 @@
 
 
 <div class="content container mgt-depn-nav">
-
 	
 	<h3>會員申請店家 - regstore.jsp</h3>
 	
