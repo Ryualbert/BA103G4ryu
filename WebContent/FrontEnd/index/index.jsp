@@ -99,7 +99,7 @@
 		<!--CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC-->
 		<div class="container cus-tab-block content">
 			<div class="row">
-				<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+				<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 					<div role="tabpanel">
 					    <!-- 標籤面板：標籤區 -->
 					    <ul class="nav nav-tabs " role="tablist">

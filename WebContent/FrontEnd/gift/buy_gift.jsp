@@ -5,7 +5,8 @@
 <%@ page import="com.gift_data.model.*"%>
 
 
-   <jsp:include page="/FrontEnd/include/head.jsp"/>
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 
 <style type="text/css">
 

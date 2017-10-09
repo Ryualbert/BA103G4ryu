@@ -6,10 +6,9 @@
 <%@ page import="com.mem.model.*"%>
 <%@ page import="com.convert_gift.model.*"%>
 
-   <jsp:include page="/FrontEnd/include/head.jsp"/>
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
   <%
-  
-  
   
     Gift_dataService gift_dataSvc = new Gift_dataService();
 
@@ -17,10 +16,6 @@ List<Gift_dataVO> list=gift_dataSvc.getAll();
     request.setAttribute("list",list);
     
     String mem_ac=(String)session.getAttribute("mem_ac");
-    if(mem_ac==null){
-    	mem_ac="mamabeak";
-    	}
-    
    
     MemService memSvc=new MemService();
    MemVO mem_vo= memSvc.getOneProd(mem_ac);
@@ -41,9 +36,8 @@ List<Gift_dataVO> list=gift_dataSvc.getAll();
     
 %>
   
- <link rel="stylesheet" href="<%=request.getContextPath()%>/BackEnd/res/font-awesome-4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/BackEnd/res/font-awesome-4.7.0/css/font-awesome.min.css">
-      
+<%-- <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/font-awesome-4.7.0/css/font-awesome.css"> --%>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/plugin/font-awesome-4.7.0/css/font-awesome.min.css">
       
       
       <style>

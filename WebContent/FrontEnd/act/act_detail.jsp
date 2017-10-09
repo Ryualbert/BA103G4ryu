@@ -6,11 +6,10 @@
 <%@ page import="com.act_comm.model.*"%>
 
   
-  
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
   <%
-  
-  session.setAttribute("mem_ac","mamabeak");
-  
+
 ActVO act_vo= (ActVO) session.getAttribute("act_vo");
 Date date_act_op_date=act_vo.getAct_op_date();
 java.sql.Timestamp act_op_date = new java.sql.Timestamp(date_act_op_date.getTime());
@@ -26,7 +25,6 @@ pageContext.setAttribute("act_vo",act_vo);
 	
 	%>
   
-  <jsp:include page="/FrontEnd/include/head.jsp"/>
 <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
 
 

@@ -107,7 +107,7 @@
                     <c:if test="${mem_ac!= null}">
                     <li><a href="<%=request.getContextPath()%>/FrontEnd/mem/mem.jsp">會員中心</a></li>
                     <li><a href="<%=request.getContextPath()%>/FrontEnd/buyerorder/buyerorder.jsp?status=1">購買清單</a></li>
-                    <li><a href="">我的活動</a></li>
+                    <li><a href="<%=request.getContextPath()%>/FrontEnd/act/my_act.jsp">我的活動</a></li>
                     <li><a href="<%=request.getContextPath()%>/memlogin/memlogin.do?action=logout">登出</a></li>
                     </c:if>
                     
@@ -135,6 +135,9 @@
           <ul class="nav navbar-nav">
             <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/shop/shop.jsp">找豆</a></li>
             <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/act/act.jsp">辦活動</a></li>
+            <c:if test="${not empty mem_ac}" >
+            <li><a class="padt20 padb17" href="<%=request.getContextPath()%>/FrontEnd/gift/gift_data_frontEnd.jsp">積分兌換</a></li>
+            </c:if>
           </ul>
         </div>
         <!-- 手機隱藏選單區結束 -->

@@ -6,12 +6,12 @@
 
   
   
-  <jsp:include page="/FrontEnd/include/head.jsp"/>
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 
-     
 <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
   <%--date picker專用css --%>
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/BackEnd/res/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/FrontEnd/res/css/bootstrap-datetimepicker.min.css" />
 
 <style>
 
@@ -351,8 +351,8 @@ margin-right: 10px;
  </div>
 
   <%--date picker專用js --%> 
-     <script type="text/javascript"  src="<%=request.getContextPath()%>/BackEnd/res/js/bootstrap-datetimepicker.js"></script> 
- <script type="text/javascript"  src="<%=request.getContextPath()%>/BackEnd/res/js/bootstrap-datetimepicker.fr.js"></script>
+     <script type="text/javascript"  src="<%=request.getContextPath()%>/FrontEnd/res/js/bootstrap-datetimepicker.js"></script> 
+ <script type="text/javascript"  src="<%=request.getContextPath()%>/FrontEnd/res/js/bootstrap-datetimepicker.fr.js"></script>
  
  <script>
  for(var i=0;i<$(".memory").length;i++){

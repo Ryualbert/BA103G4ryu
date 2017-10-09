@@ -4,7 +4,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.act.model.*"%>
 
-  <jsp:include page="/FrontEnd/include/head.jsp"/>
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 
 
 <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
@@ -197,6 +198,7 @@ color: #eee;
 		
 		</script>
 		
-		<jsp:include page="/FrontEnd/include/footer.jsp"/>
+
+<jsp:include page="/FrontEnd/include/footer.jsp"/>
 		
 	

@@ -15,7 +15,8 @@ if(mem_ac==null){
 pageContext.setAttribute("mem_ac",mem_ac);
 
 --%>
-
+<jsp:include page="/FrontEnd/include/head.jsp"/>
+<c:set var="mem_ac" value="${sessionScope.mem_ac}" scope="page"/>
 
 <%
 session.setAttribute("mem_ac","mamabeak");
@@ -36,7 +37,6 @@ pageContext.setAttribute("act_pair_list",act_pair_list);
 
 %>
 
-<jsp:include page="/FrontEnd/include/head.jsp"/>
 <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
 <style type="text/css">
 
