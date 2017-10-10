@@ -42,6 +42,7 @@ public class ProdServlet extends HttpServlet {
 				String proc = req.getParameter("proc");
 				String roast = req.getParameter("roast");
 				String others = req.getParameter("others");
+				System.out.println(req.getParameter("bean_roast"));
 
 				//bring the search param back
 				HttpSession session = req.getSession();
