@@ -11,40 +11,55 @@ import javax.websocket.OnError;
 import javax.websocket.OnClose;
 import javax.websocket.CloseReason;
 
-@ServerEndpoint("/MyEchoServer/{myName}/{myRoom}")
+@ServerEndpoint("/MyEchoServer/{myName}/{urName}")
 public class MyEchoServer {
 
-private static final Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
-private static final Map<String,  Set<Session>> mapSessions = Collections.synchronizedMap(new HashMap<String, Set<Session>>());
+private static final Map<Set<String>,  Set<Session>> pairSessions = Collections.synchronizedMap(new HashMap<Set<String>, Set<Session>>());
 	
 	@OnOpen
-	public void onOpen(@PathParam("myName") String myName, @PathParam("myRoom") String myRoom, Session userSession) throws IOException {
-//		allSessions.add(userSession);
+	public void onOpen(@PathParam("myName") String myName, @PathParam("urName") String urName, Session userSession) throws IOException {
+
+		//key
+		Set<String> pairSet=  Collections.synchronizedSet(new HashSet<String>());
+		pairSet.add(myName);
+		pairSet.add(urName);
 		
-		if(mapSessions.get(myRoom)==null){
+		//first time of this key
+		if(pairSessions.get(pairSet)==null){
+			//val
 			Set<Session> setSessions = Collections.synchronizedSet(new HashSet<Session>());
 			setSessions.add(userSession);
-			mapSessions.put(myRoom, setSessions);
-		}else {
-			Set<Session> setSessions = mapSessions.get(myRoom);
+			//map
+			pairSessions.put(pairSet, setSessions);
+		//others time of this key	
+		} else{
+			//val
+			Set<Session> setSessions= pairSessions.get(pairSet);
 			setSessions.add(userSession);
-			mapSessions.put(myRoom, setSessions);
+			//map
+			pairSessions.put(pairSet, setSessions);
 		}
-		
+	
 		System.out.println(userSession.getId() + ": 已連線");
-		System.out.println(myName + ": 已連線");
-		System.out.println(myRoom + ": 房號");
+		System.out.println(myName + ": myName");
+		System.out.println(urName + ": urName");
 //		userSession.getBasicRemote().sendText("WebSocket 連線成功");
 	}
 
 	
 	@OnMessage
-	public void onMessage(@PathParam("myRoom") String myRoom,Session userSession, String message) {
-		for (Session session : mapSessions.get(myRoom)) {
+	public void onMessage(@PathParam("myName") String myName, @PathParam("urName") String urName,Session userSession, String message) {
+		//key
+		Set<String> pairSet=  Collections.synchronizedSet(new HashSet<String>());
+		pairSet.add(myName);
+		pairSet.add(urName);
+		//map
+		for (Session session: pairSessions.get(pairSet)){
 			if (session.isOpen())
 				session.getAsyncRemote().sendText(message);
 		}
-		System.out.println("Message received: " + message);
+		
+		System.out.println(pairSet+ "Message received: " + message);
 	}
 	
 	@OnError
@@ -53,9 +68,18 @@ private static final Map<String,  Set<Session>> mapSessions = Collections.synchr
 	}
 	
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason) {
-		allSessions.remove(userSession);
-		System.out.println(userSession.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
+	public void onClose(@PathParam("myName") String myName, @PathParam("urName") String urName, Session userSession, CloseReason reason) {
+		//key
+		Set<String> pairSet=  Collections.synchronizedSet(new HashSet<String>());
+		pairSet.add(myName);
+		pairSet.add(urName);
+		//val
+		Set<Session> setSessions= pairSessions.get(pairSet);
+		setSessions.remove(userSession);
+		//map
+		pairSessions.put(pairSet, setSessions);
+		
+		System.out.println(userSession.getId() + pairSet+ ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}
 
  

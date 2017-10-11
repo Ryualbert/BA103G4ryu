@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+		<title>Title Page</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<!--[if lt IE 9]>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body ">
+		
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-sm-offset-8">	
+						<div role="tabpanel">
+						    <!-- 標籤面板：標籤區 -->
+						    <ul class="nav nav-tabs" role="tablist">
+						        <li role="presentation" class="active">
+						            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">xxx</a>
+						        </li>
+						        <li role="presentation">
+						            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">yyy</a>
+						        </li>
+						        <li role="presentation">
+						            <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">zzz</a>
+						        </li>
+						    </ul>
+						
+						    <!-- 標籤面板：內容區 -->
+						    <div class="tab-content ">
+						        <div role="tabpanel" class="tab-pane active" id="tab1">
+									<div class="container-fluid fix-h30">
+										<div id="M002M001" class="row"">
+											<div class="col-xs-4 col-sm-2">
+												<img class="pull-right" src="http://fakeimg.pl/50x50/00CED1/FFF/?text=img+placeholder">
+											</div>
+											<div class="col-xs-8 col-sm-8 well">
+												Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+												tempor incidit esse
+												cillum dolore eu fugiat nuid est laborum.
+											</div>
+
+
+											<div class="col-xs-8 col-sm-8 col-sm-offset-2 well">
+												Lorem ipsumt cupidatat non
+												proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+											</div>
+											<div class="col-xs-4 col-sm-2">
+												<img src="http://fakeimg.pl/50x50/00CED1/FFF/?text=img+placeholder">
+												
+											</div>
+										</div>
+									</div>
+									<div>
+										<textarea id="msgM002M001"></textarea>
+										<span id="submitM002M001" class="btn btn-primary btn-sm">送出</span>
+									</div>
+						        </div>
+
+
+						        <div role="tabpanel" class="tab-pane" id="tab2">
+									<div class="container-fluid fix-h30">
+										<div id="M003M001" class="row">
+											<div class="col-xs-4 col-sm-2">
+												<img class="pull-right" src="http://fakeimg.pl/50x50/00CED1/FFF/?text=img+placeholder">
+											</div>
+											<div class="col-xs-8 col-sm-8 well">
+												Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+												tempor incidit esse
+												cillum dolore eu fugiat nuid est laborum.
+											</div>
+
+
+											<div class="col-xs-8 col-sm-8 col-sm-offset-2 well">
+												Lorem ipsumt cupidatat non
+												proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+											</div>
+											<div class="col-xs-4 col-sm-2">
+												<img src="http://fakeimg.pl/50x50/00CED1/FFF/?text=img+placeholder">
+												
+											</div>
+										</div>
+									</div>
+									<div>
+										<textarea id="msgM003M001"></textarea>
+										<span id="submitM003M001" class="btn btn-primary btn-sm">送出</span>
+									</div>
+						        </div>
+
+						        <div role="tabpanel" class="tab-pane" id="tab3">最新標籤的內容</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		
+		
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</body>
+</html>	
+
+<style type="text/css">
+	*{
+		/*outline: 1px solid red;*/
+	}
+	.fix-h30{
+		height:30vh;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+</style>
+
+<script>
+$(document).ready(function(){
+	connect('M002','M001');
+	connect('M003','M001');
+
+	console.log(webSocket);
+});
+
+$('#submitM003M001').click(function(){
+	console.log('subM001M003');
+	sendMessage('M003','M001');
+});
+$('#submitM002M001').click(function(){
+	console.log('subM001M002');
+	sendMessage('M002','M001');
+});
+
+    var host = window.location.host;
+    var path = window.location.pathname;
+    var webCtx = path.substring(0, path.indexOf('/', 1));
+    
+	// var statusOutput = document.getElementById("statusOutput");
+	var webSocket = [];
+	var i=0;
+	function connect(myName,urName) {
+		i++;
+		var MyPoint = "/MyEchoServer/"+myName+"/"+urName;
+    	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+    	console.log(endPointURL);
+		// 建立 websocket 物件
+		webSocket[i] = new WebSocket(endPointURL);
+		
+		webSocket[i].onopen = function(event) {
+			console.log('connect'+myName+urName);
+			// updateStatus("WebSocket 成功連線");
+		};
+
+		webSocket[i].onmessage = function(event) {
+			console.log(event);
+			var messagesArea = $('#'+myName+urName);
+			console.log(messagesArea+'fffff'+myName+urName);
+	        var jsonObj = JSON.parse(event.data);
+	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
+	        
+	        messagesArea.append(message);
+	        messagesArea.scrollTop = messagesArea.scrollHeight;
+		};
+
+		webSocket[i].onclose = function(event) {
+			console.log('close'+myName+urName);
+			// updateStatus("WebSocket 已離線");
+		};
+	}
+	
+	
+// 	var inputUserName ='M001';
+	// inputUserName.focus();
+	
+	function sendMessage(myName,urName) {
+	    var userName = myName;
+	    if (userName === ""){
+	        alert ("使用者名稱請勿空白!");
+	        // inputUserName.focus();
+			return;
+	    }
+	    
+	    var inputMessage = $("#msg"+myName+urName);
+	    console.log(inputMessage.val());
+	    var message = inputMessage.val().trim();
+	    
+	    if (message === ""){
+	        alert ("訊息請勿空白!");
+	        // inputMessage.focus();
+	    }else{
+	    	var index;
+	    	if(myName+urName=='M002M001'){
+	    		index=1;
+	    		console.log(index);
+	    	} else if(myName+urName=='M003M001'){
+	    		index=2;
+	    		console.log(index);
+	    	}
+	        var jsonObj = {"userName" : userName, "message" : message};
+	        console.log(webSocket[index]+'sendwebSocket');
+	        webSocket[index].send(JSON.stringify(jsonObj));
+	        inputMessage.value = "";
+	        // inputMessage.focus();
+	    }
+	}
+
+	
+	function disconnect (e) {
+		console.log('dis');
+		webSocket[i].close();
+		// document.getElementById('sendMessage').disabled = true;
+		// document.getElementById('connect').disabled = false;
+		// document.getElementById('disconnect').disabled = true;
+	}
+
+	
+	function updateStatus(newStatus) {
+		// statusOutput.innerHTML = newStatus;
+	}
+    
+</script>
