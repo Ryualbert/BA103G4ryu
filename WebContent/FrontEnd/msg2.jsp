@@ -200,18 +200,18 @@ $(document).ready(function(){
 	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
 
 	        var msghtml ='';
-	        if(jsonObj.userName=='${urName}'){
+	        if(jsonObj.userName== urName){
 	        	msghtml = '<div class="container-fluid"><div class="row"><div class="media"><div class="media-left">'+
-	        	'<img  class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc=${urName}">'+
+	        	'<img  class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc='+urName+'">'+
 	        	'</div><div class="media-body"><p class="col-xs-11 col-sm-10 well">'+
 	        				jsonObj.message+"\r\n"+
 							'</p></div></div></div></div>';
-	        } else if (jsonObj.userName=='${mem_ac}'){
+	        } else if (jsonObj.userName==myName){
 	        	msghtml = '<div class="container-fluid"><div class="row"><div class="media"><div class="media-body">'+
 	        				'<p class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2 well">'+
 	        				jsonObj.message+"\r\n"+
 							'</p></div><div class="media-right">'+
-							'<img class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc=${mem_ac}"></div></div></div></div>';
+							'<img class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc='+myName+'"></div></div></div></div>';
 	        }
 	        
 	        messagesArea.append(msghtml);
