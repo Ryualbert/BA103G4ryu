@@ -97,9 +97,9 @@
 												<c:if test="${msgVO.mem_sen==mem_ac}">
 													<div class="media">
 														<div class="media-body">
-															<p class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2 well">
-																${msgVO.msg_cont}
-															</p>
+															<div class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2">
+																<div class=" pull-right  well bg-light-g">${msgVO.msg_cont}</div>
+															</div>
 														</div>
 														<div class="media-right">
 															<img class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc=${mem_ac}">

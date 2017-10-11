@@ -4,6 +4,11 @@ import java.util.*;
 
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.msg.model.MsgService;
+
 import javax.websocket.Session;
 import javax.websocket.OnOpen;
 import javax.websocket.OnMessage;
@@ -57,6 +62,13 @@ private static final Map<Set<String>,  Set<Session>> pairSessions = Collections.
 		for (Session session: pairSessions.get(pairSet)){
 			if (session.isOpen())
 				session.getAsyncRemote().sendText(message);
+			
+			Gson gson = new Gson();
+			JsonObject jsonObject = gson.fromJson(message, JsonObject.class);
+			String msg_cont = jsonObject.get("message").getAsString();
+			
+			MsgService msgSvc = new MsgService();
+			msgSvc.addMsgVO(myName, urName, msg_cont);
 		}
 		
 		System.out.println(pairSet+ "Message received: " + message);
