@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -44,11 +45,11 @@ public class MsgDAO implements MsgDAO_interface {
 	private static final String UPDATE = 
 		"UPDATE MSG set mem_sen=?, mem_rec=?, msg_cont=?, msg_send_date=?, msg_stat=? where msg_no =?";
 	private static final String GET_ALLPAIR_BY_MEMSEN = 
-			"select mem_sen from msg where mem_sen = ? or mem_rec = ? group by mem_sen";
+			"select mem_sen from msg where (mem_sen = ? or mem_rec = ? ) and msg_stat = '開啟' group by mem_sen";
 	private static final String GET_ALLPAIR_BY_MEMREC = 
-			"select mem_rec from msg where mem_sen = ? or mem_rec = ? group by mem_rec";
+			"select mem_rec from msg where (mem_sen = ? or mem_rec = ? ) and msg_stat = '開啟' group by mem_rec";
 	private static final String GET_ALL_BY_PAIR = 
-			"SELECT * FROM MSG where (mem_sen=? and mem_rec =?) or (mem_rec = ? and mem_sen=?) order by msg_no";
+			"SELECT * FROM MSG where ((mem_sen=? and mem_rec =?) or (mem_rec = ? and mem_sen=?) )and msg_stat = '開啟' order by msg_no";
 	
 	
 	@Override
@@ -126,7 +127,7 @@ public class MsgDAO implements MsgDAO_interface {
 			pstmt.setString(1, msgVO.getMem_sen());
 			pstmt.setString(2, msgVO.getMem_rec());
 			pstmt.setString(3, msgVO.getMsg_cont());
-			pstmt.setDate(4, msgVO.getMsg_send_date());
+			pstmt.setTimestamp(4, new Timestamp(msgVO.getMsg_send_date().getTime()));
 			pstmt.setString(5, msgVO.getMsg_stat());
 			pstmt.setString(6, msgVO.getMsg_no());
 

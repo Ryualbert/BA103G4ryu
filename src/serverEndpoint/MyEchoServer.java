@@ -54,21 +54,42 @@ private static final Map<Set<String>,  Set<Session>> pairSessions = Collections.
 	
 	@OnMessage
 	public void onMessage(@PathParam("myName") String myName, @PathParam("urName") String urName,Session userSession, String message) {
+		Gson gson = new Gson();
+		JsonObject jsonObject = gson.fromJson(message, JsonObject.class);
+		MsgService msgSvc = new MsgService();
+		
+		if(jsonObject.get("action")!=null){
+			String action = jsonObject.get("action").getAsString();
+			if(action.equals("toSeal")){
+
+				System.out.println(myName+urName+message);
+				msgSvc.toSeal(myName, urName);
+			}
+			return;
+		}
+		
 		//key
 		Set<String> pairSet=  Collections.synchronizedSet(new HashSet<String>());
 		pairSet.add(myName);
 		pairSet.add(urName);
 		//map
 		for (Session session: pairSessions.get(pairSet)){
-			if (session.isOpen())
+			if (session.isOpen()){
 				session.getAsyncRemote().sendText(message);
-			
-			Gson gson = new Gson();
-			JsonObject jsonObject = gson.fromJson(message, JsonObject.class);
+			}
 			String msg_cont = jsonObject.get("message").getAsString();
-			
-			MsgService msgSvc = new MsgService();
 			msgSvc.addMsgVO(myName, urName, msg_cont);
+		}
+		//syskey
+		Set<String> sysSet=  Collections.synchronizedSet(new HashSet<String>());
+		sysSet.add(urName);
+		sysSet.add("sys");
+		//map
+		if( pairSessions.get(sysSet)!=null){
+			for (Session session: pairSessions.get(sysSet)){
+				if (session.isOpen())
+					session.getAsyncRemote().sendText(message);
+			}
 		}
 		
 		System.out.println(pairSet+ "Message received: " + message);

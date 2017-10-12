@@ -22,7 +22,15 @@ public class MsgService {
 		msgVO.setMem_sen(mem_sen);
 		msgVO.setMem_rec(mem_rec);
 		msgVO.setMsg_cont(msg_cont);
-		msgVO.setMsg_stat("未讀");
+		msgVO.setMsg_stat("開啟");
 		dao.insert(msgVO);
+	}
+	
+	public void toSeal (String mem_ac1, String mem_ac2){
+		Set<MsgVO> set =  dao.getAllByPair(mem_ac1,mem_ac2);
+		for(MsgVO msgVO : set){
+			msgVO.setMsg_stat("封存");
+			dao.update(msgVO);
+		}
 	}
 }

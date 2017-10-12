@@ -9,34 +9,35 @@
 <jsp:useBean id="msgSvc" scope="page" class="com.msg.model.MsgService" />
 
 <jsp:include page="/FrontEnd/include/head.jsp"/>
-<c:set var="mem_ac" value="mamabeak" scope="page"/>
+<c:set var="mem_ac" value="mrbrown" scope="page"/>
 <c:set var="urNames" value="${msgSvc.getAllPairByMem(mem_ac)}" scope="page"/>
 
 
-	<span class="mgt60 glyphicon glyphicon-comment msgTo" id="newboston">newboston</span>
-	<span class="msgTo glyphicon glyphicon-comment" id="count123">count123</span>
+	<span class="mgt60 msgTo" id="newboston">newboston</span>
+	<span class="msgTo" id="count123">count123</span>
+	<span class="msgTo" id="mamabeak">mamabeak</span>
+	我是mrbrown
 
 <script type="text/javascript">
-	$('.msgTo').click(function(){
-		console.log($(this).attr('id'));
-		console.log($($('#msgTab li:last')).attr('count'));
-		
+
+	$('.msgTo').click(function (){
 		//check if already open
 		var $urName = $(this).attr('id');
 		for(var i =0 ; i <$('#msgTab li').length; i++){
-			if($($('#msgTab li')[i]).children('a').text() == $urName){
+			if($($('#msgTab li')[i]).children('a').attr('name') == $urName){
 				return;
 			}
 		}
-		
+		openMsg($urName);
+	});
+	
+	function openMsg($urName){
 		//add Tab
 		var $count = Number($($('#msgTab li:last')).attr('count'))+1;
 		$('#msgTab').append(' <li role="presentation"  count="'+
-				$count+'"><a href="#msg'+
+				$count+'" id="msgTab'+$count+'"><a href="#msg'+
 				$count+'" aria-controls="msg'+$count+
-				'" role="tab" data-toggle="tab">'+$urName+'</a></li>');
-		
-		console.log($('.msg .tab-content'));
+				'" role="tab" data-toggle="tab"  name="'+$urName+'">'+$urName+'<button id="msgClose'+$count+'" type="button" class="close msgClose" count="'+$count+'">&times;</button></a></li>');
 		
 		//add Tab-content
 		var $content = $('.msg .tab-content');
@@ -47,32 +48,62 @@
 			dataType: "html",
 			async: false,
 			success : function(result) {
-				console.log('innnnn');
 				$content.append(result);
 			},
 			error : function(xhr) {
 				alert('Ajax request 發生錯誤');
 			}
 		});
+		//change active
+		for(var i = 0 ; i< $count;i++){
+			$('#msgTab'+i).removeClass('active');
+			$('#msg'+i).removeClass('active');
+		}
+		$('#msgTab'+ $count).addClass('active');
+		$('#msg'+$count).addClass('active');
+		//scrollTop to End
+		var messagesArea = $('#msg'+$count+'>div>div');
+		$(messagesArea).scrollTop(messagesArea.prop('scrollHeight'));
 		
-	});
+		
+		
+		//when close do
+		$('.msgClose').click(function(event){
+			event.stopPropagation();
+			event.stopImmediatePropagation();
+			var $count = Number($(this).attr('count'));
+			//check if active is true
+			if($('#msgTab'+$count).hasClass('active')){
+				$('#msgTab'+$count).removeClass('active');
+				$('#msgTab0').addClass('active');
+				$('#msg'+$count).removeClass('active');
+				$('#msg0').addClass('active');
+			}
+			var $urname= $('#msgTab'+$count+'>a').attr('name');
+			console.log($urname);
+			disconnect ('${mem_ac}',$urname);
+			$('#msg'+$count).remove();
+			$('#msgTab'+$count).remove();
+		});
+	}
+	
+
 </script>
-		
+
 			<div class="container-fluid msg">
 				<div class="row">
 					<div class="col-xs-12 col-sm-4 col-sm-offset-8">	
 						<div role="tabpanel">
 						    <!-- 標籤面板：標籤區 -->
 						    <ul class="nav nav-tabs" role="tablist" id="msgTab">
-						        <li role="presentation"  class="active"  count="0">
-						            <a href="#msg0" aria-controls="msg0" role="tab" data-toggle="tab">System</a>
+						        <li role="presentation"  class="active" count="0" id="msgTab0">
+						            <a href="#msg0" aria-controls="msg0" role="tab" data-toggle="tab" name="SYS">
+						            	Sys
+						            </a>
+						             
 						        </li>
 						        
-						        <c:forEach var="urName" items="${urNames}" varStatus="s">
-							        <li role="presentation"  count="${s.count}">
-							            <a href="#msg${s.count}" aria-controls="msg${s.count}" role="tab" data-toggle="tab">${urName}</a>
-							        </li>
-						        </c:forEach>
+						       
 						       
 
 						    </ul>
@@ -83,7 +114,7 @@
 
 						        <div role="tabpanel" class="tab-pane active" id="msg0">
 									<div class="container-fluid ">
-										<div id="system" class="row  fix-h30 scrollbar-macosx" index="1">
+										<div id="${mem_ac}sys" class="row  fix-h30 scrollbar-macosx" index="1">
 										
 											<div class="container-fluid">
 												<div class="row">
@@ -93,11 +124,8 @@
 															<img  class="media-object round-img" src="http://fakeimg.pl/50x50/00CED1/FFF/?text=img+placeholder">
 														</div>
 														<div class="media-body">
-															<p class="col-xs-11 col-sm-10 well">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-															tempor incidit esse
-															cillum dolore eu fugiat nuid est laborum.
+															<p class="col-xs-11 col-sm-10 well">xxx.
 															</p>
-															
 														</div>
 													</div>
 
@@ -109,8 +137,8 @@
 									</div>
 									
 									<div>
-										<textarea class="form-control" rows="3" placeholder="輸入私訊..." id="msgIn${mem_ac}${urName}" disabled></textarea>
-										<span id="submit${mem_ac}${urName}" class="btn btn-primary btn-sm pull-right" disabled>送出</span>
+										<textarea class="form-control" rows="3" placeholder="輸入私訊..." id="msgIn${mem_ac}sys" disabled></textarea>
+										<span id="submit${mem_ac}sys" class="btn btn-primary btn-sm pull-right" disabled>送出</span>
 									</div>
 									
 								</div>
@@ -119,79 +147,6 @@
 
 <!-- ------------------------------------------------------------------------------------------------------------------------- -->
 
-<c:forEach var="urName" items="${urNames}" varStatus="s">
-
-
-						        <div role="tabpanel" class="tab-pane" id="msg${s.count}">
-									<div class="container-fluid ">
-										<div id="${mem_ac}${urName}" class="row fix-h30 scrollbar-macosx" index="${s.count}">
-										
-<c:forEach var="msgVO" items="${msgSvc.getAllByPair(mem_ac,urName)}">
-
-											<div class="container-fluid">
-												<div class="row">
-												
-												<c:if test="${msgVO.mem_sen==urName}">
-													<div class="media">
-														<div class="media-left">
-															<img  class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc=${urName}">
-														</div>
-														<div class="media-body">
-															<p class="col-xs-11 col-sm-10 well">
-																${msgVO.msg_cont}
-															</p>
-															
-														</div>
-													</div>
-												</c:if>
-												
-												<c:if test="${msgVO.mem_sen==mem_ac}">
-													<div class="media">
-														<div class="media-body">
-															<div class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2">
-																<div class=" pull-right  well bg-light-g">${msgVO.msg_cont}</div>
-															</div>
-														</div>
-														<div class="media-right">
-															<img class="media-object round-img w50" src="<%=request.getContextPath()%>/mem/memImg.do?memAc=${mem_ac}">
-														</div>
-													</div>
-												</c:if>
-
-													
-												</div>
-											</div>
-</c:forEach> <%-- msgVOs--%>
-
-										</div>
-
-									</div>
-									<div>
-										<textarea class="form-control" rows="3" placeholder="輸入私訊..." id="msgIn${mem_ac}${urName}"></textarea>
-										<span id="submit${mem_ac}${urName}" class="btn btn-primary btn-sm pull-right">送出</span>
-									</div>
-									
-						        </div>
-
-
-<script type="text/javascript">
-
-$(document).ready(function(){
-	connect('${mem_ac}','${urName}');
-	$('#submit${mem_ac}${urName}').click(function(){
-// 		console.log('sub${mem_ac}${urName}');
-		sendMessage('${mem_ac}','${urName}');
-	});
-	$('#msgIn${mem_ac}${urName}').keypress(function(e){
-		if(e.keyCode == 13){
-			sendMessage('${mem_ac}','${urName}');
-		}
-	});
-});
-
-</script>
-
-</c:forEach> <%-- urNames --%>
 <!-- ------------------------------------------------------------------------------------------------------------------------- -->
 
 			
@@ -247,6 +202,12 @@ $(document).ready(function(){
 			var messagesArea = $('#'+myName+urName);
 	        var jsonObj = JSON.parse(event.data);
 	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
+	        if(urName=='sys' && jsonObj.userName!='sys'){
+	        	if($($('#'+myName+jsonObj.userName)).length==0){
+	        		openMsg(jsonObj.userName);
+	        	}
+	        	return false;
+	        }
 
 	        var msghtml ='';
 	        if(jsonObj.userName== urName){
@@ -264,7 +225,6 @@ $(document).ready(function(){
 	        }
 	        
 	        messagesArea.append(msghtml);
-	        console.log(msghtml);
 	        $(messagesArea).scrollTop(messagesArea.prop('scrollHeight'));
 		};
 
@@ -301,5 +261,11 @@ $(document).ready(function(){
 	function updateStatus(newStatus) {
 		// statusOutput.innerHTML = newStatus;
 	}
+	
+
+	//ready
+	connect('${mem_ac}','sys');
     
 </script>
+
+
